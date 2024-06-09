@@ -49,27 +49,19 @@ const data = [
 
 const ItemCarousel = () => {
   return (
-    <div className="px-4 md:px-6 relative w-full">
-      <Carousel
-        className="w-full max-w-4xl mx-auto"
-        opts={{
-          align: "start",
-          autoplay: true,
-          interval: 5000,
-          loop: true,
-        }}
-      >
+    <div className="py-2 md:px-6 relative pb-10">
+      <Carousel className="w-full max-w-6xl mx-auto">
         <CarouselContent>
           {data.map((item) => (
             <CarouselItem key={item.id} item={item} />
           ))}
         </CarouselContent>
-        <CarouselPrevious className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full p-2 cursor-pointer transition-colors absolute left-[60%] sm:left-[70%] md:left-5 lg:-left-10">
+        {/* <CarouselPrevious className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full p-2 cursor-pointer transition-colors absolute left-[50%] sm:left-[70%] md:left-5 lg:-left-10">
           <ArrowLeftIcon className="w-5 h-5 text-gray-600 dark:text-gray-400 " />
         </CarouselPrevious>
         <CarouselNext className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full p-2 cursor-pointer transition-colors right-12 top-2/4 sm:right-18 md:right-5 lg:-right-10">
           <ArrowRightIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-        </CarouselNext>
+        </CarouselNext> */}
       </Carousel>
     </div>
   );
@@ -80,15 +72,15 @@ export default ItemCarousel;
 const CarouselItem = ({ item }: any) => {
   return (
     <BaseCarouselItem>
-      <div className="grid md:grid-cols-2 gap-6 md:gap-10">
+      <div className="w-full overflow-hidden">
         <Image
           alt={item.name}
-          className="rounded-lg object-cover w-full aspect-[3/2]"
+          className="object-cover w-full sm:aspect-[16/10] aspect-[16/13]  overflow-hidden"
           height={400}
           src={item.image}
-          width={600}
+          width={400}
         />
-        <div className="flex flex-col justify-center gap-4">
+        {/* <div className="flex flex-col justify-center gap-4">
           <div className="space-y-2">
             <div className="inline-block rounded-lg bg-gray-200 px-3 py-1 text-sm font-medium dark:bg-gray-700 dark:text-gray-200">
               Featured
@@ -98,11 +90,11 @@ const CarouselItem = ({ item }: any) => {
               {item.description}
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 justify-between md:justify-center">
             <Button>Add to Cart</Button>
             <Button variant="outline">View Product</Button>
           </div>
-        </div>
+        </div> */}
       </div>
     </BaseCarouselItem>
   );
