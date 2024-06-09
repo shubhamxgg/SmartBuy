@@ -8,7 +8,7 @@ const SellerDashboard = ({ children }: { children: React.ReactNode }) => {
       <SellerLeftbar />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <SellerNavbar />
-        <div>{children}</div>
+        <div className="flex-1 py-12 md:py-16">{children}</div>
       </div>
     </div>
   );

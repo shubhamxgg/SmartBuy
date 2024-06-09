@@ -70,6 +70,9 @@ export function Dash() {
           </div>
         </div>
       </header>
+
+
+
       <main className="flex-1">
         <section className="bg-gray-100 dark:bg-gray-800 py-12 md:py-16 lg:py-20">
           <div className="container px-4 md:px-6">
@@ -169,6 +172,7 @@ export function Dash() {
             </Carousel>
           </div>
         </section>
+        
         <section className="py-12 md:py-16 lg:py-20">
           <div className="container px-4 md:px-6 grid md:grid-cols-[240px_1fr] gap-10 items-start">
             <div className="flex flex-col gap-4">
