@@ -75,7 +75,7 @@ const CarouselItem = ({ item }: any) => {
       <div className="w-full overflow-hidden">
         <Image
           alt={item.name}
-          className="object-cover w-full max-h-[500px] h-[100%] overflow-hidden "
+          className="object-cover w-full max-h-[500px] h-[100%] overflow-hidden"
           height={400}
           src={item.image}
           width={400}
