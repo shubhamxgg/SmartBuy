@@ -3,3 +3,8 @@ export enum ProductStatus {
   OUT_OF_STOCK,
   DISCONTINUED,
 }
+
+
+export interface Products{
+  
+}

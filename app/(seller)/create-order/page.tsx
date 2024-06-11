@@ -12,7 +12,6 @@ import { ProductStatus } from "@prisma/client";
 import { useState } from "react";
 
 const CreateOrder = () => {
-  const [categoryId, setCategoryId] = useState<number | "">("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState<number | "">("");
@@ -28,16 +27,16 @@ const CreateOrder = () => {
     null
   );
   const sellerId = 1;
-  const cat = 1
+  const categoryid = 1;
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const formData = {
       title: name,
       description,
       price: parseFloat(price as string),
-      imageUrl: mainImage ? URL.createObjectURL(mainImage) : "", // Handle file upload correctly
-      categoryId: cat, // Ensure categoryId is parsed correctly
-      sellerId, // Include sellerId
+      imageUrl: mainImage ? URL.createObjectURL(mainImage) : "",
+      categoryId: categoryid,
+      sellerId,
       status,
       featured,
       sku,
