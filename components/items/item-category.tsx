@@ -2,11 +2,11 @@ import Image from "next/image";
 
 const ItemCategory = () => {
   return (
-    <div className="max-w-6xl px-2 pb-5 pt-2 flex flex-col md:flex-row mx-auto">
-      <div className="flex items-center justify-center py-2 border-[2px] flex-1 md:font-bold md:text-4xl md:px-6 md:py-0">
+    <div className="pb-5 pt-2 flex flex-col md:flex-row w-full gap-2">
+      <div className="flex items-center justify-center py-2 border-[2px] flex-1 md:font-bold md:text-4xl md:px-6 md:py-0 rounded-sm">
         <h1>{"Shop by category"}</h1>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-2">
+      <div className="grid grid-cols-2 md:grid-cols-2 gap-2">
         <ItemCategoryCard image="/user.jpg" title="Clothing" />
         <ItemCategoryCard image="/user.jpg" title="Phone" />
       </div>
@@ -21,7 +21,7 @@ interface ItemCategoryCardProps {
 
 const ItemCategoryCard = ({ image, title }: ItemCategoryCardProps) => {
   return (
-    <div className="w-full border">
+    <div className="w-full border rounded-sm">
      <div className="p-5">
      <Image
         height={200}

@@ -49,8 +49,8 @@ const data = [
 
 const ItemCarousel = () => {
   return (
-    <div className="py-2 md:px-6 relative pb-10">
-      <Carousel className="w-full max-w-6xl mx-auto">
+    <div className="py-2 relative pb-10">
+      <Carousel className="w-full border border-red-50 rounded-sm overflow-hidden">
         <CarouselContent>
           {data.map((item) => (
             <CarouselItem key={item.id} item={item} />

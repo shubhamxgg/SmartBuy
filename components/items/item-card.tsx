@@ -34,23 +34,23 @@ const ItemCard = ({ product }: ItemCardProps) => {
   const { addToCart } = useProductStore();
 
   return (
-    <div className="relative group overflow-hidden w-full bg-card">
+    <div className="relative group overflow-hidden w-full bg-card p-4 rounded-sm">
       <Link href={`/items/${product.id}`}>
         <Image
           alt={"item-card"}
-          className="object-cover w-full aspect-square border border-red-100 overflow-hidden"
+          className="object-cover w-full aspect-square border rounded-sm overflow-hidden"
           height={300}
           width={300}
           src={"/user.jpg"}
         />
-        <div className="bg-white p-4 dark:bg-gray-950">
+        <div className="p-4">
           <h3 className="font-bold text-lg">{product.title}</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {product.description}
           </p>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-2">
             <span className="font-semibold text-lg">${product.price}</span>
-            <div className="flex  gap-2">
+            <div className="flex items-center gap-2">
               <Button
                 size="default"
                 variant="outline"

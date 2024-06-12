@@ -13,13 +13,13 @@ const HomePage = () => {
   console.log(products, da);
 
   return (
-    <div className="w-full px-5 py-5 sm:px-2 mx-auto max-w-6xl">
+    <div className="flex flex-col p-5">
       <ItemCarousel />
       <ItemSection title={"Electronic"} />
       <ItemCategory />
-      <ItemSection title={"Clothing"} />
-      <ItemSection title={"Home Appliance"} />
-      <ItemSection title={"Gaming"} />
+      <ItemSection title={"Electronic"} />
+      <ItemSection title={"Electronic"} />
+      <ItemSection title={"Electronic"} />
       <ItemFeaturedBuy />
       <ItemBlog />
       <CustomerTestimonal />
