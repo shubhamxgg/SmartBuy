@@ -4,8 +4,8 @@ import Image from "next/image";
 
 const ItemBlog = () => {
   return (
-    <div className="max-w-6xl p-2 py-10 mx-auto">
-      <div className="border">
+    <div className="py-10">
+      <div className="border rounded-sm">
         <div className="p-2 border-b flex justify-between items-center">
           <h1>Blog Posts</h1>
           <Link href={""}>
@@ -13,9 +13,21 @@ const ItemBlog = () => {
           </Link>
         </div>
         <div className="grid md:grid-cols-3">
-          <ItemBlogCard title="asdssdasddas" description="asdsdddsdsa" image="/user.jpg" />
-          <ItemBlogCard title="asdssdasddas" description="asdsdddsdsa" image="/user.jpg" />
-          <ItemBlogCard title="asdssdasddas" description="asdsdddsdsa" image="/user.jpg" />
+          <ItemBlogCard
+            title="asdssdasddas"
+            description="asdsdddsdsa"
+            image="/user.jpg"
+          />
+          <ItemBlogCard
+            title="asdssdasddas"
+            description="asdsdddsdsa"
+            image="/user.jpg"
+          />
+          <ItemBlogCard
+            title="asdssdasddas"
+            description="asdsdddsdsa"
+            image="/user.jpg"
+          />
         </div>
       </div>
     </div>
@@ -36,7 +48,7 @@ const ItemBlogCard = ({ title, image, description }: ItemBlogCardProps) => {
         alt="l"
         width={100}
         height={100}
-        className="w-full border border-red-50"
+        className="w-full border border-red-50 aspect-square object-cover rounded-sm"
       />
       <h2>{description}</h2>
       <p>{title}</p>

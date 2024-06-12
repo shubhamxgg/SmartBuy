@@ -8,15 +8,15 @@ interface ItemSectonProps {
 
 const ItemSection = ({ title }: ItemSectonProps) => {
   const { filterProductsByCategory, isLoading } = useProductStore();
-  const data = filterProductsByCategory(title);
+  const data = filterProductsByCategory(title).slice(0,3);
   return (
-    <div className="max-w-6xl flex flex-col px-2 pb-5">
-      <div className="flex items-center justify-between px-2 py-4 border">
+    <div className="flex flex-col pb-5 w-full">
+      <div className="flex items-center justify-between px-2 py-4 border rounded-sm border-white/20">
         <h1>{title}</h1>
         <span>View all product</span>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 w-full p-3 gap-2 border flex-1">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 w-full p-3 gap-4 border flex-1 mt-2 rounded-sm">
         {data.map((product) => (
           <ItemCard key={product.id} product={product} />
         ))}

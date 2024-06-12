@@ -6,6 +6,7 @@ import { Package2, ShoppingCart, Store } from "lucide-react";
 import SearchBar from "../searchbar";
 import UserDropdown from "./user-dropdown";
 import Sidebar from "./side-bar";
+import CartSheet from "./cart";
 
 const Navbar = () => {
   const session = true;
@@ -31,10 +32,11 @@ const Navbar = () => {
             <Store className="h-5 w-5" />
             <span className="hidden text-clip">Became a seller</span>
           </Link>
-          <Link href="/cart" className="flex items-center gap-2 text-sm">
+
+          {/* <div className="flex items-center gap-2 text-sm">
             <ShoppingCart className="h-5 w-5" />
-            {/* <span className="hidden md:block">Cart</span> */}
-          </Link>
+          </div> */}
+          <CartSheet />
 
           <UserDropdown />
         </div>
