@@ -1,3 +1,4 @@
+"use client";
 import ItemCard from "@/components/items/item-card";
 import Filter from "@/components/search/filter";
 import { Button } from "@/components/ui/button";
@@ -18,14 +19,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import useProductStore from "@/lib/store/use-products";
 import { ArrowDownIcon, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 
 const Search = () => {
+  const { filteredProducts, setSort } = useProductStore();
+  const handleSortChange = (criteria: string) => {
+    setSort(criteria);
+  };
+  console.log(filteredProducts);
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative flex items-center justify-start p-4 md:p-6 font-bold mt-3 mb-4 lg:mt-5 lg:mb-2 text-lg md:text-xl">
-        <span className="pl-8">31 results for a</span>
+        <span className="pl-8">{filteredProducts.length} results found</span>
         <div className="absolute md:hidden">
           <ArrowLeft className="h-5 w-5" />
         </div>
@@ -42,10 +50,22 @@ const Search = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>Featured</DropdownMenuItem>
-              <DropdownMenuItem>Discount</DropdownMenuItem>
-              <DropdownMenuItem>Price low to high</DropdownMenuItem>
-              <DropdownMenuItem>Price high to low</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleSortChange("Featured")}>
+                Featured
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleSortChange("Discount")}>
+                Discount
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleSortChange("Price low to high")}
+              >
+                Price low to high
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleSortChange("Price high to low")}
+              >
+                Price high to low
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -57,21 +77,8 @@ const Search = () => {
         </div>
 
         <div className="col-span-1 md:col-span-3 grid  xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 md:gap-5">
-          {[...Array(10)].map((_, i) => (
-            <div key={i} className="border p-3 bg-card rounded-sm">
-              <Image
-                alt=""
-                src="/user.jpg"
-                height={200}
-                width={200}
-                className="overflow-hidden object-cover aspect-square w-full rounded-sm"
-              />
-              <div className="flex flex-col gap-2">
-                <span className="mt-2">Pixel</span>
-                <span className="mt-2">700</span>
-                <Button>Add to cart</Button>
-              </div>
-            </div>
+          {filteredProducts.map((product) => (
+            <ItemCard key={product.id} product={product} />
           ))}
         </div>
       </div>

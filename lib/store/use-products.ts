@@ -22,15 +22,25 @@ interface Product {
   images: { id: number; url: string }[];
   reviews: { id: number; rating: number; comment: string }[];
   category: Category;
+  brand: string;
 }
 
 interface CartItem extends Product {
   quantity: number;
 }
 
+interface Filter {
+  categories?: string[];
+  brands?: string[];
+  rating?: string[];
+  priceRange?: [number, number];
+  searchTerm?: string;
+}
+
 interface ProductStore {
   products: any[];
-  categories: any[];
+  filteredProducts: any[];
+  categories: string[];
   cart: CartItem[];
   isLoading: boolean;
   error: string | null;
@@ -40,11 +50,15 @@ interface ProductStore {
   removeFromCart: (productId: number) => void;
   updateCartItemQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
+  setFilter: (filter: Filter) => void;
+  resetFilter: () => void;
+  setSort: (sortCriteria: string) => void;
 }
 
 const useProductStore = create<ProductStore>((set, get) => ({
   products: [],
   categories: [],
+  filteredProducts: [],
   cart: [],
   isLoading: false,
   error: null,
@@ -57,14 +71,84 @@ const useProductStore = create<ProductStore>((set, get) => ({
         new Set(response.map((product) => product.category.name))
       );
       set({ products: response, categories, isLoading: false });
+      set({ filteredProducts: response });
     } catch (error: any) {
       set({ error: error.message, isLoading: false });
     }
   },
 
+  setFilter: (filter: Filter) => {
+    const { products } = get();
+    let filtered = products;
+
+    if (
+      filter.categories &&
+      Array.isArray(filter.categories) &&
+      filter.categories.length > 0
+    ) {
+      filtered = filtered.filter((product) =>
+        filter.categories!.includes(product.category.name)
+      );
+    }
+
+    if (
+      filter.brands &&
+      Array.isArray(filter.brands) &&
+      filter.brands.length > 0
+    ) {
+      filtered = filtered.filter((product) =>
+        filter.brands!.includes(product.brand)
+      );
+    }
+
+    if (filter.priceRange) {
+      filtered = filtered.filter(
+        (product) =>
+          product.price >= filter.priceRange![0] &&
+          product.price <= filter.priceRange![1]
+      );
+    }
+
+    if (filter.searchTerm) {
+      filtered = filtered.filter((product) =>
+        product.title.toLowerCase().includes(filter.searchTerm?.toLowerCase())
+      );
+    }
+
+    set({ filteredProducts: filtered });
+  },
+
+  resetFilter: () => {
+    const { products } = get();
+    set({ filteredProducts: products });
+  },
+
   filterProductsByCategory: (categoryName: string) => {
     const { products } = get();
     return products.filter((product) => product.category.name === categoryName);
+  },
+
+  setSort: (sortCriteria: string) => {
+    const { filteredProducts } = get();
+    let sortedProducts = [...filteredProducts];
+
+    switch (sortCriteria) {
+      case "Featured":
+        sortedProducts.sort((a, b) => b.featured - a.featured);
+        break;
+      case "Discount":
+        break;
+      case "Price low to high":
+        sortedProducts.sort((a, b) => a.price - b.price);
+        break;
+      case "Price high to low":
+        sortedProducts.sort((a, b) => b.price - a.price);
+        break;
+      default:
+        break;
+    }
+
+    set({ filteredProducts: sortedProducts });
   },
 
   addToCart: (product: Product) => {
