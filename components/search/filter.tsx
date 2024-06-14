@@ -1,40 +1,71 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "../ui/slider";
+import useProductStore from "@/lib/store/use-products";
+import { Button } from "../ui/button";
 
 const Filter = () => {
+  const { setFilter, resetFilter } = useProductStore();
   const [priceRange, setPriceRange] = useState<[number, number]>([10, 1000]);
-  const categories = ["Electronics", "Fashion", "Home", "Books"];
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedRating, setSelectedRating] = useState<number | null>(null);
+  const categories = [
+    "Electronic",
+    "Fashion",
+    "Home",
+    "Books",
+    "Clothing",
+    "Home_Appliance",
+  ];
   const brands = ["Apple", "Samsung", "Sony", "LG"];
   const ratings = [5, 4, 3, 2, 1];
-  
-  console.log(priceRange)
+
+  useEffect(() => {
+    setFilter({ priceRange, categories: selectedCategories });
+  }, [selectedCategories, setFilter, priceRange]);
 
   const handleCategoryChange = (category: string) => {
-    console.log(category);
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
   };
 
   const handleBrandChange = (brand: string) => {
-    console.log(brand);
+    setSelectedBrands((prev) =>
+      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
+    );
   };
 
   const handleRatingChange = (rating: number) => {
-    console.log(rating);
+    setSelectedRating((prev) => (prev === rating ? null : rating));
   };
 
   const handlePriceChange = (newPriceRange: number[]) => {
     setPriceRange([newPriceRange[0], newPriceRange[1]] as [number, number]);
-    console.log(newPriceRange)
   };
-  
+
+  const handleResetFilters = () => {
+    setPriceRange([10, 1000]);
+    setSelectedCategories([]);
+    setSelectedBrands([]);
+    setSelectedRating(null);
+    resetFilter();
+  };
+
   return (
     <div className="p-4">
       <div className="mb-6">
         <h2 className="font-bold text-xl mb-2">Category</h2>
         {categories.map((category) => (
           <div key={category} className="flex items-center mb-2">
-            <Checkbox onCheckedChange={() => handleCategoryChange(category)} />
+            <Checkbox
+              onCheckedChange={() => handleCategoryChange(category)}
+              checked={selectedCategories.includes(category)}
+            />
             <span className="ml-2">{category}</span>
           </div>
         ))}
@@ -59,7 +90,10 @@ const Filter = () => {
         <h2 className="font-bold text-xl mb-2">Brand</h2>
         {brands.map((brand) => (
           <div key={brand} className="flex items-center mb-2">
-            <Checkbox onCheckedChange={() => handleBrandChange(brand)} />
+            <Checkbox
+              onCheckedChange={() => handleBrandChange(brand)}
+              checked={selectedBrands.includes(brand)}
+            />
             <span className="ml-2">{brand}</span>
           </div>
         ))}
@@ -69,10 +103,17 @@ const Filter = () => {
         <h2 className="font-bold text-xl mb-2">Rating</h2>
         {ratings.map((rating) => (
           <div key={rating} className="flex items-center mb-2">
-            <Checkbox onCheckedChange={() => handleRatingChange(rating)} />
+            <Checkbox
+              onCheckedChange={() => handleRatingChange(rating)}
+              checked={selectedRating === rating}
+            />
             <span className="ml-2">{rating} Stars</span>
           </div>
         ))}
+      </div>
+
+      <div className="mb-6">
+        <Button onClick={handleResetFilters}>Reset Filters</Button>
       </div>
     </div>
   );
