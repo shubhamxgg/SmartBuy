@@ -3,12 +3,22 @@ import { SearchIcon, X } from "lucide-react";
 import { Input } from "./ui/input";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useProductStore from "@/lib/store/use-products";
 
 const Searchbar = () => {
-  const { filteredProducts, setFilter } = useProductStore();
+  const { setFilter } = useProductStore();
   const [search, setSearch] = useState<string>("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setFilter({ searchTerm: search });
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [search, setFilter]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Checkbox } from "../ui/checkbox";
 
 interface StatusDetailsProps {
   status: ProductStatus;
@@ -51,13 +52,14 @@ const StatusDetails = ({
         </div>
         <div className="grid gap-2">
           <Label htmlFor="featured">Featured</Label>
-          <input
+          {/* <input
             type="checkbox"
             id="featured"
             checked={featured}
             onChange={(e) => setFeatured(e.target.checked)}
             className="checkbox"
-          />
+          /> */}
+          <Checkbox checked={featured} onCheckedChange={() => setFeatured} />
         </div>
       </CardContent>
     </Card>
