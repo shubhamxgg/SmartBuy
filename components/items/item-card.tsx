@@ -24,6 +24,7 @@ interface Product {
   images: { id: number; url: string }[];
   reviews: { id: number; rating: number; comment: string }[];
   category: Category;
+  brand : string
 }
 
 interface ItemCardProps {
