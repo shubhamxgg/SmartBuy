@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { HeartIcon } from "lucide-react";
+import { HeartIcon, ShoppingCart } from "lucide-react";
 import useProductStore from "@/lib/store/use-products";
 import Link from "next/link";
 
@@ -24,7 +24,7 @@ interface Product {
   images: { id: number; url: string }[];
   reviews: { id: number; rating: number; comment: string }[];
   category: Category;
-  brand : string
+  brand: string;
 }
 
 interface ItemCardProps {
@@ -35,18 +35,18 @@ const ItemCard = ({ product }: ItemCardProps) => {
   const { addToCart } = useProductStore();
 
   return (
-    <div className="relative group overflow-hidden w-full bg-card p-4 rounded-sm">
+    <div className="relative group overflow-hidden w-full bg-card p-4 rounded-sm max-h-[400px] h-[100%]">
       <Link href={`/items/${product.id}`}>
         <Image
           alt={"item-card"}
-          className="object-cover w-full aspect-square border rounded-sm overflow-hidden"
+          className="object-contain w-full max-h-[250px] h-[100%] border rounded-sm overflow-hidden bg-white"
           height={300}
           width={300}
-          src={"/user.jpg"}
+          src={product.imageUrl}
         />
         <div className="p-4">
           <h3 className="font-bold text-lg">{product.title}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-gray-500 dark:text-gray-400 overflow-hidden">
             {product.description}
           </p>
           <div className="flex items-center justify-between mt-2">
@@ -55,14 +55,21 @@ const ItemCard = ({ product }: ItemCardProps) => {
               <Button
                 size="default"
                 variant="outline"
-                onClick={() => addToCart(product)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  addToCart(product);
+                }}
               >
-                Add to Cart
+                <ShoppingCart />
               </Button>
-              <Button size="icon" variant="ghost">
-                <HeartIcon className="w-5 h-5" />
-                <span className="sr-only">Add to Wishlist</span>
-              </Button>
+
+              <HeartIcon
+                className="w-7 h-7 absolute top-4 right-4 fill-red-600"
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              />
+              <span className="sr-only">Add to Wishlist</span>
             </div>
           </div>
         </div>
