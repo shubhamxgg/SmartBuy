@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { HeartIcon, ShoppingCart } from "lucide-react";
 import useProductStore from "@/lib/store/use-products";
 import Link from "next/link";
+import { toast } from "sonner";
 
 interface Category {
   id: number;
@@ -34,6 +35,16 @@ interface ItemCardProps {
 const ItemCard = ({ product }: ItemCardProps) => {
   const { addToCart } = useProductStore();
 
+  const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try {
+      await addToCart(product);
+      toast.success("Product added to cart!");
+    } catch (error) {
+      toast.error("Failed to add product to cart.");
+    }
+  };
+
   return (
     <div className="relative group overflow-hidden w-full bg-card p-4 rounded-sm max-h-[400px] h-[100%]">
       <Link href={`/items/${product.id}`}>
@@ -55,10 +66,7 @@ const ItemCard = ({ product }: ItemCardProps) => {
               <Button
                 size="default"
                 variant="outline"
-                onClick={(e) => {
-                  e.preventDefault();
-                  addToCart(product);
-                }}
+                onClick={handleAddToCart}
               >
                 <ShoppingCart />
               </Button>

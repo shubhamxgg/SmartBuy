@@ -1,9 +1,13 @@
 "use server";
+
 import db from "../db";
 
-export async function getProducts() {
+export async function getProductById(id: number) {
   try {
-    const products = await db.product.findMany({
+    const product = await db.product.findUnique({
+      where: {
+        id,
+      },
       include: {
         category: true,
         seller: {
@@ -16,7 +20,12 @@ export async function getProducts() {
         reviews: true,
       },
     });
-    return products;
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    return product;
   } catch (error) {
     console.log(error);
     throw new Error("Failed to fetch data");
