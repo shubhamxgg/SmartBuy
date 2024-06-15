@@ -59,7 +59,11 @@ const StatusDetails = ({
             onChange={(e) => setFeatured(e.target.checked)}
             className="checkbox"
           /> */}
-          <Checkbox checked={featured} onCheckedChange={() => setFeatured} />
+          <Checkbox
+            checked={featured === true}
+            onCheckedChange={() => setFeatured}
+            className="w-10 h-10"
+          />
         </div>
       </CardContent>
     </Card>

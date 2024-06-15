@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -9,17 +10,24 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
+interface Category {
+  id: number;
+  name: string;
+}
 interface CategoryDetailsProps {
   category: string;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
   subcategory: string;
   setSubcategory: React.Dispatch<React.SetStateAction<string>>;
+  categories: Category[];
 }
 const CategoryDetails = ({
   category,
   setCategory,
   setSubcategory,
   subcategory,
+  categories,
 }: CategoryDetailsProps) => {
   return (
     <Card>
@@ -38,15 +46,15 @@ const CategoryDetails = ({
               <SelectValue placeholder="Select Category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="electronics">Electronics</SelectItem>
-              <SelectItem value="clothing">Clothing</SelectItem>
-              <SelectItem value="home">Home</SelectItem>
-              <SelectItem value="sports">Sports</SelectItem>
-              <SelectItem value="beauty">Beauty</SelectItem>
+              {categories.map((category) => (
+                <SelectItem key={category.id} value={category.id.toString()}>
+                  {category.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
-        <div className="grid gap-2">
+        {/* <div className="grid gap-2">
           <Label htmlFor="subcategory">Subcategory</Label>
           <Select
             defaultValue="select"
@@ -65,7 +73,10 @@ const CategoryDetails = ({
               <SelectItem value="dresses">Dresses</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+        </div> */}
+        <Link href={"/create-category"}>
+          <Button variant={"outline"}>Create New Category</Button>
+        </Link>
       </CardContent>
     </Card>
   );
