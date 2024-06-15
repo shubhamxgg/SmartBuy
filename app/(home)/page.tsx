@@ -15,11 +15,11 @@ const HomePage = () => {
   return (
     <div className="flex flex-col p-5">
       <ItemCarousel />
-      <ItemSection title={"Electronic"} />
+      <ItemSection title={"Mobile"} />
       <ItemCategory />
+      <ItemSection title={"Fashion"} />
       <ItemSection title={"Electronic"} />
-      <ItemSection title={"Electronic"} />
-      <ItemSection title={"Electronic"} />
+      <ItemSection title={"Mobile"} />
       <ItemFeaturedBuy />
       <ItemBlog />
       <CustomerTestimonal />

@@ -28,18 +28,17 @@ const Search = () => {
   const handleSortChange = (criteria: string) => {
     setSort(criteria);
   };
-  console.log(filteredProducts);
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="relative flex items-center justify-start p-4 md:p-6 font-bold mt-3 mb-4 lg:mt-5 lg:mb-2 text-lg md:text-xl">
+      <div className="relative flex items-center justify-start p-4 md:p-6 font-bold mt-3 mb-2 lg:mt-5 lg:mb-2 text-lg md:text-xl">
         <span className="pl-8">{filteredProducts.length} results found</span>
         <div className="absolute md:hidden">
           <ArrowLeft className="h-5 w-5" />
         </div>
       </div>
 
-      <div className="hidden lg:block w-full p-4 mb-5">
+      <div className="hidden lg:block w-full p-4 mb-2">
         <div className="flex items-center justify-end gap-2">
           <span className="text-md">Sort by:</span>
           <DropdownMenu>
