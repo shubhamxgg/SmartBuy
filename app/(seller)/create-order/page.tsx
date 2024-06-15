@@ -7,9 +7,11 @@ import StatusDetails from "@/components/form/status-details";
 import StockDetail from "@/components/form/stock-detail";
 import { Button } from "@/components/ui/button";
 import { createProduct } from "@/lib/actions/create-product";
+import useCategoryStore from "@/lib/store/useCategoryStore";
 import { ProductStatus } from "@prisma/client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const CreateOrder = () => {
   const [name, setName] = useState("");
@@ -26,16 +28,26 @@ const CreateOrder = () => {
   const [additionalImages, setAdditionalImages] = useState<FileList | null>(
     null
   );
+
+  const fetchCategories = useCategoryStore((state) => state.fetchCategories);
+  const categories = useCategoryStore((state) => state.categories);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
   const sellerId = 1;
-  const categoryid = 1;
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const formData = {
       title: name,
       description,
       price: parseFloat(price as string),
-      imageUrl: mainImage ? URL.createObjectURL(mainImage) : "",
-      categoryId: categoryid,
+      imageUrl: mainImage
+        ? URL.createObjectURL(mainImage)
+        : "https://m.media-amazon.com/images/I/71xb2xkN5qL._AC_SY400_.jpg",
+      categoryId: parseInt(category),
       sellerId,
       status,
       featured,
@@ -44,15 +56,31 @@ const CreateOrder = () => {
       lowStockThreshold: parseInt(lowStockThreshold as string),
       additionalImages: additionalImages
         ? Array.from(additionalImages).map((file) => URL.createObjectURL(file))
-        : [], // Handle additional images
+        : [],
     };
 
     try {
-      const product = await createProduct(formData);
-      console.log("Product created successfully:", product);
+      await createProduct(formData);
+      toast.success("Product created successfully:");
+      resetForm();
     } catch (error) {
-      console.error("Failed to create product:", error);
+      toast.error("Failed to create product:");
     }
+  };
+
+  const resetForm = () => {
+    setName("");
+    setDescription("");
+    setPrice("");
+    setSku("");
+    setQuantity("");
+    setLowStockThreshold("");
+    setCategory("");
+    setSubcategory("");
+    setStatus(ProductStatus.AVAILABLE);
+    setFeatured(false);
+    setMainImage(null);
+    setAdditionalImages(null);
   };
 
   return (
@@ -62,6 +90,13 @@ const CreateOrder = () => {
           <h1 className="font-semibold text-lg md:text-2xl">Create Product</h1>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <CategoryDetails
+            category={category}
+            setCategory={setCategory}
+            subcategory={subcategory}
+            setSubcategory={setSubcategory}
+            categories={categories}
+          />
           <ProductDetails
             name={name}
             setName={setName}
@@ -77,12 +112,6 @@ const CreateOrder = () => {
             setQuantity={setQuantity}
             lowStockThreshold={lowStockThreshold}
             setLowStockThreshold={setLowStockThreshold}
-          />
-          <CategoryDetails
-            category={category}
-            setCategory={setCategory}
-            subcategory={subcategory}
-            setSubcategory={setSubcategory}
           />
           <StatusDetails
             status={status}
