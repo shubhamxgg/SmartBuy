@@ -1,45 +1,10 @@
-// stores/productStore.ts
 import { create } from "zustand";
 import { getProducts } from "../actions/get-products";
-
-interface Category {
-  id: number;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  seller: { id: number; user: { name: string } };
-  status: string;
-  featured: boolean;
-  stock: { sku: string; quantity: number; lowStockThreshold: number };
-  images: { id: number; url: string }[];
-  reviews: { id: number; rating: number; comment: string }[];
-  category: Category;
-  brand: string;
-}
-
-interface CartItem extends Product {
-  quantity: number;
-}
-
-interface Filter {
-  categories?: string[];
-  brands?: string[];
-  rating?: string[];
-  priceRange?: [number, number];
-  searchTerm?: string;
-}
+import { CartItem, Filter, Product } from "../type";
 
 interface ProductStore {
-  products: any[];
-  filteredProducts: any[];
+  products: Product[];
+  filteredProducts: Product[];
   categories: string[];
   cart: CartItem[];
   isLoading: boolean;
@@ -54,6 +19,76 @@ interface ProductStore {
   resetFilter: () => void;
   setSort: (sortCriteria: string) => void;
 }
+
+const SORT_CRITERIA = {
+  FEATURED: "Featured",
+  DISCOUNT: "Discount",
+  PRICE_LOW_TO_HIGH: "Price low to high",
+  PRICE_HIGH_TO_LOW: "Price high to low",
+  OUT_OF_STOCK: "OUT_OF_STOCK",
+};
+
+const filterProducts = (products: Product[], filter: Filter): Product[] => {
+  let filtered = products;
+
+  if (filter.categories && filter.categories.length > 0) {
+    filtered = filtered.filter((product) =>
+      filter.categories!.includes(product.category.name)
+    );
+  }
+
+  // if (filter.brands && filter.brands.length > 0) {
+  //   filtered = filtered.filter((product) =>
+  //     filter.brands!.includes(product.brand)
+  //   );
+  // }
+
+  if (filter.priceRange) {
+    filtered = filtered.filter(
+      (product) =>
+        product.price >= filter.priceRange![0] &&
+        product.price <= filter.priceRange![1]
+    );
+  }
+
+  if (filter.searchTerm) {
+    const searchTerm = filter.searchTerm.toLowerCase();
+    filtered = filtered.filter((product) =>
+      product.title.toLowerCase().includes(searchTerm)
+    );
+  }
+  return filtered;
+};
+
+const sortProducts = (products: Product[], sortCriteria: string): Product[] => {
+  let sortedProducts = [...products];
+
+  switch (sortCriteria) {
+    case SORT_CRITERIA.FEATURED:
+      sortedProducts.sort((a, b) => Number(b.featured) - Number(a.featured));
+      break;
+    case SORT_CRITERIA.PRICE_LOW_TO_HIGH:
+      sortedProducts.sort((a, b) => a.price - b.price);
+      break;
+    case SORT_CRITERIA.PRICE_HIGH_TO_LOW:
+      sortedProducts.sort((a, b) => b.price - a.price);
+      break;
+    case SORT_CRITERIA.DISCOUNT:
+      sortedProducts.sort((a, b) => {
+        if (a.status === "OUT_OF_STOCK" && b.status !== "OUT_OF_STOCK")
+          return 1;
+        if (a.status !== "OUT_OF_STOCK" && b.status === "OUT_OF_STOCK")
+          return -1;
+        return 0;
+      });
+
+      break;
+    default:
+      break;
+  }
+
+  return sortedProducts;
+};
 
 const useProductStore = create<ProductStore>((set, get) => ({
   products: [],
@@ -70,8 +105,12 @@ const useProductStore = create<ProductStore>((set, get) => ({
       const categories = Array.from(
         new Set(response.map((product) => product.category.name))
       );
-      set({ products: response, categories, isLoading: false });
-      set({ filteredProducts: response });
+      set({
+        products: response,
+        categories,
+        filteredProducts: response,
+        isLoading: false,
+      });
     } catch (error: any) {
       set({ error: error.message, isLoading: false });
     }
@@ -79,42 +118,7 @@ const useProductStore = create<ProductStore>((set, get) => ({
 
   setFilter: (filter: Filter) => {
     const { products } = get();
-    let filtered = products;
-
-    if (
-      filter.categories &&
-      Array.isArray(filter.categories) &&
-      filter.categories.length > 0
-    ) {
-      filtered = filtered.filter((product) =>
-        filter.categories!.includes(product.category.name)
-      );
-    }
-
-    if (
-      filter.brands &&
-      Array.isArray(filter.brands) &&
-      filter.brands.length > 0
-    ) {
-      filtered = filtered.filter((product) =>
-        filter.brands!.includes(product.brand)
-      );
-    }
-
-    if (filter.priceRange) {
-      filtered = filtered.filter(
-        (product) =>
-          product.price >= filter.priceRange![0] &&
-          product.price <= filter.priceRange![1]
-      );
-    }
-
-    if (filter.searchTerm) {
-      filtered = filtered.filter((product) =>
-        product.title.toLowerCase().includes(filter.searchTerm?.toLowerCase())
-      );
-    }
-
+    const filtered = filterProducts(products, filter);
     set({ filteredProducts: filtered });
   },
 
@@ -130,24 +134,7 @@ const useProductStore = create<ProductStore>((set, get) => ({
 
   setSort: (sortCriteria: string) => {
     const { filteredProducts } = get();
-    let sortedProducts = [...filteredProducts];
-
-    switch (sortCriteria) {
-      case "Featured":
-        sortedProducts.sort((a, b) => b.featured - a.featured);
-        break;
-      case "Discount":
-        break;
-      case "Price low to high":
-        sortedProducts.sort((a, b) => a.price - b.price);
-        break;
-      case "Price high to low":
-        sortedProducts.sort((a, b) => b.price - a.price);
-        break;
-      default:
-        break;
-    }
-
+    const sortedProducts = sortProducts(filteredProducts, sortCriteria);
     set({ filteredProducts: sortedProducts });
   },
 
