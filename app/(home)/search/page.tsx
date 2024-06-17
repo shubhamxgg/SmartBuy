@@ -1,33 +1,24 @@
 "use client";
-import ItemCard from "@/components/items/item-card";
-import Filter from "@/components/search/filter";
-import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import Filter from "@/components/search/search-filter";
+import SearchFilterDrawer from "@/components/search/search-drawer";
+import SearchSortMenu from "@/components/search/search-sort-menu";
 import useProductStore from "@/lib/store/use-products";
-import { ArrowDownIcon, ArrowLeft } from "lucide-react";
-import Image from "next/image";
+import { ArrowLeft } from "lucide-react";
+import SearchProductList from "@/components/search/search-product-list";
+import SearchSkeleton from "@/components/search/search-skeleton";
 
 const Search = () => {
-  const { filteredProducts, setSort } = useProductStore();
+  const { filteredProducts, setSort, isLoading } = useProductStore();
+
+  console.log(filteredProducts);
+
   const handleSortChange = (criteria: string) => {
     setSort(criteria);
   };
+
+  if (isLoading) {
+    return <SearchSkeleton />;
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -39,35 +30,7 @@ const Search = () => {
       </div>
 
       <div className="hidden lg:block w-full p-4 mb-2">
-        <div className="flex items-center justify-end gap-2">
-          <span className="text-md">Sort by:</span>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant={"default"} size={"sm"} className="flex gap-2">
-                Featured
-                <ArrowDownIcon className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => handleSortChange("Featured")}>
-                Featured
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleSortChange("Discount")}>
-                Discount
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => handleSortChange("Price low to high")}
-              >
-                Price low to high
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => handleSortChange("Price high to low")}
-              >
-                Price high to low
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <SearchSortMenu onSortChange={handleSortChange} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4 p-5">
@@ -75,44 +38,10 @@ const Search = () => {
           <Filter />
         </div>
 
-        <div className="col-span-1 md:col-span-3 grid  xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 md:gap-5">
-          {filteredProducts.map((product) => (
-            <ItemCard key={product.id} product={product} />
-          ))}
-        </div>
+        <SearchProductList products={filteredProducts} />
       </div>
 
-      <div className="md:hidden flex items-center w-full p-4 gap-2">
-        <Drawer>
-          <DrawerTrigger asChild>
-            <Button className="w-full" variant={"outline"}>
-              Sort
-            </Button>
-          </DrawerTrigger>
-          <DrawerContent>
-            <DrawerHeader>
-              <DrawerTitle>Sort</DrawerTitle>
-            </DrawerHeader>
-            <div className="flex flex-col items-center justify-center gap-2 p-5 group cursor-pointer pb-16">
-              <span>Featured</span>
-              <span>Discount</span>
-              <span>Price high to low</span>
-              <span>Price low to high</span>
-            </div>
-          </DrawerContent>
-        </Drawer>
-
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button className="w-full" variant={"outline"}>
-              Filter
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="bottom" className="max-h-[600px] overflow-scroll">
-            <Filter />
-          </SheetContent>
-        </Sheet>
-      </div>
+      <SearchFilterDrawer />
     </div>
   );
 };

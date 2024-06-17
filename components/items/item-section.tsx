@@ -2,6 +2,7 @@ import useProductStore from "@/lib/store/use-products";
 import ItemCard from "./item-card";
 import ItemList from "./item-list";
 import { Loader } from "lucide-react";
+import ItemSectionSkeleton from "./item-section-skeleton";
 
 interface ItemSectonProps {
   title: string;
@@ -11,11 +12,7 @@ const ItemSection = ({ title }: ItemSectonProps) => {
   const { filterProductsByCategory, isLoading } = useProductStore();
   const data = filterProductsByCategory(title).slice(0, 3);
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center">
-        <Loader  className="animate-spin"/>
-      </div>
-    );
+    return <ItemSectionSkeleton />;
   }
   return (
     <div className="flex flex-col pb-5 w-full">

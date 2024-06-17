@@ -1,5 +1,6 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
-import { Button } from "../ui/button";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { Skeleton } from "../ui/skeleton";
 import {
   Carousel,
   CarouselContent,
@@ -7,8 +8,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 
 const data = [
   {
@@ -50,6 +49,12 @@ const data = [
 
 const ItemCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000); // Simulate loading time
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -58,6 +63,17 @@ const ItemCarousel = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  if (loading) {
+    return (
+      <div className="py-2 relative pb-10">
+        <div className="w-full border border-red-50 rounded-sm overflow-hidden">
+          <Skeleton className="w-full h-80" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="py-2 relative pb-10">
       <Carousel className="w-full border border-red-50 rounded-sm overflow-hidden">
@@ -69,12 +85,6 @@ const ItemCarousel = () => {
             <CarouselItem key={item.id} item={item} />
           ))}
         </CarouselContent>
-        {/* <CarouselPrevious className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full p-2 cursor-pointer transition-colors absolute left-[50%] sm:left-[70%] md:left-5 lg:-left-10">
-          <ArrowLeftIcon className="w-5 h-5 text-gray-600 dark:text-gray-400 " />
-        </CarouselPrevious>
-        <CarouselNext className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full p-2 cursor-pointer transition-colors right-12 top-2/4 sm:right-18 md:right-5 lg:-right-10">
-          <ArrowRightIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-        </CarouselNext> */}
       </Carousel>
     </div>
   );
@@ -93,21 +103,6 @@ const CarouselItem = ({ item }: any) => {
           src={item.image}
           width={400}
         />
-        {/* <div className="flex flex-col justify-center gap-4">
-          <div className="space-y-2">
-            <div className="inline-block rounded-lg bg-gray-200 px-3 py-1 text-sm font-medium dark:bg-gray-700 dark:text-gray-200">
-              Featured
-            </div>
-            <h2 className="text-3xl font-bold tracking-tight">{item.name}</h2>
-            <p className="text-gray-500 dark:text-gray-400">
-              {item.description}
-            </p>
-          </div>
-          <div className="flex gap-2 justify-between md:justify-center">
-            <Button>Add to Cart</Button>
-            <Button variant="outline">View Product</Button>
-          </div>
-        </div> */}
       </div>
     </BaseCarouselItem>
   );

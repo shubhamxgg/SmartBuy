@@ -4,29 +4,8 @@ import { HeartIcon, ShoppingCart } from "lucide-react";
 import useProductStore from "@/lib/store/use-products";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Product } from "@/lib/type";
 
-interface Category {
-  id: number;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  seller: { id: number; user: { name: string } };
-  status: string;
-  featured: boolean;
-  stock: { sku: string; quantity: number; lowStockThreshold: number };
-  images: { id: number; url: string }[];
-  reviews: { id: number; rating: number; comment: string }[];
-  category: Category;
-  brand: string;
-}
 
 interface ItemCardProps {
   product: Product;
