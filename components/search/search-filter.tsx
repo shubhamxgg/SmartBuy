@@ -1,5 +1,5 @@
 "use client";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "../ui/slider";
 import { Button } from "../ui/button";
@@ -21,21 +21,25 @@ const Filter = () => {
     handleResetFilters,
   } = useFilters();
 
+  const [showMoreCategories, setShowMoreCategories] = useState(false);
+
   const renderCategoryCheckboxes = useMemo(
     () =>
-      categories.map((category) => (
-        <div key={category.id} className="flex items-center mb-2">
-          <Checkbox
-            id={`category-${category}`}
-            onCheckedChange={() => handleCategoryChange(category.name)}
-            checked={selectedCategories.includes(category.name)}
-          />
-          <label htmlFor={`category-${category}`} className="ml-2">
-            {category.name}
-          </label>
-        </div>
-      )),
-    [categories, selectedCategories, handleCategoryChange]
+      (showMoreCategories ? categories : categories.slice(0, 5)).map(
+        (category) => (
+          <div key={category.id} className="flex items-center mb-2">
+            <Checkbox
+              id={`category-${category}`}
+              onCheckedChange={() => handleCategoryChange(category.name)}
+              checked={selectedCategories.includes(category.name)}
+            />
+            <label htmlFor={`category-${category}`} className="ml-2">
+              {category.name}
+            </label>
+          </div>
+        )
+      ),
+    [showMoreCategories, categories, selectedCategories, handleCategoryChange]
   );
 
   const renderBrandCheckboxes = useMemo(
@@ -75,11 +79,20 @@ const Filter = () => {
   return (
     <div className="p-4">
       <div className="mb-6 w-full">
-        <Button onClick={handleResetFilters} className="w-full">Reset Filters</Button>
+        <Button onClick={handleResetFilters} className="w-full">
+          Reset Filters
+        </Button>
       </div>
       <div className="mb-6">
         <h2 className="font-bold text-xl mb-2">Category</h2>
         {renderCategoryCheckboxes}
+        <Button
+          variant="link"
+          onClick={() => setShowMoreCategories(!showMoreCategories)}
+          className="ml-2 mt-2"
+        >
+          {showMoreCategories ? "Show less" : "Show more"}
+        </Button>
       </div>
 
       <div className="mb-6">

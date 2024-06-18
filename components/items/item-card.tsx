@@ -25,7 +25,7 @@ const ItemCard = ({ product }: ItemCardProps) => {
   };
 
   return (
-    <div className="relative group overflow-hidden w-full bg-card p-4 rounded-sm max-h-[400px] h-[100%]">
+    <div className="relative group overflow-hidden max-w-5xl w-full bg-card p-4 rounded-sm min-h-[450px]">
       <Link href={`/items/${product.id}`}>
         <Image
           alt={"item-card"}

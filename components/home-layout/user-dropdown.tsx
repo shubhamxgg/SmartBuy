@@ -1,4 +1,3 @@
-import { User2, UserCircle } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,8 +6,10 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { currentUser } from "@clerk/nextjs/server";
 
-const UserDropdown = () => {
+const UserDropdown = async () => {
+  const user = await currentUser();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -17,22 +18,21 @@ const UserDropdown = () => {
           size="icon"
           variant="ghost"
         >
-          <Image
+          {user ? <Image
             alt="Avatar"
             className="overflow-hidden rounded-full"
             height={32}
-            src="/user.jpg"
+            src={user?.imageUrl!}
             style={{
               aspectRatio: "36/36",
               objectFit: "cover",
             }}
             width={36}
-          />
-          {/* <span className="hidden sm:block">Shubham</span> */}
+          /> : ""}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>Shubham</DropdownMenuItem>
+        <DropdownMenuItem>{user?.firstName}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

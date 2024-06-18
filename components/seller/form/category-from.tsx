@@ -1,51 +1,60 @@
-import { useState } from "react";
 import useCategoryStore from "@/lib/store/useCategoryStore";
 import { createCategory } from "@/lib/actions/create-category";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import FormSumbitButton from "./form-submit-button";
+import { useFormState } from "react-dom";
+import { useEffect } from "react";
 
 const CategoryForm = () => {
-  const [name, setName] = useState<string>("");
+  // useEffect(() => {
+  //   if (!state) {
+  //     return;
+  //   }
+  //   if (state.status === "error") {
+  //     toast.error("Failed to create category.");
+  //   }
+
+  //   if (state.status === "success") {
+  //     toast.success("Category created successfully!");
+  //   }
+  // }, [state]);
   const addCategory = useCategoryStore((state) => state.addCategory);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  async function fromAction(formData: FormData) {
     try {
-      const category = await createCategory({ name });
-      addCategory(category);
-      toast.success("Category created successfully !");
-      setName("");
-    } catch (error) {
+      const name = formData.get("name");
+      if (typeof name === "string") {
+        const category = await createCategory({ name });
+        addCategory(category);
+        toast.success("Category created successfully!");
+      } else {
+        throw new Error("Invalid category name");
+      }
+    } catch {
       toast.error("Failed to create category.");
     }
-  };
+  }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col justify-evenly
-      gap-4 p-4 max-w-sm mx-auto bg-card h-[400px] rounded-sm "
-    >
-      <div className="flex items-center pt-5">
-        <h1 className="font-semibold text-lg md:text-2xl">Create Category</h1>
-      </div>
-      <div className="flex flex-col gap-4">
-        <label className="block text-sm font-medium text-gray-700">
-          Category Name
-        </label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="p-2 border rounded"
-          required
-        />
-      </div>
-      <div className="flex justify-end gap-2">
-        <Button variant="outline">Cancel</Button>
-        <Button type="submit">Save Category</Button>
-      </div>
-    </form>
+    <div className="flex items-center justify-center sm:max-w-md mx-auto w-full sm:rounded-sm bg-card">
+      <form
+        action={fromAction}
+        className="flex flex-col justify-evenly
+      gap-4 p-4 h-[400px] w-full max-w-sm mx-auto"
+      >
+        <div className="flex items-center pt-5">
+          <h1 className="font-semibold text-lg md:text-2xl">Create Category</h1>
+        </div>
+        <div className="flex flex-col gap-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Category Name
+          </label>
+          <input type="text" name="name" className="p-2 border rounded" />
+          {/* <p className="text-red-500 text-sm">{state?.error}</p> */}
+        </div>
+        <FormSumbitButton />
+      </form>
+    </div>
   );
 };
 
