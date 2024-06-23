@@ -10,7 +10,6 @@ import useProductStore from "@/lib/store/use-products";
 const HomePage = () => {
   const { products, isLoading, filterProductsByCategory } = useProductStore();
   const da = filterProductsByCategory("Clothing");
-  console.log(products, da);
 
   return (
     <div className="flex flex-col p-5">

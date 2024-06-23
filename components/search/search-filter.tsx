@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "../ui/slider";
 import { Button } from "../ui/button";
-import { useFilters } from "@/hook/use-filters";
+import { useFilters } from "@/hook/use-handle-filters";
 
 const Filter = () => {
   const {

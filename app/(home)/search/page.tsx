@@ -6,15 +6,26 @@ import useProductStore from "@/lib/store/use-products";
 import { ArrowLeft } from "lucide-react";
 import SearchProductList from "@/components/search/search-product-list";
 import SearchSkeleton from "@/components/search/search-skeleton";
+import { useFilters } from "@/hook/use-handle-filters";
 
-const Search = () => {
+const SearchPage = () => {
   const { filteredProducts, setSort, isLoading } = useProductStore();
-
-  console.log(filteredProducts);
+  const { products, setPage, totalProducts, loading } = useFilters();
+  const pageSize = 10;
+  const totalPages = Math.ceil(totalProducts / pageSize);
+  console.log(products, "Products");
 
   const handleSortChange = (criteria: string) => {
     setSort(criteria);
   };
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
+
+  if (loading) {
+    <SearchSkeleton />;
+  }
 
   if (isLoading) {
     return <SearchSkeleton />;
@@ -23,7 +34,7 @@ const Search = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative flex items-center justify-start p-4 md:p-6 font-bold mt-3 mb-2 lg:mt-5 lg:mb-2 text-lg md:text-xl">
-        <span className="pl-8">{filteredProducts.length} results found</span>
+        <span className="pl-8">{products.length} results found</span>
         <div className="absolute md:hidden">
           <ArrowLeft className="h-5 w-5" />
         </div>
@@ -38,7 +49,23 @@ const Search = () => {
           <Filter />
         </div>
 
-        <SearchProductList products={filteredProducts} />
+        {products.length > 0 ? (
+          <SearchProductList products={products} />
+        ) : (
+          "No Product"
+        )}
+      </div>
+
+      <div className="flex justify-center mt-4 mb-5 w-full">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            className="px-3 py-1 mx-1  bg-card rounded"
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
 
       <SearchFilterDrawer />
@@ -46,4 +73,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchPage;

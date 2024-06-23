@@ -60,7 +60,7 @@ const ItemsPage = ({ params: { id } }: ItemPageProps) => {
   if (error) return <div>Error:</div>;
   if (!product) return <div>Product not found</div>;
 
-  console.log(product);
+  
 
   return (
     <div className="flex flex-col w-full">
