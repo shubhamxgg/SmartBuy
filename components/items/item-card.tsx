@@ -25,7 +25,7 @@ const ItemCard = ({ product }: ItemCardProps) => {
   };
 
   return (
-    <div className="relative group overflow-hidden max-w-5xl w-full bg-card p-4 rounded-sm min-h-[450px]">
+    <div className="relative group overflow-hidden max-w-5xl w-full bg-card p-4 rounded-sm min-h-[400px]">
       <Link href={`/items/${product.id}`}>
         <Image
           alt={"item-card"}
@@ -36,9 +36,10 @@ const ItemCard = ({ product }: ItemCardProps) => {
         />
         <div className="p-4">
           <h3 className="font-bold text-lg">{product.title}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 overflow-hidden">
+          {/* <p className="text-sm text-gray-500 dark:text-gray-400 overflow-hidden text-pretty max-w-[80%]">
             {product.description}
-          </p>
+          </p> */}
+          <p className="text-red-300 mt-2">{product.category.name}</p>
           <div className="flex items-center justify-between mt-2">
             <span className="font-semibold text-lg">${product.price}</span>
             <div className="flex items-center gap-2">
