@@ -1,6 +1,6 @@
 // components/CartSummary.tsx
 import React from "react";
-import useProductStore from "@/lib/store/use-products";
+import useProductStore from "@/store/useProducts";
 
 const CartSummary: React.FC = () => {
   const { cart, clearCart } = useProductStore();

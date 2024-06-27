@@ -5,12 +5,11 @@ import ItemCarousel from "@/components/items/item-carousel";
 import ItemCategory from "@/components/items/item-category";
 import ItemFeaturedBuy from "@/components/items/item-featured-buy";
 import ItemSection from "@/components/items/item-section";
-import useProductStore from "@/lib/store/use-products";
+import useProductStore from "@/store/useProducts";
 
 const HomePage = () => {
   const { products, isLoading, filterProductsByCategory } = useProductStore();
   const da = filterProductsByCategory("Clothing");
-  console.log(products, da);
 
   return (
     <div className="flex flex-col p-5">

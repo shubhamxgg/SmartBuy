@@ -1,5 +1,5 @@
+import { getCategories } from "@/lib/actions/get-category";
 import { create } from "zustand";
-import { getCategories } from "../actions/get-category";
 
 interface Category {
   id: number;

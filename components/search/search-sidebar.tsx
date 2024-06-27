@@ -3,9 +3,9 @@ import { useMemo } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "../ui/slider";
 import { Button } from "../ui/button";
-import { useFilters } from "@/hook/use-filters";
+import { useSearchFilters } from "@/hooks/use-sidebar-filters";
 
-const Filter = () => {
+const SearchSidebar = () => {
   const {
     categories,
     brands,
@@ -19,7 +19,7 @@ const Filter = () => {
     handleRatingChange,
     handlePriceChange,
     handleResetFilters,
-  } = useFilters();
+  } = useSearchFilters();
 
   const renderCategoryCheckboxes = useMemo(
     () =>
@@ -75,7 +75,9 @@ const Filter = () => {
   return (
     <div className="p-4">
       <div className="mb-6 w-full">
-        <Button onClick={handleResetFilters} className="w-full">Reset Filters</Button>
+        <Button onClick={handleResetFilters} className="w-full">
+          Reset Filters
+        </Button>
       </div>
       <div className="mb-6">
         <h2 className="font-bold text-xl mb-2">Category</h2>
@@ -110,4 +112,4 @@ const Filter = () => {
   );
 };
 
-export default Filter;
+export default SearchSidebar;

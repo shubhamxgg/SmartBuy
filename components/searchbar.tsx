@@ -4,7 +4,7 @@ import { Input } from "./ui/input";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useCallback, useEffect, useState } from "react";
-import useProductStore from "@/lib/store/use-products";
+import useProductStore from "@/store/useProducts";
 
 const Searchbar = () => {
   const { setFilter } = useProductStore();

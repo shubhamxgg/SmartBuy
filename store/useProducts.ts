@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { getProducts } from "../actions/get-products";
-import { CartItem, Filter, Product } from "../type";
+import { getProducts } from "../lib/actions/get-products";
+import { CartItem, Filter, Product } from "../lib/type";
 
 interface ProductStore {
   products: Product[];
