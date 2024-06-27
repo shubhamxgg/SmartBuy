@@ -2,8 +2,9 @@
 import { ShoppingCart } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import useProductStore from "@/lib/store/use-products";
+import useProductStore from "@/store/useProducts";
 import CartItem from "../cart/cart-item";
+import CartSummary from "../cart/cart-summary";
 
 const CartSheet = () => {
   const { cart } = useProductStore();
@@ -19,11 +20,15 @@ const CartSheet = () => {
         {cart.length === 0 ? (
           <p>Your cart is empty.</p>
         ) : (
-          <div className="flex flex-col md:flex-row md:space-x-4">
-            <div className="flex-1">
+          <div className="flex flex-col justify-around min-h-full ">
+            <div className="max-h-96 overflow-y-auto">
               {cart.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
+            </div>
+
+            <div>
+              <CartSummary />
             </div>
           </div>
         )}

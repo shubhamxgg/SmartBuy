@@ -20,7 +20,7 @@ export interface Product {
   seller: { id: number; user: { name: string } };
   status: string;
   featured: boolean;
-  stock: { sku: string; quantity: number; lowStockThreshold: number } | null;
+  stock?: { sku: string; quantity: number; lowStockThreshold: number } | null;
   images: { id: number; url: string }[];
   reviews: { id: number; rating: number; comment: string }[];
   category: Category;
@@ -36,4 +36,11 @@ export interface Filter {
   rating?: number[];
   priceRange?: [number, number];
   searchTerm?: string;
+}
+
+export interface FilterState {
+  category: string | null;
+  priceMin: number | null;
+  priceMax: number | null;
+  page: number;
 }

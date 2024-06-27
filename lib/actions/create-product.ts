@@ -31,7 +31,7 @@ export async function createProduct({
   additionalImages: string[];
 }) {
   try {
-    const seller = 5;
+    const seller = 1;
     // Ensure seller exists
     // const seller = await db.seller.findUnique({
     //   where: { userId: sellerId },

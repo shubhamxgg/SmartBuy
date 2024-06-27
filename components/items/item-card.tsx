@@ -1,11 +1,10 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { HeartIcon, ShoppingCart } from "lucide-react";
-import useProductStore from "@/lib/store/use-products";
+import useProductStore from "@/store/useProducts";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Product } from "@/lib/type";
-
 
 interface ItemCardProps {
   product: Product;
@@ -25,11 +24,11 @@ const ItemCard = ({ product }: ItemCardProps) => {
   };
 
   return (
-    <div className="relative group overflow-hidden max-w-5xl w-full bg-card p-4 rounded-sm min-h-[400px]">
+    <div className="relative group overflow-hidden max-w-5xl w-full bg-card p-4 rounded-sm min-h-[440px]">
       <Link href={`/items/${product.id}`}>
         <Image
           alt={"item-card"}
-          className="object-contain w-full max-h-[250px] h-[100%] border rounded-sm overflow-hidden bg-white"
+          className="object-contain w-full  max-h-[250px] h-[100%] border rounded-sm overflow-hidden  bg-white"
           height={300}
           width={300}
           src={product.imageUrl}

@@ -1,8 +1,10 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import db from "../db";
+import { PrismaClient, Prisma } from "@prisma/client";
 
-interface FilterParams {
+const db = new PrismaClient();
+
+export interface FilterParams {
   categoryNames?: string[];
   minPrice?: number;
   maxPrice?: number;
@@ -10,16 +12,40 @@ interface FilterParams {
   minRating?: number;
   skip?: number;
   take?: number;
+  sort?: string;
 }
 
 export async function getFilteredProducts(filters: FilterParams) {
   try {
-    const { categoryNames, minPrice, maxPrice, brand, minRating, skip, take } =
-      filters;
+    const {
+      categoryNames,
+      minPrice,
+      maxPrice,
+      brand,
+      minRating,
+      skip,
+      take = 10,
+      sort,
+    } = filters;
 
-    const filterConditions: any = {};
+    let orderBy: Prisma.ProductOrderByWithRelationInput = {};
 
-    // Filter by category names
+    switch (sort) {
+      case "priceLowToHigh":
+        orderBy = { price: "asc" };
+        break;
+      case "priceHighToLow":
+        orderBy = { price: "desc" };
+        break;
+      case "featured":
+        orderBy = { featured: "desc" };
+        break;
+      default:
+        orderBy = { featured: "desc" };
+    }
+
+    const filterConditions: Prisma.ProductWhereInput = {};
+
     if (categoryNames && categoryNames.length > 0) {
       filterConditions.category = {
         name: {
@@ -28,20 +54,13 @@ export async function getFilteredProducts(filters: FilterParams) {
       };
     }
 
-    // Filter by price range
-    if (minPrice || maxPrice) {
+    if (minPrice !== undefined || maxPrice !== undefined) {
       filterConditions.price = {};
       if (minPrice !== undefined) filterConditions.price.gte = minPrice;
       if (maxPrice !== undefined) filterConditions.price.lte = maxPrice;
     }
 
-    // Filter by brand
-    if (brand) {
-      filterConditions.brand = brand;
-    }
-
-    // Filter by minimum rating
-    if (minRating) {
+    if (minRating !== undefined) {
       filterConditions.reviews = {
         some: {
           rating: {
@@ -50,9 +69,6 @@ export async function getFilteredProducts(filters: FilterParams) {
         },
       };
     }
-
-    console.log("Filter Conditions: ", filterConditions);
-    console.log("Pagination: ", { skip, take });
 
     const products = await db.product.findMany({
       where: filterConditions,
@@ -68,6 +84,7 @@ export async function getFilteredProducts(filters: FilterParams) {
         images: true,
         reviews: true,
       },
+      orderBy,
     });
 
     const totalProducts = await db.product.count({ where: filterConditions });

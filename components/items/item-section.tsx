@@ -1,4 +1,4 @@
-import useProductStore from "@/lib/store/use-products";
+import useProductStore from "@/store/useProducts";
 import ItemCard from "./item-card";
 import ItemList from "./item-list";
 import { Loader } from "lucide-react";

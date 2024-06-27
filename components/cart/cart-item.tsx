@@ -1,6 +1,5 @@
-// components/CartItem.tsx
 import React from "react";
-import useProductStore from "@/lib/store/use-products";
+import useProductStore from "@/store/useProducts";
 import Image from "next/image";
 
 interface CartItem {
@@ -22,7 +21,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
   return (
     <div className="flex items-center border-b py-4">
       <Image
-        src={'/user.jpg'}
+        src={item.imageUrl}
         alt={item.title}
         width={80}
         height={80}
@@ -30,7 +29,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
       />
       <div className="flex-1">
         <h4 className="font-semibold">{item.title}</h4>
-        <p className="text-gray-500">{item.description}</p>
+        {/* <p className="text-gray-500">{item.description}</p> */}
         <div className="flex items-center mt-2">
           <input
             type="number"

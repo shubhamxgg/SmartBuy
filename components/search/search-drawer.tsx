@@ -7,7 +7,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import Filter from "@/components/search/search-filter";
+import SearchSidebar from "./search-sidebar";
 
 const SearchFilterDrawer = () => (
   <div className="md:hidden flex items-center w-full p-4 gap-2 mt-auto">
@@ -37,7 +37,7 @@ const SearchFilterDrawer = () => (
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom" className="max-h-[600px] overflow-scroll">
-        <Filter />
+        <SearchSidebar />
       </SheetContent>
     </Sheet>
   </div>

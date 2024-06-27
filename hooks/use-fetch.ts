@@ -1,4 +1,4 @@
-import useProductStore from "@/lib/store/use-products";
+import useProductStore from "@/store/useProducts";
 import { Filter } from "@/lib/type";
 import { useEffect, useState } from "react";
 

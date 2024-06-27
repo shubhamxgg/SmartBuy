@@ -1,4 +1,4 @@
-import useCategoryStore from "@/lib/store/useCategoryStore";
+import useCategoryStore from "@/store/useCategoryStore";
 import { createCategory } from "@/lib/actions/create-category";
 import { toast } from "sonner";
 import FormSumbitButton from "./form-submit-button";
