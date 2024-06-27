@@ -18,7 +18,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
             disableTransitionOnChange
           >
             {children}
-            <Toaster position="top-right" closeButton richColors />
+            <Toaster position="top-center" closeButton richColors />
           </ThemeProvider>
         </QueryClientProvider>
       </ClerkProvider>

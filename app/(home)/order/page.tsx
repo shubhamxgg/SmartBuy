@@ -1,9 +1,5 @@
 const page = () => {
-    return (
-        <div>
-            Enter
-        </div>
-    );
-}
+  return <div></div>;
+};
 
 export default page;

@@ -7,7 +7,7 @@ import StatusDetails from "@/components/form/status-details";
 import StockDetail from "@/components/form/stock-detail";
 import { Button } from "@/components/ui/button";
 import { createProduct } from "@/lib/actions/create-product";
-import useCategoryStore from "@/lib/store/useCategoryStore";
+import useCategoryStore from "@/store/useCategoryStore";
 import { ProductStatus } from "@prisma/client";
 
 import { useEffect, useState } from "react";
