@@ -4,10 +4,10 @@ import { HeartIcon, ShoppingCart } from "lucide-react";
 import useProductStore from "@/store/useProducts";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Product } from "@/lib/type";
+import { Product, ProductType } from "@/lib/type";
 
 interface ItemCardProps {
-  product: Product;
+  product: any;
 }
 
 const ItemCard = ({ product }: ItemCardProps) => {
@@ -38,7 +38,7 @@ const ItemCard = ({ product }: ItemCardProps) => {
           {/* <p className="text-sm text-gray-500 dark:text-gray-400 overflow-hidden text-pretty max-w-[80%]">
             {product.description}
           </p> */}
-          <p className="text-red-300 mt-2">{product.category.name}</p>
+          <p className="text-red-300 mt-2">{product.title}</p>
           <div className="flex items-center justify-between mt-2">
             <span className="font-semibold text-lg">${product.price}</span>
             <div className="flex items-center gap-2">

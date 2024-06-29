@@ -11,7 +11,7 @@ import CartSheet from "./cart";
 const Navbar = () => {
   const session = true;
   return (
-    <div className="sticky top-0 flex items-center h-16 w-full gap-4 px-4 md:px-8 border-b bg-card z-50">
+    <div className="sticky top-2 flex items-center h-16 max-w-7xl gap-4 px-4 md:px-8 border-b bg-card mx-auto z-50 rounded-sm ">
       <div className="flex items-center justify-between w-full gap-3">
         <div>
           <Sidebar />
