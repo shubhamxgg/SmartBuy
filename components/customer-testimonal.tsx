@@ -32,7 +32,6 @@ const CustomerTestimonial = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading delay
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -54,10 +53,10 @@ const CustomerTestimonial = () => {
 
   return (
     <div className="flex flex-col md:flex-row gap-2">
-      <div className="w-full md:w-1/2 flex items-center justify-center px-5 border rounded-sm p-2">
+      <div className="w-full md:w-1/2 flex items-center justify-center px-5 border rounded-sm p-2 bg-card">
         <p className="text-xl md:text-5xl text-center">Customer Testimonials</p>
       </div>
-      <div className="w-full md:w-1/2 border rounded-sm">
+      <div className="w-full md:w-1/2 border rounded-sm bg-card">
         <CustomerTestimonialCarousel />
       </div>
     </div>

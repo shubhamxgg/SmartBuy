@@ -9,7 +9,6 @@ const ItemFeaturedBuy = () => {
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    // Simulate loading delay
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -39,18 +38,18 @@ const ItemFeaturedBuy = () => {
   }
 
   return (
-    <div className="border rounded-sm flex flex-col md:flex-row-reverse">
-      <div className="p-5 w-full max-w-md mx-auto">
+    <div className="border rounded-sm flex flex-col md:flex-row-reverse gap- overflow-hidden">
+      <div className="p-5 w-full max-w-md mx-auto bg-card">
         <Image
           height={200}
           width={200}
           src={"/user.jpg"}
           alt="image-card"
-          className="object-cover border border-red-100 aspect-square w-full overflow-hidden"
+          className="object-cover border border-red-100 aspect-square w-full overflow-hidden rounded-sm"
         />
       </div>
 
-      <div className="p-5 flex flex-col flex-1">
+      <div className="p-5 flex flex-col flex-1 bg-card">
         <h1 className="pt-20 text-4xl font-semibold mb-1">
           Google Pixel 8 Pro
         </h1>

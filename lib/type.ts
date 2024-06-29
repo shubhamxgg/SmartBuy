@@ -44,3 +44,35 @@ export interface FilterState {
   priceMax: number | null;
   page: number;
 }
+
+export interface ProductType {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  categoryId: number;
+  sellerId: number;
+  status: ProductStatus;
+  featured: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+[];
+
+export interface Products {
+  products: {
+    id: number;
+    title: string;
+    description: string;
+    price: number;
+    imageUrl: string;
+    categoryId: number;
+    sellerId: number;
+    status: ProductStatus;
+    featured: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+}
+[];

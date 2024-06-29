@@ -55,7 +55,7 @@ const ItemBlog = () => {
   return (
     <div className="py-10">
       <div className="border rounded-sm shadow-lg">
-        <div className="p-4 border-b flex justify-between items-center ">
+        <div className="p-4 border-b flex justify-between items-center bg-card ">
           <h1 className="text-2xl font-semibold">Blog Posts</h1>
           <Link href="/blog">
             <Button variant="outline">View all</Button>
@@ -84,7 +84,7 @@ interface ItemBlogCardProps {
 
 const ItemBlogCard = ({ title, image, description }: ItemBlogCardProps) => {
   return (
-    <div className="p-4 w-full flex flex-col gap-2 border rounded-md shadow-sm hover:shadow-md transition-shadow duration-200">
+    <div className="p-4 w-full flex flex-col gap-2 border rounded-md shadow-sm hover:shadow-md transition-shadow duration-200 bg-card">
       <Image
         src={image}
         alt={title}
