@@ -19,7 +19,6 @@ const Search = () => {
     categoryNames: selectedCategories,
     selectedRating,
   };
-  console.log(filters);
 
   const { data: products, error } = useProducts(filters);
   const isLoading = false;

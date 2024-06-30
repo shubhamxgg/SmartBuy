@@ -20,7 +20,7 @@ const CartSheet = () => {
         {cart.length === 0 ? (
           <p>Your cart is empty.</p>
         ) : (
-          <div className="flex flex-col justify-around min-h-full ">
+          <div className="flex flex-col">
             <div className="max-h-96 overflow-y-auto">
               {cart.map((item) => (
                 <CartItem key={item.id} item={item} />

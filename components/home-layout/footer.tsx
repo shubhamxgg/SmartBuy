@@ -30,7 +30,7 @@ const footerData = {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-neutral-800/70 text-white py-10 w-full overflow-hidden">
+    <footer className="bg-card text-white py-10 w-full overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
