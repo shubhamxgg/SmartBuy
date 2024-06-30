@@ -33,8 +33,8 @@ const ItemSection = ({ title }: ItemSectonProps) => {
         <h1 className="px-5 font-bold text-xl">{title}</h1>
         {/* <span className="px-5 font-bold text-md cursor-pointer">View all product</span> */}
         <Button
-        className=""
-        variant={"outline"}
+          className=""
+          variant={"outline"}
           onClick={() => {
             router.push(`/search?categories=${title}`);
           }}

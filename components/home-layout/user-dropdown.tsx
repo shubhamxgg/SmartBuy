@@ -16,19 +16,23 @@ const UserDropdown = async () => {
         <Button
           className="rounded-full flex gap-2 items-center"
           size="icon"
-          variant="ghost"
+          variant="outline"
         >
-          {user ? <Image
-            alt="Avatar"
-            className="overflow-hidden rounded-full"
-            height={32}
-            src={user?.imageUrl!}
-            style={{
-              aspectRatio: "36/36",
-              objectFit: "cover",
-            }}
-            width={36}
-          /> : ""}
+          {user ? (
+            <Image
+              alt="Avatar"
+              className="overflow-hidden rounded-full"
+              height={32}
+              src={user?.imageUrl!}
+              style={{
+                aspectRatio: "36/36",
+                objectFit: "cover",
+              }}
+              width={36}
+            />
+          ) : (
+            ""
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

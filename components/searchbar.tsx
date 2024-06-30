@@ -7,33 +7,17 @@ import { useCallback, useEffect, useState } from "react";
 import useProductStore from "@/store/useProducts";
 
 const Searchbar = () => {
-  const { setFilter } = useProductStore();
   const [search, setSearch] = useState<string>("");
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setFilter({ searchTerm: search });
-    }, 300);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [search, setFilter]);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearch(value);
-    setFilter({ searchTerm: value });
-  };
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
 
   const clearSearch = () => {
     setSearch("");
-    setFilter({ searchTerm: "" });
   };
 
   return (
     <div className="flex gap-2">
-      <div className="relative w-auto flex gap-2">
+      <div className="hidden sm:flex relative w-auto gap-2">
         <SearchIcon className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
         <Input
           className="w-full pl-8 md:w-[400px] lg:w-[400px]"

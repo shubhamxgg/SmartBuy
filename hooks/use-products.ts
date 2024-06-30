@@ -10,9 +10,8 @@ const useProducts = (filters: any) => {
   return useQuery({
     queryKey: ["products", filters],
     queryFn: () => fetchProducts(filters),
-    refetchOnWindowFocus : false
+    refetchOnWindowFocus: false,
   });
-
 };
 
 export default useProducts;
