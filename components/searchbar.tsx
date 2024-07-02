@@ -32,7 +32,7 @@ const Searchbar = () => {
           />
         )}
       </div>
-      <div>
+      <div className="ml-auto">
         <Link href={"/search"}>
           <Button variant={"outline"} size={"icon"}>
             <SearchIcon className="h-4 w-4" />

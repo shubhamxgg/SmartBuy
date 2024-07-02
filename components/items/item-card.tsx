@@ -4,7 +4,7 @@ import { HeartIcon, ShoppingCart } from "lucide-react";
 import useProductStore from "@/store/useProducts";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Product, ProductType } from "@/lib/type";
+import { Product } from "@/lib/type";
 
 interface ItemCardProps {
   product: any;
