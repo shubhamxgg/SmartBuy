@@ -1,8 +1,7 @@
 import { create } from "zustand";
-import { CartItems, Product } from "../lib/type";
+import { Product } from "../lib/type";
 
 import {
-  CartResponse,
   clearCartItem,
   createCartItem,
   getCartItem,
@@ -31,8 +30,8 @@ const cartStore = create<CartStore>((set, get) => ({
   fetchCart: async () => {
     set({ isLoading: true, error: null });
     try {
-      const response: CartResponse = await getCartItem();
-      set({ cartId: response.cartId, cart: response.items, isLoading: false });
+      const { cartId, items } = await getCartItem();
+      set({ cartId, cart: items, isLoading: false });
     } catch (error: any) {
       set({ error: error.message, isLoading: false });
     }

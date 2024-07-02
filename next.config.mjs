@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
+import MillionCompiler from "@million/lint";
 const nextConfig = {
+  reactStrictMode: true,
   images: {
     domains: [
       "plus.unsplash.com",
@@ -13,3 +15,6 @@ const nextConfig = {
 };
 
 export default nextConfig;
+// export default MillionCompiler.next({
+//   rsc: true,
+// })(nextConfig);

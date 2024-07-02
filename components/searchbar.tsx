@@ -16,11 +16,11 @@ const Searchbar = () => {
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center justify-end gap-2 w-full">
       <div className="hidden sm:flex relative w-auto gap-2">
         <SearchIcon className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
         <Input
-          className="w-full pl-8 md:w-[400px] lg:w-[400px]"
+          className="w-full pl-8 sm:w-[200px] md:w-[350px] lg:w-[400px]"
           placeholder="Search product..."
           onChange={handleSearchChange}
           value={search}
@@ -32,7 +32,7 @@ const Searchbar = () => {
           />
         )}
       </div>
-      <div className="ml-auto">
+      <div className="">
         <Link href={"/search"}>
           <Button variant={"outline"} size={"icon"}>
             <SearchIcon className="h-4 w-4" />

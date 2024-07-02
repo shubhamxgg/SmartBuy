@@ -4,10 +4,10 @@ import Navbar from "@/components/home-layout/navbar";
 const HomeLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="bg-black">
-      <div className="px-5 top-2 sticky mx-auto z-50 bg-transparent">
+      <div className="px-3 top-2 sticky mx-auto z-50 bg-transparent">
         <Navbar />
       </div>
-      <div className="mx-auto min-h-screen w-full max-w-7xl pt-5">
+      <div className="mx-auto min-h-screen w-full max-w-7xl pt-5 px-2">
         {children}
       </div>
       <Footer />

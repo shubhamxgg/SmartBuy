@@ -1,11 +1,7 @@
 "use server";
 
-import { CartItem } from "@prisma/client";
 import db from "../db";
-export interface CartResponse {
-  cartId: number;
-  items: CartItem[];
-}
+
 interface CartProps {
   productId: number;
   quantity: number;
@@ -14,7 +10,7 @@ interface removeCartProps {
   productId: number;
 }
 
-export async function getCartItem(): Promise<CartResponse> {
+export async function getCartItem(): Promise<any> {
   const userId = 1;
 
   try {
@@ -30,17 +26,16 @@ export async function getCartItem(): Promise<CartResponse> {
         },
       },
     });
-    if (!cart) {
-      return { cartId: 0, items: [] };
-    }
 
-    const items = cart.items.map((item) => ({
-      id: item.id,
-      productId: item.productId,
-      quantity: item.quantity,
-      product: item.product,
-    }));
-    return { cartId: cart.id, items: [] };
+    if (cart) {
+      const items = cart.items.map((item) => ({
+        id: item.id,
+        productId: item.productId,
+        quantity: item.quantity,
+        product: item.product,
+      }));
+      return { cartId: cart.id, items };
+    }
   } catch (error) {
     throw new Error("Cant find fetch cart ");
   }

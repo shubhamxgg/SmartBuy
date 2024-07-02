@@ -6,10 +6,10 @@ import CartSummary from "../cart/cart-summary";
 import { useEffect } from "react";
 import CartItem from "../cart/cart-item";
 import cartStore from "@/store/cartStore";
-
+import useProductStore from "@/store/useProducts";
 
 const CartSheet = () => {
-  const { cart, fetchCart } = cartStore();
+  const { cart, fetchCart } = useProductStore();
 
   useEffect(() => {
     fetchCart();

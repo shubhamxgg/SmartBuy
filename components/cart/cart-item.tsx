@@ -2,13 +2,14 @@ import React from "react";
 import Image from "next/image";
 import cartStore from "@/store/cartStore";
 import { CartItems } from "@/lib/type";
+import useProductStore from "@/store/useProducts";
 
 interface CartItemProps {
   item: CartItems;
 }
 
 const CartItem = ({ item }: CartItemProps) => {
-  const { removeFromCart, updateCartItemQuantity } = cartStore();
+  const { removeFromCart, updateCartItemQuantity } = useProductStore();
   if (!item || !item.product) {
     return null;
   }
@@ -18,9 +19,9 @@ const CartItem = ({ item }: CartItemProps) => {
       <Image
         src={item.product.imageUrl}
         alt={"image"}
-        width={80}
-        height={80}
-        className="mr-4 aspect-square w-full h-full "
+        width={20}
+        height={20}
+        className="mr-4 h-16 w-16 rounded-sm border-2 border-red-200"
       />
       <div className="flex-1">
         <h4 className="font-semibold">{item.product.title}</h4>
