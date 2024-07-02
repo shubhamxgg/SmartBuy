@@ -1,8 +1,9 @@
 import cartStore from "@/store/cartStore";
+import useProductStore from "@/store/useProducts";
 import React from "react";
 
 const CartSummary = () => {
-  const { cart, cartId, clearCart } = cartStore();
+  const { cart, cartId, clearCart } = useProductStore();
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
