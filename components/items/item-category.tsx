@@ -3,17 +3,17 @@ import Image from "next/image";
 import { Skeleton } from "../ui/skeleton";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getCategories } from "@/lib/actions/get-category";
 
 const ItemCategory = () => {
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => await getCategories(),
+    refetchOnWindowFocus: false,
+  });
 
-  useEffect(() => {
-    // Simulate loading delay
-    const timer = setTimeout(() => setLoading(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="pb-5 pt-2 flex flex-col md:flex-row w-full gap-2">
         <div className="flex items-center justify-center py-2 border-[2px] flex-1 md:font-bold md:text-4xl md:px-6 md:py-0 rounded-sm">
@@ -32,20 +32,23 @@ const ItemCategory = () => {
       <div className="flex items-center justify-center py-2 border-[2px] flex-1 md:font-bold md:text-4xl md:px-6 md:py-0 rounded-sm bg-card">
         <h1>{"Shop by category"}</h1>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-2 gap-2">
-        <ItemCategoryCard image="/clothing.jpg" title="Fashion" />
-        <ItemCategoryCard image="/mobile.png" title="Mobile" />
+      <div className="grid grid-flow-col auto-cols-max gap-2 overflow-x-auto scroll">
+        {data?.map((item) => (
+          <ItemCategoryCard key={item.id} item={item} />
+        ))}
       </div>
     </div>
   );
 };
 
 interface ItemCategoryCardProps {
-  title: string;
-  image: string;
+  item: {
+    id: number;
+    name: string;
+  };
 }
 
-const ItemCategoryCard = ({ image, title }: ItemCategoryCardProps) => {
+const ItemCategoryCard = ({ item }: ItemCategoryCardProps) => {
   const router = useRouter();
   return (
     <div className="w-full border rounded-sm hover:shadow-lg transition-shadow duration-200 bg-card">
@@ -53,22 +56,21 @@ const ItemCategoryCard = ({ image, title }: ItemCategoryCardProps) => {
         <Image
           height={200}
           width={200}
-          src={image}
+          src={"/clothing.jpg"}
           alt="image-card"
           className="object-cover border border-red-100 aspect-square w-full overflow-hidden rounded-sm"
         />
       </div>
-      {/* <h1 className="flex items-center justify-center pb-4 font-bold md:px-5 text-lg">
-        {title}
-      </h1> */}
+
       <div className="flex items-center justify-center pb-4">
         <Button
-          className="flex items-center justify-center font-bold md:px-5 text-lg"
+          className="flex items-center justify-center font-bold md:px-5 text-lg px-10"
           onClick={() => {
-            router.push(`/search?categories=${title}`);
+            router.push(`/search?categories=${item.name}`);
           }}
+          variant={"secondary"}
         >
-          {title}
+          {item.name}
         </Button>
       </div>
     </div>

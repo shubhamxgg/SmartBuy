@@ -2,7 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 // import SearchBar from "../search/search";
 // import NavbarUserDropdown from "./user-dropdown";
-import { Package2, ShoppingCart, Store } from "lucide-react";
+import {
+  BaggageClaimIcon,
+  Package2,
+  ShoppingCart,
+  Store,
+  User2Icon,
+} from "lucide-react";
 import SearchBar from "../searchbar";
 import UserDropdown from "./user-dropdown";
 import Sidebar from "./side-bar";
@@ -11,20 +17,24 @@ import CartSheet from "./cart";
 const Navbar = () => {
   const session = true;
   return (
-    <div className="sticky top-2 flex items-center h-16 max-w-7xl gap-4 px-4 md:px-8 border-b bg-card mx-auto z-50 rounded-sm ">
-      <div className="flex items-center justify-between w-full gap-3">
+    <div className="flex items-center h-16 max-w-[1240px] gap-4 px-4 md:px-8 border-b bg-card mx-auto z-50 rounded-sm">
+      <div className="flex items-center justify-between w-full gap-3 px-2">
         <div>
           <Sidebar />
-          <Link href="/" className="hidden sm:flex items-center gap-2">
-            <Package2 className="h-6 w-6" />
-            <span className="text-foreground">Nexus</span>
+          <Link
+            href="/"
+            className="hidden sm:flex items-center justify-center gap-2"
+          >
+            <BaggageClaimIcon className="h-6 w-6 font-bold" />
+            <span className="text-foreground text-xl font-bold">Nexus</span>
           </Link>
         </div>
-        <div>
+
+        <div className="ml-auto sm:ml-0">
           <SearchBar />
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex items-center gap-4">
           <Link
             href="/seller"
             className="hidden md:flex items-center gap-2 text-sm"
@@ -37,6 +47,10 @@ const Navbar = () => {
             <ShoppingCart className="h-5 w-5" />
           </div> */}
           <CartSheet />
+
+          <Link href={"/account"}>
+            <User2Icon />
+          </Link>
 
           <UserDropdown />
         </div>

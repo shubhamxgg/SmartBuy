@@ -1,70 +1,43 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { Skeleton } from "../ui/skeleton";
 import {
   Carousel,
   CarouselContent,
   CarouselItem as BaseCarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "../ui/carousel";
-
-const data = [
-  {
-    id: 1,
-    image:
-      "https://images.unsplash.com/photo-1555093596-009b0f066b96?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fGZ1bGwlMjBoZCUyMHdhbGxwYXBlcnxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Cozy Knit Sweater",
-    description: "Soft and warm knit sweater perfect for the winter season.",
-  },
-  {
-    id: 2,
-    image:
-      "https://images.unsplash.com/photo-1530075288903-69b220251c3e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGZ1bGwlMjBoZCUyMHdhbGxwYXBlcnxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Cozy Knit Sweater",
-    description: "Soft and warm knit sweater perfect for the winter season.",
-  },
-  {
-    id: 3,
-    image:
-      "https://plus.unsplash.com/premium_photo-1669867484691-941a88d2d196?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGZ1bGwlMjBoZCUyMHdhbGxwYXBlcnxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Cozy Knit Sweater",
-    description: "Soft and warm knit sweater perfect for the winter season.",
-  },
-  {
-    id: 4,
-    image:
-      "https://plus.unsplash.com/premium_photo-1676637000058-96549206fe71?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D",
-    name: "Cozy Knit Sweater",
-    description: "Soft and warm knit sweater perfect for the winter season.",
-  },
-  {
-    id: 5,
-    image:
-      "https://plus.unsplash.com/premium_photo-1676637000058-96549206fe71?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D",
-    name: "Cozy Knit Sweater",
-    description: "Soft and warm knit sweater perfect for the winter season.",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { getFeaturedItem } from "@/lib/actions/get-featured-item";
 
 const ItemCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["itemCarousel"],
+    queryFn: async () => await getFeaturedItem(),
+    refetchOnWindowFocus: false,
+    staleTime: 300000,
+    gcTime: 600000,
+  });
+
+  const currentIndex = useRef(0);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 5000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (data && data.length > 0) {
+      const interval = setInterval(() => {
+        currentIndex.current = (currentIndex.current + 1) % data.length;
+        if (carouselRef.current) {
+          carouselRef.current.style.transform = `translateX(-${
+            currentIndex.current * 100
+          }%)`;
+        }
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [data]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % data.length);
-    }, 5000);
+  if (error) return <h1>{error.message}</h1>;
 
-    return () => clearInterval(interval);
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="py-2 relative pb-10">
         <div className="w-full border border-red-50 rounded-sm overflow-hidden">
@@ -73,13 +46,15 @@ const ItemCarousel = () => {
       </div>
     );
   }
+  if (!data) return null;
 
   return (
     <div className="py-2 relative pb-10">
-      <Carousel className="w-full border border-red-50 rounded-sm overflow-hidden">
+      <Carousel className="w-full border rounded-sm overflow-hidden">
         <CarouselContent
+          ref={carouselRef}
           className="transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          style={{ transform: `translateX(-${currentIndex.current * 100}%)` }}
         >
           {data.map((item) => (
             <CarouselItem key={item.id} item={item} />
@@ -100,7 +75,7 @@ const CarouselItem = ({ item }: any) => {
           alt={item.name}
           className="object-cover w-full max-h-[500px] h-[100%] overflow-hidden"
           height={400}
-          src={item.image}
+          src={item.imageUrl}
           width={400}
         />
       </div>

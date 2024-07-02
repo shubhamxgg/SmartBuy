@@ -1,9 +1,9 @@
-// components/CartSummary.tsx
-import React from "react";
+import cartStore from "@/store/cartStore";
 import useProductStore from "@/store/useProducts";
+import React from "react";
 
-const CartSummary: React.FC = () => {
-  const { cart, clearCart } = useProductStore();
+const CartSummary = () => {
+  const { cart, cartId, clearCart } = useProductStore();
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
@@ -20,7 +20,7 @@ const CartSummary: React.FC = () => {
         </button>
         <button
           className="w-full mt-2 py-2 bg-gray-200 text-gray-700 rounded"
-          onClick={clearCart}
+          onClick={() => clearCart(cartId)}
         >
           Clear Cart
         </button>

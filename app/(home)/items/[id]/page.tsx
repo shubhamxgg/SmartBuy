@@ -60,15 +60,13 @@ const ItemsPage = ({ params: { id } }: ItemPageProps) => {
   if (error) return <div>Error:</div>;
   if (!product) return <div>Product not found</div>;
 
-  
-
   return (
-    <div className="flex flex-col w-full">
-      <div className="hidden sm:block p-5 ">
+    <div className="flex flex-col w-full gap-8">
+      <div className="hidden sm:block p-5">
         <ProductBreadcrumbs category={product.category} title={product.title} />
       </div>
 
-      <div className="flex flex-col lg:flex-row p-2 md:p-5">
+      <div className="flex flex-col gap-2 lg:flex-row p-2 md:p-5">
         <ProductImages product={product} />
         <ProductDetails product={product} />
       </div>

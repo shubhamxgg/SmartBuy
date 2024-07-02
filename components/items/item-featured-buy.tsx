@@ -49,7 +49,7 @@ const ItemFeaturedBuy = () => {
         />
       </div>
 
-      <div className="p-5 flex flex-col flex-1 bg-card">
+      <div className="p-5 flex flex-col flex-1 bg-card ">
         <h1 className="pt-20 text-4xl font-semibold mb-1">
           Google Pixel 8 Pro
         </h1>
@@ -78,8 +78,12 @@ const ItemFeaturedBuy = () => {
         </div>
 
         <div className="pt-10 flex gap-2 w-full">
-          <Button className="w-full">Go to cart</Button>
-          <Button className="w-full">Buy now</Button>
+          <Button className="w-full" variant={"outline"}>
+            Go to cart
+          </Button>
+          <Button className="w-full" variant={"outline"}>
+            Buy now
+          </Button>
         </div>
       </div>
     </div>

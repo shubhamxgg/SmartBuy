@@ -2,12 +2,25 @@
 import { ShoppingCart } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import useProductStore from "@/store/useProducts";
-import CartItem from "../cart/cart-item";
 import CartSummary from "../cart/cart-summary";
+import { useEffect } from "react";
+import CartItem from "../cart/cart-item";
+import cartStore from "@/store/cartStore";
+import useProductStore from "@/store/useProducts";
 
 const CartSheet = () => {
-  const { cart } = useProductStore();
+  const { cart, fetchCart } = useProductStore();
+
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
+
+  if (!cart) {
+    return null;
+  }
+
+  console.log(cart);
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -20,14 +33,14 @@ const CartSheet = () => {
         {cart.length === 0 ? (
           <p>Your cart is empty.</p>
         ) : (
-          <div className="flex flex-col justify-around min-h-full ">
-            <div className="max-h-96 overflow-y-auto">
-              {cart.map((item) => (
+          <div className="flex flex-col h-full py-5">
+            <div className="lex-grow overflow-auto">
+              {cart?.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
             </div>
 
-            <div>
+            <div className="mt-5">
               <CartSummary />
             </div>
           </div>

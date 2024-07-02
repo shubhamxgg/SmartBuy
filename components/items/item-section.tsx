@@ -28,13 +28,13 @@ const ItemSection = ({ title }: ItemSectonProps) => {
   }
 
   return (
-    <div className="flex flex-col pb-5 w-full">
+    <div className="flex flex-col gap-2 pb-5 w-full">
       <div className="flex items-center justify-between px-2 py-4 border rounded-sm border-white/20 bg-card">
         <h1 className="px-5 font-bold text-xl">{title}</h1>
         {/* <span className="px-5 font-bold text-md cursor-pointer">View all product</span> */}
         <Button
-        className=""
-        variant={"outline"}
+          className=""
+          variant={"outline"}
           onClick={() => {
             router.push(`/search?categories=${title}`);
           }}
