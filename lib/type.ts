@@ -12,6 +12,7 @@ export interface Category {
 }
 
 export interface Product {
+  quantity?: string | number | readonly string[] | undefined;
   id: number;
   title: string;
   description: string;
@@ -24,10 +25,6 @@ export interface Product {
   images: { id: number; url: string }[];
   reviews: { id: number; rating: number; comment: string }[];
   category: Category;
-}
-
-export interface CartItem extends Product {
-  quantity: number;
 }
 
 export interface Filter {
@@ -45,34 +42,42 @@ export interface FilterState {
   page: number;
 }
 
-export interface ProductType {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  categoryId: number;
-  sellerId: number;
-  status: ProductStatus;
-  featured: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-[];
+// export interface ProductType {
+//   id: number;
+//   title: string;
+//   description: string;
+//   price: number;
+//   imageUrl: string;
+//   categoryId: number;
+//   sellerId: number;
+//   status: ProductStatus;
+//   featured: boolean;
+//   createdAt: Date;
+//   updatedAt: Date;
+// }
+// [];
 
-export interface Products {
-  products: {
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    imageUrl: string;
-    categoryId: number;
-    sellerId: number;
-    status: ProductStatus;
-    featured: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-  };
+// export interface Products {
+//   products: {
+//     id: number;
+//     title: string;
+//     description: string;
+//     price: number;
+//     imageUrl: string;
+//     categoryId: number;
+//     sellerId: number;
+//     status: ProductStatus;
+//     featured: boolean;
+//     createdAt: Date;
+//     updatedAt: Date;
+//   };
+// }
+// [];
+
+export interface CartItems {
+  id: number;
+  cartId: number;
+  productId: number;
+  quantity: number;
+  product: Product;
 }
-[];

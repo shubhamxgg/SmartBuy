@@ -1,18 +1,18 @@
 "use client";
-import SearchFilterDrawer from "@/components/search/search-drawer";
 import { ArrowLeft } from "lucide-react";
 import SearchSidebar from "@/components/search/search-sidebar";
 import SearchProductListSkeleton from "@/components/search/search-sidebar-skeleton";
 import SearchProductList from "@/components/search/search-product-list";
 import SearchSortMenu from "@/components/search/search-sort-menu";
 import { useFilterStore } from "@/store/useFilterStore";
-import useProducts from "@/hooks/use-products";
 import useSyncURLWithState from "@/hooks/use-filtered-url";
+import useProducts from "@/hooks/use-products";
 
 const Search = () => {
   useSyncURLWithState();
   const { priceRange, selectedBrands, selectedCategories, selectedRating } =
     useFilterStore();
+    
   const filters = {
     priceRange,
     selectedBrands,
