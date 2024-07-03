@@ -7,12 +7,13 @@ import SearchSortMenu from "@/components/search/search-sort-menu";
 import { useFilterStore } from "@/store/useFilterStore";
 import useSyncURLWithState from "@/hooks/use-filtered-url";
 import useProducts from "@/hooks/use-products";
+import SearchFilterDrawer from "@/components/search/search-drawer";
 
 const Search = () => {
   useSyncURLWithState();
   const { priceRange, selectedBrands, selectedCategories, selectedRating } =
     useFilterStore();
-    
+
   const filters = {
     priceRange,
     selectedBrands,
@@ -54,7 +55,7 @@ const Search = () => {
         )}
       </div>
 
-      {/* <SearchFilterDrawer onFilterChange={handleFilterChange} /> */}
+      <SearchFilterDrawer />
     </div>
   );
 };

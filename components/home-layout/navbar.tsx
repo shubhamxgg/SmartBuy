@@ -17,7 +17,7 @@ import CartSheet from "./cart";
 const Navbar = () => {
   const session = true;
   return (
-    <div className="flex items-center h-16 max-w-[1240px] gap-4 px-4 md:px-8 border-b bg-card mx-auto z-50 rounded-sm">
+    <div className="flex items-center h-16 max-w-[1240px] gap-4 px-4 md:px-8 border-b bg-card/90 backdrop-blur-lg mx-auto z-50 rounded-sm">
       <div className="flex items-center justify-between w-full gap-3 px-2">
         <div>
           <Sidebar />

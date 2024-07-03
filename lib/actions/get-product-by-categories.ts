@@ -14,7 +14,7 @@ export async function getProductByCategory({
       },
       include: {
         products: {
-          take: 3,
+          take: 4,
         },
       },
     });
