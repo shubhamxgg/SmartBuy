@@ -54,14 +54,14 @@ const ItemBlog = () => {
 
   return (
     <div className="py-10">
-      <div className="border rounded-sm shadow-lg">
-        <div className="p-4 border-b flex justify-between items-center bg-card ">
+      <div className="rounded-sm shadow-lg overflow-hidden">
+        <div className="p-4 flex justify-between items-center bg-card mb-2">
           <h1 className="text-2xl font-semibold">Blog Posts</h1>
           <Link href="/blog">
             <Button variant="outline">View all</Button>
           </Link>
         </div>
-        <div className="grid md:grid-cols-3 gap-4 p-4">
+        <div className="grid md:grid-cols-3 gap-4">
           {blogPosts.map((post, index) => (
             <ItemBlogCard
               key={index}

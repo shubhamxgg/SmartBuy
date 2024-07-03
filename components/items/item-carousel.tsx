@@ -30,7 +30,7 @@ const ItemCarousel = () => {
             currentIndex.current * 100
           }%)`;
         }
-      }, 5000);
+      }, 9000);
       return () => clearInterval(interval);
     }
   }, [data]);
@@ -73,7 +73,7 @@ const CarouselItem = ({ item }: any) => {
       <div className="w-full overflow-hidden">
         <Image
           alt={item.name}
-          className="object-cover w-full max-h-[500px] h-[100%] overflow-hidden"
+          className="object-cover w-full max-h-[400px] h-full overflow-hidden"
           height={400}
           src={item.imageUrl}
           width={400}

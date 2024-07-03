@@ -24,15 +24,17 @@ const ItemCard = ({ product }: ItemCardProps) => {
   };
 
   return (
-    <div className="relative group overflow-hidden max-w-5xl w-full bg-card p-4 rounded-sm min-h-[320px]">
-      <Link href={`/items/${product.id}`}>
-        <Image
-          alt={"item-card"}
-          className="object-fill aspect-auto w-full border rounded-sm overflow-hidden bg-white"
-          height={300}
-          width={300}
-          src={product.imageUrl}
-        />
+    <div className="relative group overflow-hidden w-full bg-card p-4 rounded-sm min-h-60">
+      <Link href={`/items/${product.id}`} className="h-full">
+        <div className="max-h-48 h-full">
+          <Image
+            alt={"item-card"}
+            className="object-fill h-full w-full border rounded-sm overflow-hidden bg-white"
+            height={300}
+            width={300}
+            src={product.imageUrl}
+          />
+        </div>
         <div className="p-2">
           <h3 className="font-bold text-lg text-nowrap text-ellipsis truncate hover:text-pretty cursor-pointer">
             {product.title}
@@ -53,7 +55,7 @@ const ItemCard = ({ product }: ItemCardProps) => {
               </Button>
 
               <HeartIcon
-                className="w-7 h-7 absolute top-4 right-4 fill-red-600"
+                className="w-6 h-6 absolute top-5 right-5 stroke-red-500 stroke-2 transition ease-in-out duration-300 hover:fill-red-500 hover:-translate-y-2"
                 onClick={(e) => {
                   e.preventDefault();
                 }}
