@@ -10,7 +10,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import SearchSidebar from "./search-sidebar";
 
 const SearchFilterDrawer = () => (
-  <div className="md:hidden flex items-center w-full p-4 gap-2 mt-auto">
+  <div className="md:hidden flex items-center w-full gap-2 p-2 mb-5 sticky bottom-0 z-50 rounded-sm">
     <Drawer>
       <DrawerTrigger asChild>
         <Button className="w-full" variant={"outline"}>

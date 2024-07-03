@@ -34,7 +34,7 @@ const CartSheet = () => {
           <p>Your cart is empty.</p>
         ) : (
           <div className="flex flex-col h-full py-5">
-            <div className="lex-grow overflow-auto">
+            <div className="flex-grow flex-col-reverse overflow-auto">
               {cart?.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}

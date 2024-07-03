@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Skeleton } from "../ui/skeleton";
 import { Button } from "../ui/button";
@@ -32,7 +31,7 @@ const ItemCategory = () => {
       <div className="flex items-center justify-center py-2 border-[2px] flex-1 md:font-bold md:text-4xl md:px-6 md:py-0 rounded-sm bg-card">
         <h1>{"Shop by category"}</h1>
       </div>
-      <div className="grid grid-flow-col auto-cols-max gap-2 overflow-x-auto scroll">
+      <div className="flex gap-2 overflow-x-auto scroll-auto snap-x snap-proximity">
         {data?.map((item) => (
           <ItemCategoryCard key={item.id} item={item} />
         ))}
@@ -51,7 +50,7 @@ interface ItemCategoryCardProps {
 const ItemCategoryCard = ({ item }: ItemCategoryCardProps) => {
   const router = useRouter();
   return (
-    <div className="w-full border rounded-sm hover:shadow-lg transition-shadow duration-200 bg-card">
+    <div className="flex-shrink-0 w-72 border rounded-sm hover:shadow-lg transition-shadow duration-200 bg-card snap-center snap-always cursor-pointer">
       <div className="p-5">
         <Image
           height={200}
