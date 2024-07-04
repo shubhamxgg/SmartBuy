@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import useProductStore from "@/store/useProducts";
+import useProductStore from "@/store/useProductStore";
 import CartItem from "@/components/cart/cart-item";
 import CartSummary from "@/components/cart/cart-summary";
 

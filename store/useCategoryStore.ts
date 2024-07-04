@@ -1,4 +1,4 @@
-import { getCategories } from "@/lib/actions/get-category";
+import { getCategories } from "@/lib/actions/category";
 import { create } from "zustand";
 
 interface Category {

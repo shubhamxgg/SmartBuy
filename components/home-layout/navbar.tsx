@@ -1,18 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
-// import SearchBar from "../search/search";
-// import NavbarUserDropdown from "./user-dropdown";
-import {
-  BaggageClaimIcon,
-  Package2,
-  ShoppingCart,
-  Store,
-  User2Icon,
-} from "lucide-react";
+import { BaggageClaimIcon, Store, User2Icon } from "lucide-react";
 import SearchBar from "../searchbar";
 import UserDropdown from "./user-dropdown";
-import Sidebar from "./side-bar";
 import CartSheet from "./cart";
+import HomePageSidebar from "./home-sidebar";
 
 const Navbar = () => {
   const session = true;
@@ -20,7 +11,7 @@ const Navbar = () => {
     <div className="flex items-center h-16 max-w-[1240px] gap-4 px-4 md:px-8 border-b bg-card/90 backdrop-blur-lg mx-auto z-50 rounded-sm">
       <div className="flex items-center justify-between w-full gap-3 px-2">
         <div>
-          <Sidebar />
+          <HomePageSidebar />
           <Link
             href="/"
             className="hidden sm:flex items-center justify-center gap-2"

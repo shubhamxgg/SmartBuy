@@ -7,7 +7,7 @@ import {
   CarouselItem as BaseCarouselItem,
 } from "../ui/carousel";
 import { useQuery } from "@tanstack/react-query";
-import { getFeaturedItem } from "@/lib/actions/get-featured-item";
+import { getFeaturedItem } from "@/lib/actions/filter";
 
 const ItemCarousel = () => {
   const { data, isLoading, error } = useQuery({

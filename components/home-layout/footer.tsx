@@ -11,7 +11,7 @@ const footerData = {
     address: "123 E-commerce St, Shop City, SC 12345",
   },
   quickLinks: [
-    { label: "Home", href: "/" },
+    { label: "Home", href: " /" },
     { label: "Shop", href: "/shop" },
     { label: "About Us", href: "/about" },
     { label: "Contact Us", href: "/contact" },
@@ -30,9 +30,9 @@ const footerData = {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-card text-white py-10 w-full overflow-hidden">
+    <footer className="bg-card text-white py-8 w-full overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <h4 className="text-lg font-semibold mb-4">About Us</h4>
             <p>{footerData.aboutUs}</p>
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
-            <div className="flex space-x-4">
+            <div className="flex  flex-row-reverse space-x-4 gap-2 items-center">
               {footerData.socialMedia.map((social, index) => (
                 <Link key={index} href={social.href}>
                   <span className="text-white hover:text-gray-400 flex flex-col gap-2">

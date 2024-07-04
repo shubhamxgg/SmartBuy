@@ -1,5 +1,4 @@
 "use server";
-import { revalidatePath } from "next/cache";
 import { PrismaClient, Prisma } from "@prisma/client";
 
 const db = new PrismaClient();

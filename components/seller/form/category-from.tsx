@@ -1,9 +1,7 @@
 import useCategoryStore from "@/store/useCategoryStore";
-import { createCategory } from "@/lib/actions/create-category";
 import { toast } from "sonner";
 import FormSumbitButton from "./form-submit-button";
-import { useFormState } from "react-dom";
-import { useEffect } from "react";
+import { createCategory } from "@/lib/actions/category";
 
 const CategoryForm = () => {
   // useEffect(() => {

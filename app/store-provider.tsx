@@ -1,6 +1,6 @@
 "use client";
 
-import useProductStore from "@/store/useProducts";
+import useProductStore from "@/store/useProductStore";
 import React, { ReactNode } from "react";
 import { useEffect } from "react";
 
