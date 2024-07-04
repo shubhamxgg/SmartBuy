@@ -1,4 +1,3 @@
-import Sidebar from "@/components/home-layout/side-bar";
 import SellerLeftbar from "@/components/seller/seller-leftbar";
 import SellerNavbar from "@/components/seller/seller-navbar";
 

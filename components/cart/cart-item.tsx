@@ -1,8 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import cartStore from "@/store/cartStore";
+
 import { CartItems } from "@/lib/type";
-import useProductStore from "@/store/useProducts";
+import useProductStore from "@/store/useProductStore";
 
 interface CartItemProps {
   item: CartItems;

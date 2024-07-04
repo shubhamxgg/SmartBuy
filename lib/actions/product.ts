@@ -1,7 +1,8 @@
 "use server";
 
-import { ProductStatus } from "@prisma/client";
 import db from "../db";
+
+import { ProductStatus } from "@prisma/client";
 
 export async function createProduct({
   title,
@@ -80,5 +81,80 @@ export async function createProduct({
   } catch (error) {
     console.error(error);
     throw new Error("An error occurred while creating the product");
+  }
+}
+
+export async function getProducts() {
+  try {
+    const products = await db.product.findMany({
+      include: {
+        category: true,
+        seller: {
+          include: {
+            user: true,
+          },
+        },
+        stock: true,
+        images: true,
+        reviews: true,
+      },
+    });
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch data");
+  }
+}
+
+export async function getProductById(id: number) {
+  try {
+    const product = await db.product.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        category: true,
+        seller: {
+          include: {
+            user: true,
+          },
+        },
+        stock: true,
+        images: true,
+        reviews: true,
+      },
+    });
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    return product;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch data");
+  }
+}
+
+export async function getProductByCategory({
+  categoryName,
+}: {
+  categoryName: string;
+}) {
+  try {
+    const categories = await db.category.findMany({
+      where: {
+        name: categoryName,
+      },
+      include: {
+        products: {
+          take: 4,
+        },
+      },
+    });
+    return categories;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch data");
   }
 }

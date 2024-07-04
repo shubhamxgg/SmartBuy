@@ -3,7 +3,7 @@ import { Skeleton } from "../ui/skeleton";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { getCategories } from "@/lib/actions/get-category";
+import { getCategories } from "@/lib/actions/category";
 
 const ItemCategory = () => {
   const { data, isLoading } = useQuery({

@@ -9,8 +9,11 @@ export const useSearchFilters = () => {
   const fetchCategories = useCategoryStore((state) => state.fetchCategories);
   const categories = useCategoryStore((state) => state.categories);
   useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
+    if (categories.length === 0) {
+      fetchCategories();
+    }
+  }, [categories.length, fetchCategories]);
+
   const {
     selectedCategories,
     selectedBrands,
@@ -53,9 +56,14 @@ export const useSearchFilters = () => {
 
   const handlePriceChange = useCallback(
     (newPriceRange: [number, number]) => {
-      setPriceRange(newPriceRange);
+      if (
+        newPriceRange[0] !== priceRange[0] ||
+        newPriceRange[1] !== priceRange[1]
+      ) {
+        setPriceRange(newPriceRange);
+      }
     },
-    [setPriceRange]
+    [priceRange, setPriceRange]
   );
 
   const handleResetFilters = useCallback(() => {

@@ -1,12 +1,9 @@
-import useProductStore from "@/store/useProducts";
 import ItemCard from "./item-card";
-import ItemList from "./item-list";
-import { Loader } from "lucide-react";
 import ItemSectionSkeleton from "./item-section-skeleton";
 import { useQuery } from "@tanstack/react-query";
-import { getProductByCategory } from "@/lib/actions/get-product-by-categories";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { getProductByCategory } from "@/lib/actions/category";
 
 interface ItemSectonProps {
   title: string;
@@ -42,7 +39,7 @@ const ItemSection = ({ title }: ItemSectonProps) => {
         </Button>
       </div>
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full gap-4 flex-1 mt-2 rounded-sm">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full gap-4 flex-1 mt-2 rounded-sm">
         {categoryData[0]?.products?.map((product) => (
           <ItemCard key={product.id} product={product} />
         ))}

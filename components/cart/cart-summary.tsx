@@ -1,5 +1,5 @@
-import cartStore from "@/store/cartStore";
-import useProductStore from "@/store/useProducts";
+import cartStore from "@/store/useCartStore";
+import useProductStore from "@/store/useProductStore";
 import React from "react";
 
 const CartSummary = () => {

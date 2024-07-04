@@ -6,7 +6,7 @@ import ProductDetails from "@/components/form/product-detail";
 import StatusDetails from "@/components/form/status-details";
 import StockDetail from "@/components/form/stock-detail";
 import { Button } from "@/components/ui/button";
-import { createProduct } from "@/lib/actions/create-product";
+import { createProduct } from "@/lib/actions/product";
 import useCategoryStore from "@/store/useCategoryStore";
 import { ProductStatus } from "@prisma/client";
 

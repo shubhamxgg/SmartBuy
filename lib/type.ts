@@ -42,42 +42,22 @@ export interface FilterState {
   page: number;
 }
 
-// export interface ProductType {
-//   id: number;
-//   title: string;
-//   description: string;
-//   price: number;
-//   imageUrl: string;
-//   categoryId: number;
-//   sellerId: number;
-//   status: ProductStatus;
-//   featured: boolean;
-//   createdAt: Date;
-//   updatedAt: Date;
-// }
-// [];
-
-// export interface Products {
-//   products: {
-//     id: number;
-//     title: string;
-//     description: string;
-//     price: number;
-//     imageUrl: string;
-//     categoryId: number;
-//     sellerId: number;
-//     status: ProductStatus;
-//     featured: boolean;
-//     createdAt: Date;
-//     updatedAt: Date;
-//   };
-// }
-// [];
-
 export interface CartItems {
   id: number;
   cartId: number;
   productId: number;
   quantity: number;
+  product: Product;
+}
+
+export interface WishList {
+  userId: number;
+  items: WishListItems[];
+}
+
+export interface WishListItems {
+  id: number;
+  wishlistId: number;
+  productId: number;
   product: Product;
 }

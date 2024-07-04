@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { usePathname } from "next/navigation";
-import { useFilterStore } from "@/store/useFilterStore";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { SortOptionKey, useFilterStore } from "@/store/useFilterStore";
 
 const useSyncURLWithState = () => {
   const router = useRouter();
@@ -13,10 +12,13 @@ const useSyncURLWithState = () => {
     selectedCategories,
     priceRange,
     selectedRating,
+    sort,
     setPriceRange,
     setBrandFilter,
     setRatingFilter,
     setCategoryFilter,
+    setSortFilter,
+    resetFilters,
   } = useFilterStore();
 
   useEffect(() => {
@@ -25,6 +27,7 @@ const useSyncURLWithState = () => {
     const minPrice = searchParams.get("minPrice");
     const maxPrice = searchParams.get("maxPrice");
     const rating = searchParams.get("rating");
+    const sort = searchParams.get("sort") as SortOptionKey;
 
     if (categories) {
       setCategoryFilter(categories.split(","));
@@ -38,12 +41,21 @@ const useSyncURLWithState = () => {
     if (rating) {
       setRatingFilter(parseInt(rating, 10));
     }
+    if (
+      sort &&
+      ["featured", "discount", "priceLowToHigh", "priceHighToLow"].includes(
+        sort
+      )
+    ) {
+      setSortFilter(sort);
+    }
   }, [
     searchParams,
     setCategoryFilter,
     setBrandFilter,
     setPriceRange,
     setRatingFilter,
+    setSortFilter,
   ]);
 
   useEffect(() => {
@@ -51,7 +63,7 @@ const useSyncURLWithState = () => {
     if (selectedCategories.length > 0) {
       params.set("categories", selectedCategories.join(","));
     }
-    if (priceRange[0] !== 0 && priceRange[1] !== 1000) {
+    if (priceRange[0] && priceRange[1]) {
       params.set("minPrice", priceRange[0].toString());
       params.set("maxPrice", priceRange[1].toString());
     }
@@ -60,6 +72,9 @@ const useSyncURLWithState = () => {
     }
     if (selectedRating !== null) {
       params.set("rating", selectedRating.toString());
+    }
+    if (sort) {
+      params.set("sort", sort);
     }
 
     const queryString = params.toString();
@@ -73,9 +88,16 @@ const useSyncURLWithState = () => {
     priceRange,
     selectedBrands,
     selectedRating,
+    sort,
     router,
     pathname,
   ]);
+
+  useEffect(() => {
+    return () => {
+      resetFilters();
+    };
+  }, [resetFilters]);
 };
 
 export default useSyncURLWithState;
