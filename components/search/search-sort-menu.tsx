@@ -8,48 +8,63 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowDownIcon } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 const SORT_OPTIONS = {
   featured: "Featured",
   discount: "Discount",
   priceLowToHigh: "Price low to high",
   priceHighToLow: "Price high to low",
-};
+} as const;
+
+type SortOptionKey = keyof typeof SORT_OPTIONS;
 
 const SearchSortMenu = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [sort, setSort] = useState<string>();
-  const handleSortChange = useCallback(
-    (criteria: string) => {
-      setSort(criteria);
-      const query = new URLSearchParams(searchParams.toString());
-      if (criteria) {
-        query.set("sort", criteria);
-      } else {
-        query.delete("sort");
-      }
-      router.push(`${pathname}?${query.toString()}`);
+  const [sort, setSort] = useState<SortOptionKey | null>(null);
+
+  useEffect(() => {
+    const currentSort = searchParams.get("sort") as SortOptionKey;
+    if (currentSort && SORT_OPTIONS[currentSort]) {
+      setSort(currentSort);
+    } else {
+      setSort(null);
+    }
+  }, [searchParams]);
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+      return params.toString();
     },
-    [pathname, router, searchParams]
+    [searchParams]
   );
+
+  const handleSortChange = (criteria: SortOptionKey) => {
+    setSort(criteria);
+    router.push(pathname + "?" + createQueryString("sort", criteria));
+  };
 
   return (
     <div className="flex items-center justify-end gap-2">
       <span className="text-md">Sort by:</span>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant={"default"} size={"sm"} className="flex gap-2">
-            {/* {SORT_OPTIONS[sort]} */}
+          <Button variant="default" size="sm" className="flex gap-2">
+            {sort ? SORT_OPTIONS[sort] : "Any"}
             <ArrowDownIcon className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {Object.entries(SORT_OPTIONS).map(([key, label]) => (
-            <DropdownMenuItem key={key} onClick={() => handleSortChange(key)}>
+            <DropdownMenuItem
+              key={key}
+              onClick={() => handleSortChange(key as SortOptionKey)}
+            >
               {label}
             </DropdownMenuItem>
           ))}

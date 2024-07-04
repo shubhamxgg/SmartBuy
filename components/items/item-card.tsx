@@ -1,10 +1,12 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { HeartIcon, ShoppingCart } from "lucide-react";
-import useProductStore from "@/store/useProducts";
+import { ShoppingCart } from "lucide-react";
+import useProductStore from "@/store/useProductStore";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Product } from "@/lib/type";
+
+import WishlistButton from "../wishlist-button";
+import { Product } from "@prisma/client";
 
 interface ItemCardProps {
   product: any;
@@ -26,7 +28,7 @@ const ItemCard = ({ product }: ItemCardProps) => {
   return (
     <div className="relative group overflow-hidden w-full bg-card p-4 rounded-sm min-h-60">
       <Link href={`/items/${product.id}`} className="h-full">
-        <div className="max-h-48 h-full">
+        <div className="h-56">
           <Image
             alt={"item-card"}
             className="object-fill h-full w-full border rounded-sm overflow-hidden bg-white"
@@ -39,10 +41,11 @@ const ItemCard = ({ product }: ItemCardProps) => {
           <h3 className="font-bold text-lg text-nowrap text-ellipsis truncate hover:text-pretty cursor-pointer">
             {product.title}
           </h3>
-          {/* <p className="text-sm text-gray-500 dark:text-gray-400 overflow-hidden text-pretty max-w-[80%]">
-            {product.description}
-          </p> */}
-          {/* <p className="text-red-300 mt-2">{product.title}</p> */}
+
+          {product.featured && (
+            <h1 className="p-2 rounded-sm w-fit mt-1 bg-red-500">Featured</h1>
+          )}
+
           <div className="flex items-center justify-between mt-2">
             <span className="font-semibold text-lg">${product.price}</span>
             <div className="flex items-center gap-2">
@@ -54,12 +57,18 @@ const ItemCard = ({ product }: ItemCardProps) => {
                 <ShoppingCart />
               </Button>
 
-              <HeartIcon
+              {/* <HeartIcon
                 className="w-6 h-6 absolute top-5 right-5 stroke-red-500 stroke-2 transition ease-in-out duration-300 hover:fill-red-500 hover:-translate-y-2"
                 onClick={(e) => {
                   e.preventDefault();
                 }}
+              /> */}
+              <WishlistButton
+                isWishList={false}
+                productId={product.id}
+                userId={1}
               />
+
               <span className="sr-only">Add to Wishlist</span>
             </div>
           </div>

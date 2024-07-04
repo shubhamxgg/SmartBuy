@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { CartItems, Product } from "../lib/type";
-import { getProducts } from "@/lib/actions/get-products";
+
 import {
   clearCartItem,
   createCartItem,
@@ -8,6 +8,7 @@ import {
   removeCartItem,
   updateCartItem,
 } from "@/lib/actions/cart";
+import { getProducts } from "@/lib/actions/product";
 
 interface ProductStore {
   products: Product[];

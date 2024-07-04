@@ -61,7 +61,7 @@ const ItemBlog = () => {
             <Button variant="outline">View all</Button>
           </Link>
         </div>
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {blogPosts.map((post, index) => (
             <ItemBlogCard
               key={index}

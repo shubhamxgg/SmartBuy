@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../home-layout/side-bar";
+import Sidebar from "../home-layout/home-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,

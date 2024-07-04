@@ -5,8 +5,8 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import CartSummary from "../cart/cart-summary";
 import { useEffect } from "react";
 import CartItem from "../cart/cart-item";
-import cartStore from "@/store/cartStore";
-import useProductStore from "@/store/useProducts";
+import cartStore from "@/store/useCartStore";
+import useProductStore from "@/store/useProductStore";
 
 const CartSheet = () => {
   const { cart, fetchCart } = useProductStore();

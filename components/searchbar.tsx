@@ -4,7 +4,7 @@ import { Input } from "./ui/input";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useCallback, useEffect, useState } from "react";
-import useProductStore from "@/store/useProducts";
+import useProductStore from "@/store/useProductStore";
 
 const Searchbar = () => {
   const [search, setSearch] = useState<string>("");

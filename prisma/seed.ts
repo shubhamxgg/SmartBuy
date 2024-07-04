@@ -2,7 +2,8 @@
 
 import { PrismaClient, ProductStatus } from "@prisma/client";
 import { faker } from "@faker-js/faker";
-import { createProduct } from "../lib/actions/create-product";
+import { createProduct } from "@/lib/actions/product";
+
 const prisma = new PrismaClient();
 const categories = [
   { id: 1, name: "Electronic" },

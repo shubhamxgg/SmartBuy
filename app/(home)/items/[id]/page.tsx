@@ -6,7 +6,8 @@ import ProductDetails from "@/components/products/product-details";
 import ProductImages from "@/components/products/product-images";
 import ProductReviews from "@/components/products/product-reviews";
 import ProductSkeleton from "@/components/products/product-skeleton";
-import { getProductById } from "@/lib/actions/get-productById";
+import { getProductById } from "@/lib/actions/product";
+
 
 import { useEffect, useState } from "react";
 
