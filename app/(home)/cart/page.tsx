@@ -4,7 +4,7 @@ import useProductStore from "@/store/useProductStore";
 import CartItem from "@/components/cart/cart-item";
 import CartSummary from "@/components/cart/cart-summary";
 
-const CartPage: React.FC = () => {
+const CartPage = () => {
   const { cart } = useProductStore();
 
   return (

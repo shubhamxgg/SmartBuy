@@ -1,3 +1,4 @@
+"use client";
 import ItemCard from "./item-card";
 import ItemSectionSkeleton from "./item-section-skeleton";
 import { useQuery } from "@tanstack/react-query";
