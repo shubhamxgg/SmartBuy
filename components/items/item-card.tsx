@@ -1,29 +1,16 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { ShoppingCart } from "lucide-react";
-import useProductStore from "@/store/useProductStore";
 import Link from "next/link";
-import { toast } from "sonner";
-
 import WishlistButton from "../wishlist-button";
-import { Product } from "@prisma/client";
+import useCart from "@/hooks/use-cart";
 
 interface ItemCardProps {
   product: any;
 }
 
 const ItemCard = ({ product }: ItemCardProps) => {
-  const { addToCart } = useProductStore();
-
-  const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    try {
-      await addToCart(product);
-      toast.success("Product added to cart!");
-    } catch (error) {
-      toast.error("Failed to add product to cart.");
-    }
-  };
+  const { handleAddToCart } = useCart();
 
   return (
     <div className="relative group overflow-hidden w-full bg-card p-4 rounded-sm min-h-60">
@@ -42,9 +29,9 @@ const ItemCard = ({ product }: ItemCardProps) => {
             {product.title}
           </h3>
 
-          {product.featured && (
+          {product.featured ? (
             <h1 className="p-2 rounded-sm w-fit mt-1 bg-red-500">Featured</h1>
-          )}
+          ) : null}
 
           <div className="flex items-center justify-between mt-2">
             <span className="font-semibold text-lg">${product.price}</span>

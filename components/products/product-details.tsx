@@ -1,23 +1,29 @@
 import { Button } from "@/components/ui/button";
+import { Product } from "@/lib/type";
 import { Heart } from "lucide-react";
-import Image from "next/image";
 
 interface ProductDetailsProps {
-  product: any;
+  product: Product;
 }
 
 const ProductDetails = ({ product }: ProductDetailsProps) => (
   <div className="w-full p-4 lg:w-1/2 mt-3 flex flex-col lg:ml-4 bg-card rounded-sm lg:mt-0 border">
-    <div className="bg-neutral-500 max-w-[100px] p-2 rounded-md mb-4 mt-2 text-center">
+    <div className="bg-neutral-500 w-fit p-2 rounded-md mb-4 mt-2 text-center">
       {product.status === "AVAILABLE" ? "Buy Now" : "Out of Stock"}
     </div>
     <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
     <h1 className="font-semibold text-md mt-2">${product.price}</h1>
     <div className="flex flex-col gap-2 mt-2">
       <p className="text-sm">Select quantity</p>
-      <Button variant={"default"} size={"default"} className="w-1/2">
-        +
-      </Button>
+      <div className="flex gap-2">
+        <Button variant={"default"} size={"icon"}>
+          +
+        </Button>
+        {"Numer"}
+        <Button variant={"default"} size={"icon"}>
+          -
+        </Button>
+      </div>
     </div>
 
     <div className="flex flex-col p-4 mt-5 border bg-card rounded-sm">
