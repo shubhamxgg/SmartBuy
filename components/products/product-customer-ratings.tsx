@@ -1,5 +1,5 @@
 interface CustomerRatingsProps {
-  ratings: { stars: number; percentage: number }[];
+  ratings: any;
 }
 
 const ProductCustomerRatings = ({ ratings }: CustomerRatingsProps) => (
@@ -11,7 +11,7 @@ const ProductCustomerRatings = ({ ratings }: CustomerRatingsProps) => (
     <div className="flex flex-col gap-2">
       {ratings.length > 0 ? (
         <div>
-          {ratings.map((rating, index) => (
+          {ratings.map((rating: any, index: any) => (
             <div key={index} className="flex gap-2 w-full">
               <div>{rating.stars} Stars</div>
               <div>-</div>
