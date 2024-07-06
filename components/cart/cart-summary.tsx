@@ -1,5 +1,6 @@
 import cartStore from "@/store/useCartStore";
 import useProductStore from "@/store/useProductStore";
+import Link from "next/link";
 import React from "react";
 
 const CartSummary = () => {
@@ -16,7 +17,7 @@ const CartSummary = () => {
       </div>
       <div className="mt-4">
         <button className="w-full py-2 bg-blue-500 text-white rounded">
-          Proceed to Checkout
+          <Link href="/checkout">Proceed to Checkout</Link>
         </button>
         <button
           className="w-full mt-2 py-2 bg-gray-200 text-gray-700 rounded"

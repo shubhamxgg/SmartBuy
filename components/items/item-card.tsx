@@ -4,13 +4,14 @@ import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import WishlistButton from "../wishlist-button";
 import useCart from "@/hooks/use-cart";
+import { Product } from "@/lib/type";
 
 interface ItemCardProps {
   product: any;
 }
 
 const ItemCard = ({ product }: ItemCardProps) => {
-  const { handleAddToCart } = useCart();
+  const { handleAddToCart } = useCart(product);
 
   return (
     <div className="relative group overflow-hidden w-full bg-card p-4 rounded-sm min-h-60">
@@ -44,12 +45,6 @@ const ItemCard = ({ product }: ItemCardProps) => {
                 <ShoppingCart />
               </Button>
 
-              {/* <HeartIcon
-                className="w-6 h-6 absolute top-5 right-5 stroke-red-500 stroke-2 transition ease-in-out duration-300 hover:fill-red-500 hover:-translate-y-2"
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              /> */}
               <WishlistButton
                 isWishList={false}
                 productId={product.id}

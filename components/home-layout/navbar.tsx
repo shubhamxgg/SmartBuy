@@ -8,7 +8,7 @@ import HomePageSidebar from "./home-sidebar";
 const Navbar = () => {
   const session = true;
   return (
-    <div className="flex items-center h-16 max-w-[1240px] gap-4 px-4 md:px-8 border-b bg-card/90 backdrop-blur-lg mx-auto z-50 rounded-sm">
+    <div className="flex items-center h-16 max-w-[1240px] gap-4 px-4 md:px-8 border-b bg-card/90 backdrop-blur-lg mx-auto z-50 rounded-sm relative">
       <div className="flex items-center justify-between w-full gap-3 px-2">
         <div>
           <HomePageSidebar />
@@ -34,14 +34,7 @@ const Navbar = () => {
             <span className="hidden text-clip">Became a seller</span>
           </Link>
 
-          {/* <div className="flex items-center gap-2 text-sm">
-            <ShoppingCart className="h-5 w-5" />
-          </div> */}
           <CartSheet />
-
-          <Link href={"/account"}>
-            <User2Icon />
-          </Link>
 
           <UserDropdown />
         </div>

@@ -1,11 +1,12 @@
 import useProductStore from "@/store/useProductStore";
 import { toast } from "sonner";
-import { Product } from "@prisma/client";
+import { Product } from "../lib/type";
 
-const useCart = () => {
+const useCart = (product: Product) => {
   const { addToCart } = useProductStore();
 
-  const handleAddToCart = async (product: any) => {
+  const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     try {
       await addToCart(product);
       toast.success("Product added to cart!");

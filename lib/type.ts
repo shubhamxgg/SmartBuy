@@ -61,3 +61,13 @@ export interface WishListItems {
   productId: number;
   product: Product;
 }
+
+export interface Address {
+  id: number;
+  userId: number;
+  street: string;
+  state: string;
+  city: string;
+  zipCode: string;
+  country: string;
+}
