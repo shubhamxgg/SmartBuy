@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 export const useFetchAndFilterProducts = (initialFilter: Filter) => {
   const {
     fetchProducts,
-
     isLoading,
     error,
     products,

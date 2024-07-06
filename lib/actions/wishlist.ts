@@ -68,7 +68,7 @@ export async function removeItemFromWishlist({ productId, userId }: WishList) {
     return await db.wishlistItem.deleteMany({
       where: {
         wishlistId: wishlist.id,
-        productId,
+        id: productId,
       },
     });
   } catch (error) {
