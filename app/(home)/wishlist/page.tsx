@@ -1,23 +1,11 @@
 "use client";
 
-import { getWishlist } from "@/lib/actions/wishlist";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
-
-interface WishlistPageProps {
-  userId: number;
-}
-
-const fetchWishlist = async ({
-  userId,
-  pageParam = 0,
-}: {
-  userId: number;
-  pageParam: number;
-}) => {
-  const response = await getWishlist({ userId, skip: pageParam, take: 10 });
-  return response;
-};
+import { useWishlist } from "@/hooks/use-wishlist";
+import WishlistItem from "@/components/wishlist/wishlist-item";
+import LoadMoreButton from "@/components/load-more-button";
+import WishlistSkeleton from "@/components/wishlist/wishlist-skeleton";
+import { Loader } from "lucide-react";
 
 const WishlistPage = () => {
   const userId = 1;
@@ -29,39 +17,45 @@ const WishlistPage = () => {
     isFetching,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery({
-    queryKey: ["wishlist", userId],
-    queryFn: ({ pageParam = 0 }) => fetchWishlist({ userId, pageParam }),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-  });
+  } = useWishlist(userId);
 
-  if (status === "pending") return <p>Loading...</p>;
+  if (status === "pending") return <WishlistSkeleton />;
   if (status === "error") return <p>Error: {error.message}</p>;
+  const isEmpty = !data?.pages.some((page) => page.items.length > 0);
 
   return (
-    <>
-      {data?.pages.map((group, i) => (
-        <React.Fragment key={i}>
-          {group.items.map((item: any) => (
-            <p key={item.id}>{item.product.title}</p>
-          ))}
-        </React.Fragment>
-      ))}
-      <div>
-        <button
-          onClick={() => fetchNextPage()}
-          disabled={!hasNextPage || isFetchingNextPage}
-        >
-          {isFetchingNextPage
-            ? "Loading more..."
-            : hasNextPage
-            ? "Load More"
-            : "Nothing more to load"}
-        </button>
+    <div className="p-4 flex flex-col items-center min-h-screen">
+      <div className="w-full">
+        <h1 className="text-2xl font-semibold mb-4">Your Wishlist</h1>
+        {isEmpty ? (
+          <p className="text-center text-2xl">Add item to WishList</p>
+        ) : (
+          <>
+            {data?.pages.map((group, i) => (
+              <div key={i} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                {group.items.map((item: any) => (
+                  <WishlistItem key={item.id} item={item} userId={userId} />
+                ))}
+              </div>
+            ))}
+          </>
+        )}
+
+        {hasNextPage ? (
+          <LoadMoreButton
+            onClick={() => fetchNextPage()}
+            disabled={!hasNextPage || isFetchingNextPage}
+            isLoading={isFetchingNextPage}
+            hasNextPage={hasNextPage}
+          />
+        ) : null}
+        {isFetching && !isFetchingNextPage && (
+          <div className="mt-4">
+            <Loader className="animate-spin" />
+          </div>
+        )}
       </div>
-      <div>{isFetching && !isFetchingNextPage ? "Fetching..." : null}</div>
-    </>
+    </div>
   );
 };
 
