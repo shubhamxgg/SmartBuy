@@ -71,3 +71,50 @@ export interface Address {
   zipCode: string;
   country: string;
 }
+
+export interface FormState {
+  success: boolean;
+  message: string;
+  address?: Address;
+  errors?: {
+    userId?: string[];
+    street?: string[];
+    city?: string[];
+    state?: string[];
+    zipCode?: string[];
+    country?: string[];
+  };
+}
+
+export interface OrderItem {
+  productId: number;
+  quantity: number;
+  price: number;
+}
+
+export type OrderStatus = "PENDING" | "COMPLETED" | "CANCELLED" | "REFUNDED";
+export type PaymentStatus = "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
+export type ShippingStatus = "PENDING" | "SHIPPED" | "DELIVERED" | "RETURNED";
+
+export interface Address {
+  id: number;
+  userId: number;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Order {
+  id?: number;
+  userId: number;
+  items: OrderItem[];
+  totalAmount: number;
+  status: ShippingStatus;
+  paymentStatus: PaymentStatus;
+  shippingStatus: ShippingStatus;
+  shippingAddress: Address;
+}
