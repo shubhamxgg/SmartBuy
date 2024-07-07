@@ -21,7 +21,7 @@ const NavbarItems = [
   {
     title: "Order",
     icon: <ShoppingCart className="h-4 w-4" />,
-    href: "/order",
+    href: "/orders",
   },
   {
     title: "Wishlist",

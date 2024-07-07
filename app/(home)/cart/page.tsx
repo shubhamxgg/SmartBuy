@@ -20,7 +20,7 @@ const CartPage = () => {
             ))}
           </div>
           <div className="md:w-1/3">
-            <CartSummary />
+            {/* <CartSummary /> */}
           </div>
         </div>
       )}

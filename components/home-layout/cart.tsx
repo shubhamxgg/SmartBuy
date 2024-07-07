@@ -3,13 +3,14 @@ import { ShoppingCart } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import CartSummary from "../cart/cart-summary";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CartItem from "../cart/cart-item";
 import cartStore from "@/store/useCartStore";
 import useProductStore from "@/store/useProductStore";
 
 const CartSheet = () => {
   const { cart, fetchCart } = useProductStore();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     fetchCart();
@@ -22,7 +23,7 @@ const CartSheet = () => {
   console.log(cart);
 
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button variant={"ghost"} size={"icon"}>
           <ShoppingCart className="h-5 w-5" />
@@ -41,7 +42,7 @@ const CartSheet = () => {
             </div>
 
             <div className="mt-5">
-              <CartSummary />
+              <CartSummary onClose={() => setIsOpen(!isOpen)} />
             </div>
           </div>
         )}
