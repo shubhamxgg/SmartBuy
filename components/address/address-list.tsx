@@ -1,5 +1,4 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { useAddressStore } from "@/store/useAddressStore";
 import { Address } from "@/lib/type";
 import { Button } from "../ui/button";
@@ -9,94 +8,178 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import AddressForm from "./address-form";
+import { useAddresses } from "@/hooks/use-address";
+import { toast } from "sonner";
 
 interface AddressListProps {
   userId: number;
   onSelectAddress: (address: Address) => void;
 }
 
-const AddressList = ({ userId, onSelectAddress }: AddressListProps) => {
-  const {
-    addresses,
-    isLoading,
-    error,
-    fetchAddresses,
-    selectAddress,
-    updateAddress,
-  } = useAddressStore();
+const AddressList = React.memo(
+  ({ userId, onSelectAddress }: AddressListProps) => {
+    const {
+      addresses,
+      isLoading,
+      error,
+      invalidateAddresses,
+      deleteAddress,
+      isDeletingAddress,
+    } = useAddresses(userId);
+    const { selectAddress } = useAddressStore();
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [currentAddress, setCurrentAddress] = useState<Address | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [currentAddress, setCurrentAddress] = useState<any | null>(null);
+    const [addressToDelete, setAddressToDelete] = useState<number | null>(null);
 
-  const handleUpdateAddress = async (updatedAddress: Address) => {
-    await updateAddress(updatedAddress);
-    setIsDialogOpen(false);
-    setCurrentAddress(null);
-  };
+    const handleEditClick = useCallback((address: Address) => {
+      setCurrentAddress(address);
+      setIsDialogOpen(true);
+    }, []);
 
-  useEffect(() => {
-    fetchAddresses(userId);
-  }, [userId, fetchAddresses]);
-  const handleEditClick = (address: Address) => {
-    setCurrentAddress(address);
-    setIsDialogOpen(true);
-  };
-  console.log(currentAddress, "Current");
+    const handleCloseDialog = useCallback(() => {
+      setIsDialogOpen(false);
+      invalidateAddresses();
+    }, [invalidateAddresses]);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+    const handleSelectAddress = useCallback(
+      (address: Address) => {
+        selectAddress(address);
+        onSelectAddress(address);
+      },
+      [selectAddress, onSelectAddress]
+    );
 
-  return (
-    <div>
-      <h2 className="pb-2">Your Shipping Address</h2>
-      {addresses.map((address) => (
+    const handleDeleteClick = useCallback((addressId: number) => {
+      setAddressToDelete(addressId);
+      setIsDeleteDialogOpen(true);
+    }, []);
+
+    const confirmDelete = useCallback(() => {
+      if (addressToDelete) {
+        deleteAddress(addressToDelete);
+        setIsDeleteDialogOpen(false);
+        setAddressToDelete(null);
+        toast.success("Address deleted successfully");
+      }
+    }, [addressToDelete, deleteAddress]);
+
+    const addressList = useMemo(() => {
+      return addresses.map((address: Address) => (
         <div key={address.id} className="border p-4 mb-4 rounded-sm">
           <div className="flex items-center">
             <input
               type="radio"
               name="selectedAddress"
-              onClick={() => {
-                selectAddress(address);
-                onSelectAddress(address);
-              }}
+              onClick={() => handleSelectAddress(address)}
             />
             <label className="ml-5">
-              {address.street}, {address.city},{address.zipCode},{" "}
+              {address.street}, {address.city}, {address.zipCode},{" "}
               {address.country}
             </label>
-
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild className="ml-auto">
-                <Button
-                  variant={"outline"}
-                  size={"sm"}
-                  onClick={() => handleEditClick(address)}
-                >
-                  Edit
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Edit profile</DialogTitle>
-                  <DialogDescription>
-                    Make changes to your profile here. Click save when done.
-                  </DialogDescription>
-                </DialogHeader>
-                <AddressForm
-                  initialData={currentAddress!!}
-                  onSubmit={handleUpdateAddress}
-                  onCancel={() => setIsDialogOpen(false)}
-                />
-              </DialogContent>
-            </Dialog>
+            <Button
+              variant="outline"
+              size="sm"
+              className="ml-auto mr-2"
+              onClick={() => handleEditClick(address)}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleDeleteClick(address.id)}
+              disabled={isDeletingAddress}
+            >
+              Delete
+            </Button>
           </div>
         </div>
-      ))}
-    </div>
-  );
-};
+      ));
+    }, [
+      addresses,
+      handleSelectAddress,
+      handleEditClick,
+      handleDeleteClick,
+      isDeletingAddress,
+    ]);
+
+    const handleNewAddress = useCallback(() => {
+      setCurrentAddress({
+        id: 0,
+        userId: userId,
+        street: "",
+        city: "",
+        state: "",
+        zipCode: "",
+        country: "",
+      });
+      setIsDialogOpen(true);
+    }, [userId]);
+
+    if (isLoading) return <p>Loading addresses...</p>;
+    if (error) return <p>Error loading addresses. Please try again later.</p>;
+
+    return (
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <h2>Your Shipping Addresses</h2>
+          <Button onClick={handleNewAddress}>Add New Address</Button>
+        </div>
+        {addressList}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                {currentAddress?.id ? "Edit Address" : "Add New Address"}
+              </DialogTitle>
+              <DialogDescription>
+                {currentAddress?.id
+                  ? "Make changes to your address here."
+                  : "Enter your new address details."}
+              </DialogDescription>
+            </DialogHeader>
+            <AddressForm
+              initialData={currentAddress}
+              onClose={handleCloseDialog}
+            />
+          </DialogContent>
+        </Dialog>
+        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirm Deletion</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this address? This action cannot
+                be undone.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsDeleteDialogOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={confirmDelete}
+                disabled={isDeletingAddress}
+              >
+                {isDeletingAddress ? "Deleting..." : "Delete"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    );
+  }
+);
+
+AddressList.displayName = "AddressList";
 
 export default AddressList;

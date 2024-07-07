@@ -40,7 +40,7 @@ const ItemCarousel = () => {
   if (isLoading) {
     return (
       <div className="py-2 relative pb-10">
-        <div className="w-full border border-red-50 rounded-sm overflow-hidden">
+        <div className="w-full border rounded-sm overflow-hidden">
           <Skeleton className="w-full h-80" />
         </div>
       </div>

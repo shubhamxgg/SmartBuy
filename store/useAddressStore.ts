@@ -8,9 +8,6 @@ interface AddressStore {
   isLoading: boolean;
   error: string | null;
   fetchAddresses: (userId: number) => void;
-  addAddress: (address: Address) => void;
-  updateAddress: (address: Address) => void;
-  deleteAddress: (addressId: number) => void;
   selectAddress: (address: Address) => void;
 }
 
@@ -27,21 +24,6 @@ export const useAddressStore = create<AddressStore>((set) => ({
     } catch (error) {
       set({ error: "Failed to fetch addresses ", isLoading: false });
     }
-  },
-  addAddress: async (address: Address) => {
-    set((state) => ({ addresses: [...state.addresses, address] }));
-  },
-  updateAddress: async (address: Address) => {
-    set((state) => ({
-      addresses: state.addresses.map((addr) =>
-        addr.id === address.id ? address : addr
-      ),
-    }));
-  },
-  deleteAddress: async (addressId: number) => {
-    set((state) => ({
-      addresses: state.addresses.filter((addr) => addr.id !== addressId),
-    }));
   },
   selectAddress: (address: Address) => set({ selectedAddress: address }),
 }));

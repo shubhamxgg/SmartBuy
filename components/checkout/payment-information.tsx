@@ -1,34 +1,27 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
+
+import React from "react";
+
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { usePaymentStore } from "@/store/usePaymentStore";
 
 const PaymentInformation = () => {
+  const { paymentMethod, setPaymentMethod } = usePaymentStore();
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Payment Information</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form>
-          <div className="mb-4">
-            <label className="block mb-2">Card Number</label>
-            <input type="text" className="w-full p-2 border rounded" />
-          </div>
-          <div className="mb-4">
-            <label className="block mb-2">Expiration Date</label>
-            <input type="text" className="w-full p-2 border rounded" placeholder="MM/YY" />
-          </div>
-          <div className="mb-4">
-            <label className="block mb-2">CVV</label>
-            <input type="text" className="w-full p-2 border rounded" />
-          </div>
-          <div className="mb-4">
-            <label className="block mb-2">Cardholder Name</label>
-            <input type="text" className="w-full p-2 border rounded" />
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+    <div className="bg-card p-4 rounded-lg shadow">
+      <h2 className="text-xl font-semibold mb-4">Payment Information</h2>
+      <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="COD" id="COD" />
+          <Label htmlFor="COD">Cash on Delivery</Label>
+        </div>
+      </RadioGroup>
+    </div>
   );
 };
 
 export default PaymentInformation;
+
+
