@@ -4,7 +4,7 @@ import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import WishlistButton from "../wishlist-button";
 import useCart from "@/hooks/use-cart";
-import { Product } from "@/lib/type";
+import { Card, CardContent, CardHeader } from "../ui/card";
 
 interface ItemCardProps {
   product: any;
@@ -12,31 +12,35 @@ interface ItemCardProps {
 
 const ItemCard = ({ product }: ItemCardProps) => {
   const { handleAddToCart } = useCart(product);
+  const userId = 1;
 
   return (
-    <div className="relative group overflow-hidden w-full bg-card p-4 rounded-sm min-h-60">
-      <Link href={`/items/${product.id}`} className="h-full">
-        <div className="h-56">
+    <Card className="relative group overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+      {product.featured && (
+        <div className="absolute top-3 left-3 inline-block px-3 py-1 text-xs font-medium bg-primary text-white rounded-full z-10">
+          Featured
+        </div>
+      )}
+      <Link href={`/items/${product.id}`} className="h-full block">
+        <div className="relative h-56 w-full overflow-hidden">
           <Image
             alt={"item-card"}
-            className="object-fill h-full w-full border rounded-sm overflow-hidden bg-white"
-            height={300}
-            width={300}
+            className="object-cover w-full h-full"
             src={product.imageUrl}
+            fill
           />
         </div>
-        <div className="p-2">
-          <h3 className="font-bold text-lg text-nowrap text-ellipsis truncate hover:text-pretty cursor-pointer">
+        <CardHeader className="flex items-start px-4 py-3">
+          <h3 className="font-bold text-lg text-nowrap text-ellipsis truncate hover:text-primary cursor-pointer">
             {product.title}
           </h3>
-
-          {product.featured ? (
-            <h1 className="p-2 rounded-sm w-fit mt-1 bg-red-500">Featured</h1>
-          ) : null}
-
-          <div className="flex items-center justify-between mt-2">
-            <span className="font-semibold text-lg">${product.price}</span>
-            <div className="flex items-center gap-2">
+        </CardHeader>
+        <CardContent className="p-4">
+          <div className="flex items-start justify-between">
+            <span className="font-semibold text-lg text-white">
+              ${product.price}
+            </span>
+            <div className="flex items-center">
               <Button
                 size="default"
                 variant="outline"
@@ -44,19 +48,17 @@ const ItemCard = ({ product }: ItemCardProps) => {
               >
                 <ShoppingCart />
               </Button>
-
               <WishlistButton
                 isWishList={false}
                 productId={product.id}
                 userId={1}
               />
-
               <span className="sr-only">Add to Wishlist</span>
             </div>
           </div>
-        </div>
+        </CardContent>
       </Link>
-    </div>
+    </Card>
   );
 };
 

@@ -1,3 +1,4 @@
+"use client";
 import { Skeleton } from "../ui/skeleton";
 import ItemCategoryCard from "./item-category-card";
 import useCategories from "@/hooks/use-categories";
