@@ -18,19 +18,30 @@ export async function fetchOrderById(orderId: number) {
 }
 
 export async function fetchOrderByUserId(userId: number) {
-  const order = await db.order.findMany({
+  const orders = await db.order.findMany({
     where: { userId },
     orderBy: {
       createdAt: "desc",
     },
     include: {
-      items: true,
+      items: {
+        include: {
+          product: {
+            select: {
+              imageUrl: true,
+            },
+          },
+        },
+      },
     },
   });
 
-  if (!order) {
+  if (!orders) {
     throw new Error("No Order found");
   }
 
-  return order;
+  return orders.map((order) => ({
+    ...order,
+    image: order.items[0]?.product.imageUrl || "/clothing.jpg",
+  }));
 }

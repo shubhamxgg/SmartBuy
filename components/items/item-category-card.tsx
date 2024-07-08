@@ -1,36 +1,31 @@
+'use client'
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 
 interface ItemCategoryCardProps {
-  item: {
-    id: number;
-    name: string;
-  };
+  item: any;
 }
 
 const ItemCategoryCard = ({ item }: ItemCategoryCardProps) => {
   const router = useRouter();
+
   const handleClick = () => {
     router.push(`/search?categories=${item.name}`);
   };
+
   return (
-    <div className="flex-shrink-0 w-72 border rounded-sm hover:shadow-lg transition-shadow duration-200 bg-card snap-center snap-always cursor-pointer">
-      <div className="p-5">
+    <div className="group relative flex-shrink-0 w-72 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer">
+      <div className="aspect-square w-full">
         <Image
-          height={200}
-          width={200}
           src={"/clothing.jpg"}
-          alt="image-card"
-          className="object-cover border border-red-100 aspect-square w-full overflow-hidden rounded-sm"
+          alt={item.name}
+          fill
+          className="object-cover"
         />
       </div>
-
-      <div className="flex items-center justify-center pb-4">
-        <Button
-          className="flex items-center justify-center font-bold md:px-5 text-lg px-10"
-          onClick={handleClick}
-        >
+      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+        <Button className="w-full font-bold text-white" onClick={handleClick}>
           {item.name}
         </Button>
       </div>

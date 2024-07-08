@@ -1,75 +1,29 @@
-import React from "react";
-import Link from "next/link";
-import { FacebookIcon, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Facebook, Twitter, Instagram } from "lucide-react";
+import { Button } from "../ui/button";
 
-const footerData = {
-  aboutUs:
-    "We are span leading e-commerce platform providing top-notch services and products to our customers.",
-  contact: {
-    email: "support@estore.com",
-    phone: "+1 (123) 456-7890",
-    address: "123 E-commerce St, Shop City, SC 12345",
-  },
-  quickLinks: [
-    { label: "Home", href: " /" },
-    { label: "Shop", href: "/shop" },
-    { label: "About Us", href: "/about" },
-    { label: "Contact Us", href: "/contact" },
-  ],
-  socialMedia: [
-    { label: "Facebook", href: "https://facebook.com", icon: <FacebookIcon /> },
-    { label: "Twitter", href: "https://twitter.com", icon: <Twitter /> },
-    {
-      label: "Instagram",
-      href: "https://instagram.com",
-      icon: <Instagram />,
-    },
-    { label: "LinkedIn", href: "https://linkedin.com", icon: <Linkedin /> },
-  ],
-};
-
-const Footer: React.FC = () => {
+const Footer = () => {
   return (
-    <footer className="bg-card text-white py-8 w-full overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
-            <h4 className="text-lg font-semibold mb-4">About Us</h4>
-            <p>{footerData.aboutUs}</p>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
-            <p>Email: {footerData.contact.email}</p>
-            <p>Phone: {footerData.contact.phone}</p>
-            <p>Address: {footerData.contact.address}</p>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-            <ul>
-              {footerData.quickLinks.map((link, index) => (
-                <li key={index} className="mb-2">
-                  <Link href={link.href}>
-                    <span className="text-white hover:underline">
-                      {link.label}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
-            <div className="flex  flex-row-reverse space-x-4 gap-2 items-center">
-              {footerData.socialMedia.map((social, index) => (
-                <Link key={index} href={social.href}>
-                  <span className="text-white hover:text-gray-400 flex flex-col gap-2">
-                    {social.icon} {social.label}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
+    <footer className="bg-card text-white py-6">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div className="flex items-center space-x-4">
+          <a href="#" className="text-gray-400 hover:text-white">
+            <Facebook />
+          </a>
+          <a href="#" className="text-gray-400 hover:text-white">
+            <Twitter />
+          </a>
+          <a href="#" className="text-gray-400 hover:text-white">
+            <Instagram />
+          </a>
         </div>
+        <p className="text-gray-400">&copy; 2024 Nex Company</p>
+        <Button
+          size="default"
+          variant="outline"
+          className="text-gray-400 hover:text-white"
+        >
+          Subscribe
+        </Button>
       </div>
     </footer>
   );
