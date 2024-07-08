@@ -13,7 +13,7 @@ const PlaceOrderButton = () => {
   const router = useRouter();
   const userId = 1;
   const session = true;
-  const { cart, clearCart } = useProductStore();
+  const { cart, cartId, clearCart } = useProductStore();
   const { selectedAddress } = useAddressStore();
   const { paymentMethod } = usePaymentStore();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -22,8 +22,6 @@ const PlaceOrderButton = () => {
     (acc, item) => acc + item.product.price * item.quantity,
     0
   );
-
-  const cartId = cart.find((cart) => cart.id);
 
   const handlePlaceOrder = async () => {
     if (!session) {

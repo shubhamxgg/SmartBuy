@@ -77,8 +77,8 @@ const WishlistButton = ({
     <div>
       <HeartIcon
         className={cn(
-          `w-6 h-6 absolute top-5 right-5 stroke-red-500 stroke-2 transition ease-in-out duration-300 hover:fill-red-500 hover:-translate-y-2`,
-          isInWishlist && "fill-red-500"
+          `w-6 h-6 absolute top-5 right-5 stroke-primary stroke-2 transition ease-in-out duration-300 hover:fill-primary hover:-translate-y-2`,
+          isInWishlist && "fill-primary"
         )}
         onClick={handleWishlistToggle}
         
