@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import db from "../db";
-import { FormState } from "../type";
+import { FormState } from "../../type";
 import { revalidatePath } from "next/cache";
 
 const schema = z.object({

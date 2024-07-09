@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { Product } from "../lib/type";
-
+import { CartItems, Product } from "../type";
 import {
   clearCartItem,
   createCartItem,
@@ -10,27 +9,29 @@ import {
 } from "@/lib/actions/cart";
 
 interface CartStore {
-  cart: any[];
+  cart: CartItems[];
   cartId: number;
+  userId: number | null;
   isLoading: boolean;
   error: string | null;
-  fetchCart: () => Promise<void>;
+  fetchCart: (userId: number) => Promise<void>;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: number) => void;
   updateCartItemQuantity: (productId: number, quantity: number) => void;
   clearCart: (cartId: number) => void;
 }
 
-const cartStore = create<CartStore>((set, get) => ({
+const useCartStore = create<CartStore>((set, get) => ({
   cart: [],
   cartId: 0,
+  userId: null,
   isLoading: false,
   error: null,
 
-  fetchCart: async () => {
-    set({ isLoading: true, error: null });
+  fetchCart: async (userId: number) => {
+    set({ isLoading: true, error: null, userId });
     try {
-      const { cartId, items } = await getCartItem();
+      const { cartId, items } = await getCartItem({ userId });
       set({ cartId, cart: items, isLoading: false });
     } catch (error: any) {
       set({ error: error.message, isLoading: false });
@@ -38,12 +39,17 @@ const cartStore = create<CartStore>((set, get) => ({
   },
 
   addToCart: async (product: Product) => {
-    const { cart } = get();
+    const { cart, userId } = get();
+    if (userId === null) {
+      set({ error: "User ID is not set" });
+      return;
+    }
     const existingItem = cart.find((item) => item.productId === product.id);
     if (existingItem) {
       const updatedItem = {
         ...existingItem,
         quantity: existingItem.quantity + 1,
+        userId,
       };
       await updateCartItem(updatedItem);
       set({
@@ -57,15 +63,28 @@ const cartStore = create<CartStore>((set, get) => ({
       const newItem = await createCartItem({
         productId: product.id,
         quantity: 1,
+        userId,
       });
-      set({ cart: [...cart, newItem] });
+      const newCartItem: CartItems = {
+        id: newItem.id,
+        cartId: newItem.cartId,
+        userId: userId,
+        productId: newItem.productId,
+        quantity: newItem.quantity,
+        product: { ...product, quantity: 1 },
+      };
+      set({ cart: [...cart, newCartItem] });
     }
   },
 
   removeFromCart: async (productId: number) => {
-    const { cart } = get();
+    const { cart, userId } = get();
+    if (userId === null) {
+      set({ error: "User ID is not set" });
+      return;
+    }
     try {
-      await removeCartItem({ productId });
+      await removeCartItem({ productId, userId });
       set({ cart: cart.filter((item) => item.productId !== productId) });
     } catch (error: any) {
       set({ error: error.message });
@@ -73,9 +92,13 @@ const cartStore = create<CartStore>((set, get) => ({
   },
 
   updateCartItemQuantity: async (productId: number, quantity: number) => {
-    const { cart } = get();
+    const { userId, cart } = get();
+    if (userId === null) {
+      set({ error: "User ID is not set" });
+      return;
+    }
     try {
-      const updatedItem = await updateCartItem({ productId, quantity });
+      await updateCartItem({ productId, quantity, userId });
       set({
         cart: cart.map((item) =>
           item.productId === productId ? { ...item, quantity } : item
@@ -87,8 +110,13 @@ const cartStore = create<CartStore>((set, get) => ({
   },
 
   clearCart: async (cartId: number) => {
+    const { userId } = get();
+    if (userId === null) {
+      set({ error: "User ID is not set" });
+      return;
+    }
     try {
-      await clearCartItem(cartId);
+      await clearCartItem({ cartId, userId });
       set({ cart: [] });
     } catch (error: any) {
       set({ error: error.message });
@@ -96,4 +124,5 @@ const cartStore = create<CartStore>((set, get) => ({
     set({ cart: [] });
   },
 }));
-export default cartStore;
+
+export default useCartStore;

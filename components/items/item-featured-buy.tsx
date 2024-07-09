@@ -56,7 +56,7 @@ const ItemFeaturedBuy = () => {
           <h1 className="text-4xl font-bold">Google Pixel 8 Pro</h1>
         </CardHeader>
         <div className="pt-4">
-          <p className="mb-1 text-lg text-primary text-lg">$700</p>
+          <p className="mb-1 text-lg text-primary">$700</p>
 
           <div className="flex flex-col pt-2">
             <span className="text-gray-400">Quantity</span>

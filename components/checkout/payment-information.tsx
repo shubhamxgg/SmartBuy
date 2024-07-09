@@ -10,7 +10,7 @@ const PaymentInformation = () => {
   const { paymentMethod, setPaymentMethod } = usePaymentStore();
 
   return (
-    <div className="bg-card p-4 rounded-lg shadow">
+    <div className="bg-card p-4 rounded-lg shadow border">
       <h2 className="text-xl font-semibold mb-4">Payment Information</h2>
       <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
         <div className="flex items-center space-x-2">

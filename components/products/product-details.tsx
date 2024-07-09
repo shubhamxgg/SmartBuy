@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Product } from "@/lib/type";
+import { Product } from "@/type";
 import { Heart } from "lucide-react";
 
 interface ProductDetailsProps {

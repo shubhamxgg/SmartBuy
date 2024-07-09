@@ -6,11 +6,11 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import useProductStore from "@/store/useProductStore";
+import useCartStore from "@/store/useCartStore";
 import Image from "next/image";
 
 const OrderSummary = () => {
-  const { cart } = useProductStore();
+  const { cart } = useCartStore();
 
   const totalCost = cart.reduce(
     (acc, item) => acc + item.product.price * item.quantity,
@@ -28,13 +28,13 @@ const OrderSummary = () => {
           <div key={item.product.id} className="flex items-center mb-4">
             <Image
               src={item.product.imageUrl}
-              alt={item.product.name}
+              alt={`${item.product.id}`}
               className="w-16 h-16 rounded"
               height={50}
               width={50}
             />
             <div className="ml-4 flex-1">
-              <h3 className="font-semibold">{item.product.name}</h3>
+              <h3 className="font-semibold">{item.productId}</h3>
               <p className="text-sm">Quantity: {item.quantity}</p>
               <p className="text-sm">Price: ${item.product.price}</p>
             </div>

@@ -12,7 +12,7 @@ export interface Category {
 }
 
 export interface Product {
-  quantity?: string | number | readonly string[] | undefined;
+  quantity?: number;
   id: number;
   title: string;
   description: string;
@@ -45,6 +45,7 @@ export interface FilterState {
 export interface CartItems {
   id: number;
   cartId: number;
+  userId: number | null;
   productId: number;
   quantity: number;
   product: Product;
@@ -109,12 +110,14 @@ export interface Address {
 }
 
 export interface Order {
-  id?: number;
+  createdAt: string | number | Date;
+  id: number;
   userId: number;
+  image: string;
   items: OrderItem[];
   totalAmount: number;
   status: ShippingStatus;
   paymentStatus: PaymentStatus;
   shippingStatus: ShippingStatus;
-  shippingAddress: Address;
+  // shippingAddress?: Address;
 }

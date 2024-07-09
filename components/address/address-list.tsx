@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { useAddressStore } from "@/store/useAddressStore";
-import { Address } from "@/lib/type";
+import { Address } from "@/type";
 import { Button } from "../ui/button";
 import {
   Dialog,

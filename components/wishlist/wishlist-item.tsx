@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Heart, Trash } from "lucide-react";
-import { Product } from "@/lib/type";
+import { Product } from "@/type";
 import { useRemoveWishlist } from "@/hooks/use-wishlist";
 
 interface WishlistItemProps {
