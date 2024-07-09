@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "bunx tsx ./prisma/seed.ts"
+    "seed": "bunx tsx ./prisma/seed2.ts"
   },
   "prisma": {
     "seed": "bunx tsx ./prisma/seed.ts"

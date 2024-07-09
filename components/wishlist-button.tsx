@@ -11,6 +11,8 @@ interface WishlistButtonProps {
   userId: number;
   productId: number;
   isWishList: boolean;
+  className?: string;
+  title?: string;
 }
 
 const addToWishlist = async ({
@@ -39,6 +41,8 @@ const WishlistButton = ({
   isWishList,
   productId,
   userId,
+  className,
+  title,
 }: WishlistButtonProps) => {
   const [isInWishlist, setIsWishList] = useState(isWishList);
 
@@ -74,15 +78,16 @@ const WishlistButton = ({
   };
 
   return (
-    <div>
+    <div className="flex items-center p-2">
       <HeartIcon
         className={cn(
-          `w-6 h-6 absolute top-5 right-5 stroke-primary stroke-2 transition ease-in-out duration-300 hover:fill-primary hover:-translate-y-2`,
-          isInWishlist && "fill-primary"
+          `h-6 w-6 mr-2`,
+          isInWishlist && "fill-primary",
+          className
         )}
         onClick={handleWishlistToggle}
-        
       />
+      <span>{title}</span>
     </div>
   );
 };

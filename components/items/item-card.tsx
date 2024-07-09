@@ -25,9 +25,10 @@ const ItemCard = ({ product }: ItemCardProps) => {
         <div className="relative h-56 w-full overflow-hidden">
           <Image
             alt={"item-card"}
-            className="object-cover w-full h-full"
+            className="object-contain w-full h-full bg-white"
             src={product.imageUrl}
-            fill
+            height={80}
+            width={80}
           />
         </div>
         <CardHeader className="flex items-start px-4 py-3">
@@ -49,6 +50,7 @@ const ItemCard = ({ product }: ItemCardProps) => {
                 <ShoppingCart />
               </Button>
               <WishlistButton
+                className="absolute top-5 right-5 stroke-primary stroke-2 transition ease-in-out duration-300 hover:fill-primary hover:-translate-y-2"
                 isWishList={false}
                 productId={product.id}
                 userId={1}

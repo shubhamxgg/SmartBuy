@@ -34,13 +34,13 @@ export async function createProduct({
   additionalImages,
 }: Product) {
   try {
-    const seller = await db.seller.findUnique({
-      where: { userId: sellerId },
-    });
+    // const seller = await db.seller.findUnique({
+    //   where: { userId: sellerId },
+    // });
 
-    if (!seller) {
-      throw new Error("Only sellers can add products");
-    }
+    // if (!seller) {
+    //   throw new Error("Only sellers can add products");
+    // }
 
     const product = await db.product.create({
       data: {
