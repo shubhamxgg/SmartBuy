@@ -36,7 +36,6 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination";
 import { Separator } from "@/components/ui/separator";
-import { formatDateToText } from "@/lib/utils";
 
 const OrderDetailsPage = () => {
   const { id } = useParams();
@@ -82,7 +81,7 @@ const OrderDetailsPage = () => {
             </Button>
           </CardTitle>
           <CardDescription>
-            Date: {formatDateToText(new Date())}
+            Date: {new Date().toLocaleDateString()}
           </CardDescription>
         </div>
         <div className="ml-auto flex items-center gap-1">
@@ -180,7 +179,7 @@ const OrderDetailsPage = () => {
         <div className="text-xs text-muted-foreground">
           Updated{" "}
           <time dateTime={new Date().toISOString()}>
-            {formatDateToText(new Date())}
+            {new Date().toLocaleDateString()}
           </time>
         </div>
         <Pagination className="ml-auto mr-0 w-auto">

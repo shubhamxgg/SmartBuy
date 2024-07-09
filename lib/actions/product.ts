@@ -4,6 +4,21 @@ import db from "../db";
 
 import { ProductStatus } from "@prisma/client";
 
+interface Product {
+  title: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  categoryId: number;
+  sellerId: number;
+  status: ProductStatus;
+  featured: boolean;
+  sku: string;
+  quantity: number;
+  lowStockThreshold: number;
+  additionalImages: string[];
+}
+
 export async function createProduct({
   title,
   description,
@@ -17,32 +32,16 @@ export async function createProduct({
   quantity,
   lowStockThreshold,
   additionalImages,
-}: {
-  title: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  categoryId: number;
-  sellerId: number;
-  status: ProductStatus;
-  featured: boolean;
-  sku: string;
-  quantity: number;
-  lowStockThreshold: number;
-  additionalImages: string[];
-}) {
+}: Product) {
   try {
-    const seller = 1;
-    // Ensure seller exists
-    // const seller = await db.seller.findUnique({
-    //   where: { userId: sellerId },
-    // });
+    const seller = await db.seller.findUnique({
+      where: { userId: sellerId },
+    });
 
-    // if (!seller) {
-    //   throw new Error("Only sellers can add products");
-    // }
+    if (!seller) {
+      throw new Error("Only sellers can add products");
+    }
 
-    // Create the product
     const product = await db.product.create({
       data: {
         title,
@@ -50,13 +49,12 @@ export async function createProduct({
         price,
         imageUrl,
         categoryId,
-        sellerId: seller,
+        sellerId,
         status,
         featured,
       },
     });
 
-    // Create stock details
     await db.stock.create({
       data: {
         productId: product.id,
@@ -66,7 +64,6 @@ export async function createProduct({
       },
     });
 
-    // Handle additional images if any
     if (additionalImages && additionalImages.length > 0) {
       const images = additionalImages.map((url) => ({
         productId: product.id,

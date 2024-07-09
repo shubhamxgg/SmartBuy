@@ -6,8 +6,6 @@ import HomePageSidebar from "./home-sidebar";
 import CartPage from "./cart";
 
 const Navbar = () => {
-  const session = true;
-
   return (
     <div className="bg-card border backdrop-blur-lg px-4 md:px-8 py-2 flex items-center justify-between  z-50 rounded-md shadow-md">
       <div className="flex items-center gap-4">
@@ -29,6 +27,7 @@ const Navbar = () => {
         </Link>
 
         <CartPage />
+        
         <UserDropdown />
       </div>
     </div>

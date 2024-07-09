@@ -1,9 +1,9 @@
-import useProductStore from "@/store/useProductStore";
 import { toast } from "sonner";
-import { Product } from "../lib/type";
+import { Product } from "../type";
+import useCartStore from "@/store/useCartStore";
 
 const useCart = (product: Product) => {
-  const { addToCart } = useProductStore();
+  const { addToCart } = useCartStore();
 
   const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

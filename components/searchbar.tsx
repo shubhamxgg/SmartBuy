@@ -3,8 +3,7 @@ import { SearchIcon, X } from "lucide-react";
 import { Input } from "./ui/input";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { useCallback, useEffect, useState } from "react";
-import useProductStore from "@/store/useProductStore";
+import { useState } from "react";
 
 const Searchbar = () => {
   const [search, setSearch] = useState<string>("");

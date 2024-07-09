@@ -20,7 +20,7 @@ const Footer = () => {
         <Button
           size="default"
           variant="outline"
-          className="text-gray-400 hover:text-white"
+          className="text-gray-400 hover:text-white hidden sm:block"
         >
           Subscribe
         </Button>

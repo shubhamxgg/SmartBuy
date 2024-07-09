@@ -69,7 +69,7 @@ const UserDropdown = async () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       ) : (
-        <DropdownMenuContent className="w-52" align="center">
+        <DropdownMenuContent className="w-52" align="end" >
           {NavbarItems.map((item) => (
             <DropdownMenuItem key={item.href}>
               <Link href={item.href} className="flex gap-4 items-center p-1">

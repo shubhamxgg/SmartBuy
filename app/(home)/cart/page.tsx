@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import useProductStore from "@/store/useProductStore";
+import useCartStore from "@/store/useCartStore";
 import CartItem from "@/components/cart/cart-item";
 import CartSummary from "@/components/cart/cart-summary";
 
 const CartPage = () => {
-  const { cart } = useProductStore();
+  const { cart } = useCartStore();
 
   return (
     <div className="p-4">
@@ -19,9 +19,7 @@ const CartPage = () => {
               <CartItem key={item.id} item={item} />
             ))}
           </div>
-          <div className="md:w-1/3">
-            {/* <CartSummary /> */}
-          </div>
+          <div className="md:w-1/3"></div>
         </div>
       )}
     </div>

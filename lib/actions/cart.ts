@@ -1,18 +1,35 @@
 "use server";
 
+import { Product } from "@/type";
 import db from "../db";
+
+interface CartItems {
+  id: number;
+  userId: number;
+  productId: number;
+  quantity: number;
+  product: Product;
+}
 
 interface CartProps {
   productId: number;
   quantity: number;
+  userId: number;
 }
 interface removeCartProps {
   productId: number;
+  userId: number;
+}
+interface clearCartProps {
+  userId: number;
+  cartId: number;
 }
 
-export async function getCartItem(): Promise<any> {
-  const userId = 1;
-
+export async function getCartItem({
+  userId,
+}: {
+  userId: number;
+}): Promise<any> {
   try {
     const cart = await db.cart.findUnique({
       where: {
@@ -41,8 +58,7 @@ export async function getCartItem(): Promise<any> {
   }
 }
 
-export async function createCartItem({ productId, quantity }: CartProps) {
-  const userId = 1;
+export async function createCartItem({ productId, quantity, userId }: any) {
   try {
     const cart = await db.cart.upsert({
       where: {
@@ -70,8 +86,7 @@ export async function createCartItem({ productId, quantity }: CartProps) {
   }
 }
 
-export async function removeCartItem({ productId }: removeCartProps) {
-  const userId = 1;
+export async function removeCartItem({ productId, userId }: removeCartProps) {
   try {
     const cart = await db.cart.findUnique({
       where: { userId },
@@ -97,8 +112,7 @@ export async function removeCartItem({ productId }: removeCartProps) {
   }
 }
 
-export async function clearCartItem({ cartId }: any) {
-  const userId = 1;
+export async function clearCartItem({ cartId, userId }: clearCartProps) {
   try {
     const cart = await db.cart.findUnique({
       where: { userId },
@@ -120,9 +134,11 @@ export async function clearCartItem({ cartId }: any) {
   }
 }
 
-export async function updateCartItem({ productId, quantity }: CartProps) {
-  const userId = 1;
-
+export async function updateCartItem({
+  productId,
+  quantity,
+  userId,
+}: CartProps) {
   try {
     const cart = await db.cart.findUnique({
       where: { userId },
