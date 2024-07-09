@@ -1,5 +1,5 @@
 import useProductStore from "@/store/useProductStore";
-import { Filter } from "@/lib/type";
+import { Filter } from "@/type";
 import { useEffect, useState } from "react";
 
 export const useFetchAndFilterProducts = (initialFilter: Filter) => {

@@ -1,12 +1,11 @@
-import useProductStore from "@/store/useProductStore";
+import useCartStore from "@/store/useCartStore";
 import { useRouter } from "next/navigation";
 import React, { useCallback } from "react";
 import { Button } from "../ui/button";
-import { ShoppingCart } from "lucide-react";
 
 const CartSummary = ({ onClose }: { onClose: () => void }) => {
   const router = useRouter();
-  const { cart, cartId, clearCart } = useProductStore();
+  const { cart, cartId, clearCart } = useCartStore();
   const total = cart.reduce(
     (acc, item) => acc + item.product.price * item.quantity,
     0

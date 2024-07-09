@@ -5,14 +5,15 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import CartSummary from "../cart/cart-summary";
 import { useEffect, useState } from "react";
 import CartItem from "../cart/cart-item";
-import useProductStore from "@/store/useProductStore";
+import useCartStore from "@/store/useCartStore";
 
 const CartPage = () => {
-  const { cart, fetchCart } = useProductStore();
+  const { cart, fetchCart } = useCartStore();
   const [isOpen, setIsOpen] = useState(false);
-
+  const userId = 1;
+  
   useEffect(() => {
-    fetchCart();
+    fetchCart(userId);
   }, [fetchCart]);
 
   if (!cart) {

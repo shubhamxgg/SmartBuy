@@ -4,10 +4,10 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAddressStore } from "@/store/useAddressStore";
 import { usePaymentStore } from "@/store/usePaymentStore";
-import useProductStore from "@/store/useProductStore";
+import useCartStore from "@/store/useCartStore";
 
 const ReviewOrder = () => {
-  const { cart } = useProductStore();
+  const { cart } = useCartStore();
   const { selectedAddress } = useAddressStore();
   const { paymentMethod } = usePaymentStore();
   const totalAmount = cart.reduce(

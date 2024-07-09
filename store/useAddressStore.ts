@@ -1,5 +1,5 @@
 import { getUserAddresses } from "@/lib/actions/address";
-import { Address } from "@/lib/type";
+import { Address } from "@/type";
 import { create } from "zustand";
 
 interface AddressStore {

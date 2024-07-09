@@ -1,6 +1,6 @@
 import SearchProductListSkeleton from "./search-sidebar-skeleton";
 import SearchProductList from "./search-product-list";
-import { Product } from "@/lib/type";
+import { Product } from "@/type";
 
 interface SearchResultsProps {
   products?: Product[];

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import db from "../db";
-import { Order } from "../type";
+import { Order } from "../../type";
 
 export async function createOrder(order: any) {
   try {

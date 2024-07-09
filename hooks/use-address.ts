@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { Address } from "@/lib/type";
+import { Address } from "@/type";
 import { deleteAddress, getUserAddresses } from "@/lib/actions/address";
 import { toast } from "sonner";
 

@@ -7,7 +7,6 @@ interface Props {
 
 export async function getUserAddresses({ userId }: any) {
   try {
-    //verfiyUser
     const addresses = await db.address.findMany({
       where: { userId },
     });

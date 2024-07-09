@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AddressList from "../address/address-list";
 import { useAddressStore } from "@/store/useAddressStore";
-import { Address } from "@/lib/type";
+import { Address } from "@/type";
 
 const ShippingInformation = () => {
   const { selectAddress } = useAddressStore();

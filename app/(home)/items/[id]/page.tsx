@@ -1,12 +1,28 @@
 "use client";
-import ItemSection from "@/components/items/item-section";
-import ProductBreadcrumbs from "@/components/products/product-breadcrumb";
-import ProductCustomerRatings from "@/components/products/product-customer-ratings";
-import ProductDetails from "@/components/products/product-details";
-import ProductImages from "@/components/products/product-images";
-import ProductReviews from "@/components/products/product-reviews";
-import ProductSkeleton from "@/components/products/product-skeleton";
+
+import React, { Suspense, lazy } from "react";
+import dynamic from "next/dynamic";
 import useItemData from "@/hooks/use-item";
+import ProductSkeleton from "@/components/products/product-skeleton";
+import ProductBreadcrumbs from "@/components/products/product-breadcrumb";
+
+const ProductImages = dynamic(
+  () => import("@/components/products/product-images"),
+  { ssr: false }
+);
+const ProductDetails = dynamic(
+  () => import("@/components/products/product-details"),
+  { ssr: false }
+);
+const ItemSection = dynamic(() => import("@/components/items/item-section"), {
+  ssr: false,
+});
+const ProductCustomerRatings = lazy(
+  () => import("@/components/products/product-customer-ratings")
+);
+const ProductReviews = lazy(
+  () => import("@/components/products/product-reviews")
+);
 
 interface ItemPageProps {
   params: {
@@ -18,7 +34,7 @@ const ItemsPage = ({ params: { id } }: ItemPageProps) => {
   const { data: product, isLoading, error } = useItemData(Number(id));
 
   if (isLoading) return <ProductSkeleton />;
-  if (error) return <div>Error:</div>;
+  if (error) return <div>Error: {error.message}</div>;
   if (!product) return <div>Product not found</div>;
 
   return (
@@ -28,19 +44,29 @@ const ItemsPage = ({ params: { id } }: ItemPageProps) => {
       </div>
 
       <div className="flex flex-col gap-2 lg:flex-row p-2 md:p-5">
-        <ProductImages product={product} />
-        <ProductDetails product={product} />
+        <Suspense fallback={<div>Loading images...</div>}>
+          <ProductImages product={product} />
+        </Suspense>
+        <Suspense fallback={<div>Loading details...</div>}>
+          <ProductDetails product={product} />
+        </Suspense>
       </div>
 
-      <ItemSection title="Mobile" />
+      <Suspense fallback={<div>Loading item section...</div>}>
+        <ItemSection title="Mobile" />
+      </Suspense>
 
-      <div className="py-5 md:py-10 flex flex-col lg:flex-row gap-5 p-2 md:p-4  rounded-sm">
-        <ProductCustomerRatings ratings={product.reviews} />
+      <div className="py-5 md:py-10 flex flex-col lg:flex-row gap-5 p-2 md:p-4 rounded-sm">
+        <Suspense fallback={<div>Loading ratings...</div>}>
+          <ProductCustomerRatings ratings={product.reviews} />
+        </Suspense>
 
-        <ProductReviews reviews={product.reviews} />
+        <Suspense fallback={<div>Loading reviews...</div>}>
+          <ProductReviews reviews={product.reviews} />
+        </Suspense>
       </div>
     </div>
   );
 };
 
-export default ItemsPage;
+export default React.memo(ItemsPage);
