@@ -6,7 +6,7 @@ import { Address } from "@/type";
 
 const ShippingInformation = () => {
   const { selectAddress } = useAddressStore();
-  
+  const userId = 6;
   const handleSelectAddress = (address: Address) => {
     selectAddress(address);
   };
@@ -17,7 +17,7 @@ const ShippingInformation = () => {
         <CardTitle>Shipping Information</CardTitle>
       </CardHeader>
       <CardContent>
-        <AddressList userId={1} onSelectAddress={handleSelectAddress} />
+        <AddressList userId={userId} onSelectAddress={handleSelectAddress} />
       </CardContent>
     </Card>
   );

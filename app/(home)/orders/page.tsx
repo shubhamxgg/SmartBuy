@@ -15,7 +15,7 @@ import OrdersSkeleton from "@/components/orders/orders-skeleton";
 import OrderCard from "@/components/orders/order-card";
 
 const OrdersPage = () => {
-  const userId = 1;
+  const userId = 6;
 
   const {
     data: orders,

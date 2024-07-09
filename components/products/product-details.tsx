@@ -19,7 +19,7 @@ interface ProductDetailsProps {
 
 const ProductDetails = ({ product }: ProductDetailsProps) => {
   const { handleAddToCart } = useCart(product);
-  const userId = 1;
+  const userId = 6;
   return (
     <div className="w-full lg:w-1/2 p-8 lg:ml-4 bg-card rounded-xl border border-border shadow-sm">
       <div className="flex flex-col mb-8">

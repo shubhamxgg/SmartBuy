@@ -8,7 +8,7 @@ import WishlistSkeleton from "@/components/wishlist/wishlist-skeleton";
 import { Loader } from "lucide-react";
 
 const WishlistPage = () => {
-  const userId = 1;
+  const userId = 6;
   const {
     data,
     error,
