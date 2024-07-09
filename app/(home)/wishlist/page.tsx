@@ -24,7 +24,7 @@ const WishlistPage = () => {
   const isEmpty = !data?.pages.some((page) => page.items.length > 0);
 
   return (
-    <div className="p-4 flex flex-col items-center min-h-screen">
+    <div className="p-2 flex flex-col items-center min-h-screen">
       <div className="w-full">
         <h1 className="text-2xl font-semibold mb-4">Your Wishlist</h1>
         {isEmpty ? (

@@ -32,7 +32,7 @@ interface ItemPageProps {
 
 const ItemsPage = ({ params: { id } }: ItemPageProps) => {
   const { data: product, isLoading, error } = useItemData(Number(id));
-
+  
   if (isLoading) return <ProductSkeleton />;
   if (error) return <div>Error: {error.message}</div>;
   if (!product) return <div>Product not found</div>;

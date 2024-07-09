@@ -10,6 +10,7 @@ const nextConfig = {
       "loremflickr.com",
       "picsum.photos",
       "img.clerk.com",
+      "example.com",
     ],
   },
 };

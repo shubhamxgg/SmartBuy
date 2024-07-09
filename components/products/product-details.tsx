@@ -1,66 +1,116 @@
 import { Button } from "@/components/ui/button";
 import { Product } from "@/type";
-import { Heart } from "lucide-react";
+import {
+  Heart,
+  Plus,
+  Minus,
+  Truck,
+  ShieldCheck,
+  Lock,
+  Calendar,
+  CheckCircle,
+} from "lucide-react";
+import WishlistButton from "../wishlist-button";
+import useCart from "@/hooks/use-cart";
 
 interface ProductDetailsProps {
   product: Product;
 }
 
-const ProductDetails = ({ product }: ProductDetailsProps) => (
-  <div className="w-full p-4 lg:w-1/2 mt-3 flex flex-col lg:ml-4 bg-card rounded-sm lg:mt-0 border">
-    <div className="bg-neutral-500 w-fit p-2 rounded-md mb-4 mt-2 text-center">
-      {product.status === "AVAILABLE" ? "Buy Now" : "Out of Stock"}
-    </div>
-    <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
-    <h1 className="font-semibold text-md mt-2">${product.price}</h1>
-    <div className="flex flex-col gap-2 mt-2">
-      <p className="text-sm">Select quantity</p>
-      <div className="flex gap-2">
-        <Button variant={"default"} size={"icon"}>
-          +
+const ProductDetails = ({ product }: ProductDetailsProps) => {
+  const { handleAddToCart } = useCart(product);
+  const userId = 1;
+  return (
+    <div className="w-full lg:w-1/2 p-8 lg:ml-4 bg-card rounded-xl border border-border shadow-sm">
+      <div className="flex flex-col mb-8">
+        <span
+          className={`self-start px-3 py-1 rounded-full text-xs font-semibold mb-4 ${
+            product.status === "AVAILABLE"
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-800"
+          }`}
+        >
+          {product.status === "AVAILABLE" ? "In Stock" : "Out of Stock"}
+        </span>
+        <h2 className="text-3xl font-bold mb-2">{product.title}</h2>
+        <div className="text-4xl font-bold text-primary">${product.price}</div>
+      </div>
+
+      <div className="mb-8">
+        <label className="block text-sm font-medium mb-3">Quantity</label>
+        <div className="flex items-center space-x-3 bg-background p-2 rounded-lg w-fit border border-border">
+          <Button variant="ghost" size="icon" className="hover:bg-muted">
+            <Minus className="h-4 w-4" />
+          </Button>
+          <span className="w-8 text-center font-medium">1</span>
+          <Button variant="ghost" size="icon" className="hover:bg-muted">
+            <Plus className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+
+      <div className="bg-background rounded-lg p-5 mb-8 border border-border">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center">
+            <Truck className="h-5 w-5 mr-3 text-primary" />
+            <span className="font-semibold">Free Delivery</span>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-primary hover:bg-muted"
+          >
+            Details
+          </Button>
+        </div>
+        <div className="flex items-center text-sm text-muted-foreground">
+          <Calendar className="h-4 w-4 mr-3" />
+          <span>Estimated delivery: 3-5 business days</span>
+        </div>
+      </div>
+
+      <div className="flex gap-4 mb-6">
+        <Button className="flex-1 bg-primary hover:bg-primary/90">
+          Buy Now
         </Button>
-        {"Numer"}
-        <Button variant={"default"} size={"icon"}>
-          -
+        <Button className="flex-1" variant="outline" onClick={handleAddToCart}>
+          Add to Cart
         </Button>
       </div>
-    </div>
 
-    <div className="flex flex-col p-4 mt-5 border bg-card rounded-sm">
-      <div className="flex items-center justify-between">
-        <h4 className="text-sm lg:text-base">Free Delivery</h4>
-        <p className="text-sm lg:text-base">Details</p>
+      <WishlistButton
+        userId={userId}
+        productId={product.id}
+        isWishList={false}
+        title="Wishlist"
+      />
+
+      <div className="border-t border-border pt-6 mb-8">
+        <h3 className="text-xl font-semibold mb-4">Product Details</h3>
+        <p className="text-muted-foreground leading-relaxed mb-6">
+          {product.description}
+        </p>
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="flex items-center">
+            <ShieldCheck className="h-5 w-5 mr-2 text-primary" />
+            <span>Secure Transaction</span>
+          </div>
+          <div className="flex items-center">
+            <Lock className="h-5 w-5 mr-2 text-primary" />
+            <span>Privacy Protected</span>
+          </div>
+          <div className="flex items-center">
+            <CheckCircle className="h-5 w-5 mr-2 text-primary" />
+            <span>Quality Guaranteed</span>
+          </div>
+          <div className="flex items-center">
+            <Heart className="h-5 w-5 mr-2 text-primary" />
+            <span>Satisfaction Assured</span>
+          </div>
+        </div>
       </div>
-      <div className="mt-4 flex gap-2">
-        Get <p className="text-red-500">SAMPLE</p>
-      </div>
     </div>
-
-    <div className="flex items-center justify-between p-5 border mt-2 rounded-sm">
-      <h1>Secure</h1>
-      <h1>Satisfaction</h1>
-      <h1>Privacy</h1>
-    </div>
-
-    <div className="flex items-center gap-2 w-full mt-4 py-4">
-      <Button className="w-full" variant={"outline"}>
-        Add to cart
-      </Button>
-      <Button className="w-full" variant={"outline"}>
-        Buy now
-      </Button>
-    </div>
-
-    <div className="py-2 flex items-center gap-2">
-      <Heart className="h-5 w-5" />
-      <p className="underline underline-offset-3">Wishlist</p>
-    </div>
-
-    <h1 className="mt-10 mb-2 font-semibold text-lg">Product Details</h1>
-    <p className="w-full text-balance leading-relaxed overflow-hidden">
-      {product.description}
-    </p>
-  </div>
-);
+  );
+};
 
 export default ProductDetails;
