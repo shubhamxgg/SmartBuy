@@ -3,7 +3,7 @@ interface CustomerRatingsProps {
 }
 
 const ProductCustomerRatings = ({ ratings }: CustomerRatingsProps) => (
-  <div className="lg:w-1/3 w-full bg-card p-5 rounded-sm">
+  <div className="lg:w-1/3 w-full bg-card p-5 rounded-sm border bg-card">
     <h1 className="mb-2 font-bold">Customer Ratings</h1>
     <div className="mb-4">⭐️</div>
     <div className="mb-2">0 customer ratings</div>

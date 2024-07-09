@@ -2,7 +2,8 @@
 
 import CategoryDetails from "@/components/form/category-detail";
 import ImageDetails from "@/components/form/image-detail";
-import ProductDetails from "@/components/form/product-detail";
+import ProductDetails from "@/components/form/product-detail-from";
+
 import StatusDetails from "@/components/form/status-details";
 import StockDetail from "@/components/form/stock-detail";
 import { Button } from "@/components/ui/button";

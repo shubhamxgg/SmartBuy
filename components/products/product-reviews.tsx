@@ -5,7 +5,7 @@ interface CustomerReviewsProps {
 }
 
 const ProductReviews = ({ reviews }: CustomerReviewsProps) => (
-  <div className="lg:w-2/3 w-full bg-card p-5 rounded-sm">
+  <div className="lg:w-2/3 w-full bg-card p-5 rounded-sm border ">
     <h1 className="font-bold text-lg mb-4">Customer Reviews</h1>
     <div className="flex flex-col items-center justify-center w-full">
       {reviews.length > 0 ? (
