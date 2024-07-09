@@ -10,7 +10,7 @@ import useCartStore from "@/store/useCartStore";
 const CartPage = () => {
   const { cart, fetchCart } = useCartStore();
   const [isOpen, setIsOpen] = useState(false);
-  const userId = 1;
+  const userId = 6;
   
   useEffect(() => {
     fetchCart(userId);

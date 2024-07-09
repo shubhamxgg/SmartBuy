@@ -12,7 +12,7 @@ interface ItemCardProps {
 
 const ItemCard = ({ product }: ItemCardProps) => {
   const { handleAddToCart } = useCart(product);
-  const userId = 1;
+  const userId = 6;
 
   return (
     <Card className="relative group overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">

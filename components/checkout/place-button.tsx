@@ -13,7 +13,7 @@ import AnimatedButton from "../ui/animate-button";
 
 const PlaceOrderButton = () => {
   const router = useRouter();
-  const userId = 1;
+  const userId = 6;
   const session = true;
   const { cart, cartId, clearCart } = useCartStore();
   const { selectedAddress } = useAddressStore();
@@ -73,7 +73,7 @@ const PlaceOrderButton = () => {
     <AnimatePresence>
       <AnimatedButton
         onClick={handlePlaceOrder}
-        className={`w-full transition-colors duration-300 ${
+        className={`w-full transition-colors duration-300 rounded-sm p-2 ${
           isProcessing
             ? "bg-gray-600 hover:bg-gray-700 cursor-not-allowed"
             : "bg-primary hover:bg-primary-dark"
