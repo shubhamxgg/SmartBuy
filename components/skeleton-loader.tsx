@@ -1,9 +1,11 @@
+import { Skeleton } from "./ui/skeleton";
+
 const SkeletonLoader = () => (
   <div className="animate-pulse flex space-x-4">
     <div className="flex-1 space-y-4 py-1">
-      <div className="h-4 bg-gray-400 rounded w-3/4"></div>
-      <div className="h-4 bg-gray-400 rounded"></div>
-      <div className="h-4 bg-gray-400 rounded w-5/6"></div>
+      <Skeleton className="h-4 rounded w-3/4"></Skeleton>
+      <Skeleton className="h-4  rounded"></Skeleton>
+      <Skeleton className="h-4  rounded w-5/6"></Skeleton>
     </div>
   </div>
 );

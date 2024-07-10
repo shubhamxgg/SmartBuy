@@ -27,7 +27,7 @@ function getRandomSKU(): string {
   return Math.random().toString(36).substring(2, 12).toUpperCase();
 }
 
-const seller = 1;
+const seller = 5;
 
 async function seedCategory(
   categoryId: number,
@@ -38,7 +38,7 @@ async function seedCategory(
       title: product.name,
       description: product.description,
       price: getRandomPrice(product.priceRange[0], product.priceRange[1]),
-      imageUrl: `https://example.com/images/category${categoryId}/${product.name
+      imageUrl: `/images/category/${product.name
         .toLowerCase()
         .replace(/ /g, "-")}.jpg`,
       categoryId,
@@ -49,13 +49,13 @@ async function seedCategory(
       quantity: getRandomInt(1, 100),
       lowStockThreshold: getRandomInt(1, 10),
       additionalImages: [
-        `https://example.com/images/category${categoryId}/${product.name
+        `/images/category${categoryId}/${product.name
           .toLowerCase()
           .replace(/ /g, "-")}-1.jpg`,
-        `https://example.com/images/category${categoryId}/${product.name
+        `/images/category${categoryId}/${product.name
           .toLowerCase()
           .replace(/ /g, "-")}-2.jpg`,
-        `https://example.com/images/category${categoryId}/${product.name
+        `/images/category${categoryId}/${product.name
           .toLowerCase()
           .replace(/ /g, "-")}-3.jpg`,
       ],
@@ -175,7 +175,7 @@ async function seedFashion(): Promise<void> {
     },
   ];
 
-  await seedCategory(11, products);
+  await seedCategory(2, products);
 }
 
 async function seedHome(): Promise<void> {
@@ -232,7 +232,7 @@ async function seedHome(): Promise<void> {
     },
   ];
 
-  await seedCategory(10, products);
+  await seedCategory(3, products);
 }
 
 async function seedMovies(): Promise<void> {
@@ -289,7 +289,7 @@ async function seedMovies(): Promise<void> {
     },
   ];
 
-  await seedCategory(9, products);
+  await seedCategory(4, products);
 }
 
 async function seedBooks(): Promise<void> {
@@ -346,7 +346,7 @@ async function seedBooks(): Promise<void> {
     },
   ];
 
-  await seedCategory(9, products);
+  await seedCategory(5, products);
 }
 
 async function seedSports(): Promise<void> {
@@ -403,7 +403,7 @@ async function seedSports(): Promise<void> {
     },
   ];
 
-  await seedCategory(7, products);
+  await seedCategory(6, products);
 }
 
 async function seedMobile(): Promise<void> {
@@ -460,7 +460,7 @@ async function seedMobile(): Promise<void> {
     },
   ];
 
-  await seedCategory(6, products);
+  await seedCategory(7, products);
 }
 
 async function seedDatabase(): Promise<void> {

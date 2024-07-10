@@ -25,7 +25,7 @@ const ItemCard = ({ product }: ItemCardProps) => {
         <div className="relative h-56 w-full overflow-hidden">
           <Image
             alt={"item-card"}
-            className="object-contain w-full h-full bg-white"
+            className="object-contain w-full h-full bg-white opacity-80 p-2"
             src={product.imageUrl}
             height={80}
             width={80}
@@ -53,7 +53,7 @@ const ItemCard = ({ product }: ItemCardProps) => {
                 className="absolute top-5 right-5 stroke-primary stroke-2 transition ease-in-out duration-300 hover:fill-primary hover:-translate-y-2"
                 isWishList={false}
                 productId={product.id}
-                userId={1}
+                userId={userId}
               />
               <span className="sr-only">Add to Wishlist</span>
             </div>
