@@ -7,13 +7,14 @@ import { MinusIcon, PlusIcon } from "lucide-react";
 import { Card, CardContent, CardHeader } from "../ui/card";
 
 const ItemFeaturedBuy = () => {
+  
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState({
     id: 1,
     name: "Google Pixel 8 Pro",
     price: 700,
-    imageUrl: "/user.jpg",
+    imageUrl: "/images/mobile/google-pixel-6.jpg",
   });
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const ItemFeaturedBuy = () => {
             src={product.imageUrl}
             alt={product.name}
             fill
-            className="object-cover w-full h-full"
+            className="object-contain bg-white opacity-80 w-full h-full"
           />
         </div>
       </div>

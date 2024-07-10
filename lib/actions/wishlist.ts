@@ -44,6 +44,8 @@ export async function createWishlist({ productId, userId }: WishList) {
       include: {
         product: true,
       },
+      
+
     });
 
     return wishlistItems;

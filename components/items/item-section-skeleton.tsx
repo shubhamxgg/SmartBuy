@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const ItemSectionSkeleton = () => {
   return (
     <div className="flex flex-col pb-5 w-full">
-      <div className="flex items-center justify-between px-2 py-4 border rounded-sm border-white/20">
+      <div className="flex items-center justify-between px-2 py-4 border rounded-sm">
         <Skeleton className="h-6 w-1/4" />
         <Skeleton className="h-6 w-1/4" />
       </div>

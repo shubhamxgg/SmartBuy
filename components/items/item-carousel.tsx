@@ -1,10 +1,12 @@
-'use client'
+"use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getFeaturedItem } from "@/lib/actions/filter";
+import Link from "next/link";
+import { Skeleton } from "../ui/skeleton";
 
 const ItemCarousel = () => {
   const { data, isLoading, error } = useQuery({
@@ -38,7 +40,7 @@ const ItemCarousel = () => {
       <div className="py-2 relative pb-10">
         <div className="w-full border rounded-lg overflow-hidden">
           <div className="h-80 flex items-center justify-center">
-            <div className="animate-pulse  rounded-md w-40 h-6" />
+            <Skeleton className="h-full w-full p-2" />
           </div>
         </div>
       </div>
@@ -111,7 +113,7 @@ const CarouselItem = ({ item }: { item: any }) => {
     <div className="w-full shrink-0 relative h-80 ">
       <Image
         alt={item.name}
-        className="object-cover w-full h-full opacity-70"
+        className="object-contain bg-white w-full h-full opacity-70"
         height={400}
         src={item.imageUrl}
         width={400}
@@ -120,9 +122,11 @@ const CarouselItem = ({ item }: { item: any }) => {
         <div className="text-white/80 text-center space-y-4">
           <h3 className="text-3xl font-bold">{item.title}</h3>
           <p className="text-lg font-semibold">${item.price}</p>
-          <Button variant={"ghost"} className="px-6 py-2">
-            Buy Now
-          </Button>
+          <Link href={`/items/${item.id}`}>
+            <Button variant={"ghost"} className="px-6 py-2">
+              Buy Now
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
