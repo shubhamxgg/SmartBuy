@@ -26,7 +26,7 @@ const ProductImages = ({ product }: ProductImagesProps) => {
           src={allImages[currentImageIndex]}
           layout="fill"
           objectFit="contain"
-          className="rounded-lg"
+          className="rounded-lg overflow-hidden"
         />
         {allImages.length > 1 && (
           <>
@@ -60,6 +60,7 @@ const ProductImages = ({ product }: ProductImagesProps) => {
               width={80}
               height={80}
               objectFit="cover"
+              className="rounded-sm overflow-hidden"
             />
           </button>
         ))}

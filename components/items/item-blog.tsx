@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -31,7 +31,6 @@ const ItemBlog = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading delay
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -39,7 +38,7 @@ const ItemBlog = () => {
   if (loading) {
     return (
       <div className="py-10">
-        <div className="bg-black rounded-lg shadow-md overflow-hidden">
+        <div className="border rounded-lg shadow-md overflow-hidden">
           <div className="p-4 border-b flex justify-between items-center">
             <Skeleton className="h-6 w-32" />
             <Skeleton className="h-8 w-20" />

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import useItemData from "@/hooks/use-item";
 import ProductSkeleton from "@/components/products/product-skeleton";
 import ProductBreadcrumbs from "@/components/products/product-breadcrumb";
+import SkeletonLoader from "@/components/skeleton-loader";
 
 const ProductImages = dynamic(
   () => import("@/components/products/product-images"),
@@ -44,7 +45,7 @@ const ItemsPage = ({ params: { id } }: ItemPageProps) => {
       </div>
 
       <div className="flex flex-col gap-2 lg:flex-row p-2 md:p-5">
-        <Suspense fallback={<div>Loading images...</div>}>
+        <Suspense fallback={<SkeletonLoader />}>
           <ProductImages product={product} />
         </Suspense>
         <Suspense fallback={<div>Loading details...</div>}>
@@ -52,16 +53,16 @@ const ItemsPage = ({ params: { id } }: ItemPageProps) => {
         </Suspense>
       </div>
 
-      <Suspense fallback={<div>Loading item section...</div>}>
+      <Suspense fallback={<SkeletonLoader />}>
         <ItemSection title="Mobile" />
       </Suspense>
 
       <div className="py-5 md:py-10 flex flex-col lg:flex-row gap-5 p-2 md:p-4 rounded-sm">
-        <Suspense fallback={<div>Loading ratings...</div>}>
+        <Suspense fallback={<SkeletonLoader />}>
           <ProductCustomerRatings ratings={product.reviews} />
         </Suspense>
 
-        <Suspense fallback={<div>Loading reviews...</div>}>
+        <Suspense fallback={<SkeletonLoader />}>
           <ProductReviews reviews={product.reviews} />
         </Suspense>
       </div>

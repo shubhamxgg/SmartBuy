@@ -14,7 +14,7 @@ const ProductSkeleton = () => {
       <div className="flex flex-col lg:flex-row p-2 md:p-5">
         <div className="w-full lg:w-1/2 flex flex-col border bg-card p-5 rounded-sm">
           <div className="w-full border rounded-sm max-w-xl mx-auto">
-            <Skeleton className="w-full h-[500px] object-contain rounded-sm border shadow-lg bg-white/50" />
+            <Skeleton className="w-full h-[500px] object-contain rounded-sm border shadow-lg ç" />
           </div>
           <div className="border flex gap-2 mt-2 p-2 rounded-sm">
             <Skeleton className="w-24 h-24 border rounded-sm" />
