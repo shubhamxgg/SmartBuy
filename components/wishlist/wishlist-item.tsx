@@ -14,7 +14,7 @@ interface WishlistItemProps {
 
 const WishlistItem = ({ item, userId }: WishlistItemProps) => {
   const { mutate: removeFromWishlist, isPending } = useRemoveWishlist();
-
+  if (!userId) return <div>no userId foun</div>;
   const handleRemove = () => {
     removeFromWishlist({ productId: item.id, userId });
   };

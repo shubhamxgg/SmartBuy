@@ -1,5 +1,9 @@
-const AccountPage = () => {
-  return <div className="">Enter</div>;
-};
+import AccountForm from "@/components/form/auth-form";
 
-export default AccountPage;
+export default function AccountPage() {
+  return (
+    <div className="p-4">
+      <AccountForm />
+    </div>
+  );
+}

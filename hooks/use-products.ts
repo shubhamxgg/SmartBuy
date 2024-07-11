@@ -11,6 +11,10 @@ const useProducts = (filters: any) => {
     queryKey: ["products", filters],
     queryFn: () => fetchProducts(filters),
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchInterval: false,
+    refetchOnReconnect: false,
+    refetchIntervalInBackground: false,
   });
 };
 

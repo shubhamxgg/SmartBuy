@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import WishlistButton from "../wishlist-button";
 import useCart from "@/hooks/use-cart";
+import { useUserId } from "@/hooks/use-user-id";
 
 interface ProductDetailsProps {
   product: Product;
@@ -19,7 +20,10 @@ interface ProductDetailsProps {
 
 const ProductDetails = ({ product }: ProductDetailsProps) => {
   const { handleAddToCart } = useCart(product);
-  const userId = 6;
+  const userId = useUserId();
+  if (userId === undefined) {
+    return <div>Please log in to add items to your wishlist.</div>;
+  }
   return (
     <div className="w-full lg:w-1/2 p-8 lg:ml-4 bg-card rounded-xl border border-border shadow-sm">
       <div className="flex flex-col mb-8">
@@ -79,7 +83,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
       </div>
 
       <WishlistButton
-        userId={userId}
+        userId={userId!!}
         productId={product.id}
         isWishList={false}
         title="Wishlist"

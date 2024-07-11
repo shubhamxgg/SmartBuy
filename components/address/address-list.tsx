@@ -22,20 +22,19 @@ interface AddressListProps {
 const AddressList = React.memo(
   ({ userId, onSelectAddress }: AddressListProps) => {
     const {
-      addresses,
+      data,
       isLoading,
       error,
       invalidateAddresses,
       deleteAddress,
       isDeletingAddress,
-    } = useAddresses(userId);
+    } = useAddresses(userId!);
     const { selectAddress } = useAddressStore();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [currentAddress, setCurrentAddress] = useState<any | null>(null);
     const [addressToDelete, setAddressToDelete] = useState<number | null>(null);
-    
 
     const handleEditClick = useCallback((address: Address) => {
       setCurrentAddress(address);
@@ -70,7 +69,7 @@ const AddressList = React.memo(
     }, [addressToDelete, deleteAddress]);
 
     const addressList = useMemo(() => {
-      return addresses.map((address: Address) => (
+      return data.map((address: Address) => (
         <div key={address.id} className="border p-4 mb-4 rounded-sm">
           <div className="flex items-center">
             <input
@@ -102,7 +101,7 @@ const AddressList = React.memo(
         </div>
       ));
     }, [
-      addresses,
+      data,
       handleSelectAddress,
       handleEditClick,
       handleDeleteClick,

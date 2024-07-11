@@ -35,6 +35,7 @@ export const useWishlist = (userId: number) => {
     queryFn: ({ pageParam = 0 }) => fetchWishlist({ userId, pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
+    enabled: !!userId,
   });
 };
 

@@ -22,7 +22,7 @@ const SellerUserDropdown = () => {
             src="/user.jpg"
             width={36}
             height={36}
-            alt="Avatar"
+            alt="Avatar112"
             className="overflow-hidden rounded-full object-cover"
           />
         </Button>

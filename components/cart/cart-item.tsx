@@ -23,8 +23,9 @@ const CartItem = ({ item }: CartItemProps) => {
           <Image
             src={item.product.imageUrl}
             alt={"image"}
-            fill
-            className="object-cover rounded-md"
+            height={30}
+            width={30}
+            className="object-contain h-full w-full rounded-md bg-white"
           />
         </div>
         <div>

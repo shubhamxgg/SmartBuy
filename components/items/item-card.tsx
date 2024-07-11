@@ -5,6 +5,7 @@ import Link from "next/link";
 import WishlistButton from "../wishlist-button";
 import useCart from "@/hooks/use-cart";
 import { Card, CardContent, CardHeader } from "../ui/card";
+import { useUserId } from "@/hooks/use-user-id";
 
 interface ItemCardProps {
   product: any;
@@ -12,7 +13,7 @@ interface ItemCardProps {
 
 const ItemCard = ({ product }: ItemCardProps) => {
   const { handleAddToCart } = useCart(product);
-  const userId = 6;
+  const userId = useUserId();
 
   return (
     <Card className="relative group overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
@@ -53,7 +54,7 @@ const ItemCard = ({ product }: ItemCardProps) => {
                 className="absolute top-5 right-5 stroke-primary stroke-2 transition ease-in-out duration-300 hover:fill-primary hover:-translate-y-2"
                 isWishList={false}
                 productId={product.id}
-                userId={userId}
+                userId={userId!!}
               />
               <span className="sr-only">Add to Wishlist</span>
             </div>

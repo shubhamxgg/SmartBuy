@@ -6,9 +6,11 @@ import WishlistItem from "@/components/wishlist/wishlist-item";
 import LoadMoreButton from "@/components/load-more-button";
 import WishlistSkeleton from "@/components/wishlist/wishlist-skeleton";
 import { Loader } from "lucide-react";
+import { useUserId } from "@/hooks/use-user-id";
 
 const WishlistPage = () => {
-  const userId = 6;
+  const userId = useUserId();
+
   const {
     data,
     error,
@@ -17,10 +19,11 @@ const WishlistPage = () => {
     isFetching,
     isFetchingNextPage,
     status,
-  } = useWishlist(userId);
+  } = useWishlist(userId as number);
 
   if (status === "pending") return <WishlistSkeleton />;
-  if (status === "error") return <p>Error: {error.message}</p>;
+  if (status === "error")
+    return <p>Error: {error?.message ?? "An error occurred"}</p>;
   const isEmpty = !data?.pages.some((page) => page.items.length > 0);
 
   return (
@@ -34,7 +37,11 @@ const WishlistPage = () => {
             {data?.pages.map((group, i) => (
               <div key={i} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 {group.items.map((item: any) => (
-                  <WishlistItem key={item.id} item={item} userId={userId} />
+                  <WishlistItem
+                    key={item.id}
+                    item={item}
+                    userId={userId as number}
+                  />
                 ))}
               </div>
             ))}
