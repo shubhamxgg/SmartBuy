@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BaggageClaimIcon, Store, User2Icon } from "lucide-react";
+import { BaggageClaimIcon, Store } from "lucide-react";
 import SearchBar from "../searchbar";
 import UserDropdown from "./user-dropdown";
 import HomePageSidebar from "./home-sidebar";
@@ -27,7 +27,7 @@ const Navbar = () => {
         </Link>
 
         <CartPage />
-        
+
         <UserDropdown />
       </div>
     </div>

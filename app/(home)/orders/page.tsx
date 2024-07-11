@@ -1,4 +1,3 @@
-// OrdersPage.tsx
 "use client";
 
 import { useMemo } from "react";
@@ -13,9 +12,10 @@ import {
 } from "@/components/ui/breadcrumb";
 import OrdersSkeleton from "@/components/orders/orders-skeleton";
 import OrderCard from "@/components/orders/order-card";
+import { useUserId } from "@/hooks/use-user-id";
 
 const OrdersPage = () => {
-  const userId = 6;
+  const userId = useUserId();
 
   const {
     data: orders,
@@ -23,9 +23,8 @@ const OrdersPage = () => {
     error,
   } = useQuery({
     queryKey: ["orderbyuser", userId],
-    queryFn: () => fetchOrderByUserId(userId),
+    queryFn: () => fetchOrderByUserId(userId as number),
     enabled: !!userId,
-    
   });
 
   if (isLoading) return <OrdersSkeleton />;

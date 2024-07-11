@@ -8,12 +8,16 @@ export const useAddresses = (userId: number) => {
   const queryClient = useQueryClient();
 
   const {
-    data: addresses = [],
+    data = [],
     isLoading,
     error,
   } = useQuery({
     queryKey: ["addresses", userId],
-    queryFn: () => getUserAddresses(userId),
+    queryFn: () =>
+      getUserAddresses({ userId }).then((res) => {
+        if (!res.success) throw new Error(res.message);
+        return res.addresses;
+      }),
   });
 
   const invalidateAddresses = useCallback(() => {
@@ -21,7 +25,7 @@ export const useAddresses = (userId: number) => {
   }, [queryClient, userId]);
 
   const deleteMutation = useMutation({
-    mutationFn: (addressId: number) => deleteAddress(addressId, userId),
+    mutationFn: (addressId: number) => deleteAddress({ addressId, userId }),
     onMutate: async (addressId) => {
       await queryClient.cancelQueries({ queryKey: ["addresses", userId] });
 
@@ -54,7 +58,7 @@ export const useAddresses = (userId: number) => {
   );
 
   return {
-    addresses,
+    data,
     isLoading,
     error,
     invalidateAddresses,

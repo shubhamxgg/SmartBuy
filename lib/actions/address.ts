@@ -1,30 +1,57 @@
 "use server";
 import db from "../db";
+import { z } from "zod";
+import { isAuthorized } from "./authorization";
 
-interface Props {
-  userId: number;
-}
+const addressSchema = z.object({
+  userId: z.number().positive(),
+});
 
-export async function getUserAddresses({ userId }: any) {
+const deleteAddressSchema = z.object({
+  addressId: z.number().positive(),
+  userId: z.number().positive(),
+});
+
+export async function getUserAddresses(input: unknown) {
   try {
+    const { userId } = addressSchema.parse(input);
+
+    if (!(await isAuthorized(userId))) {
+      throw new Error("Unauthorized access");
+    }
+
     const addresses = await db.address.findMany({
       where: { userId },
     });
-    return addresses;
+    return { success: true, addresses };
   } catch (error) {
     console.error("Error fetching addresses:", error);
-    throw new Error("Failed to fetch addresses");
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Failed to fetch addresses",
+    };
   }
 }
 
-export async function deleteAddress(addressId: number, userId: number) {
+export async function deleteAddress(input: unknown) {
   try {
+    const { addressId, userId } = deleteAddressSchema.parse(input);
+
+    if (!(await isAuthorized(userId))) {
+      throw new Error("Unauthorized access");
+    }
+
     await db.address.delete({
-      where: { id: addressId, userId: userId },
+      where: { id: addressId },
     });
     return { success: true, message: "Address deleted successfully" };
   } catch (error) {
     console.error("Error deleting address:", error);
-    return { success: false, message: "Failed to delete address" };
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Failed to delete address",
+    };
   }
 }

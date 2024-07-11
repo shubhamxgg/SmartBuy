@@ -88,8 +88,7 @@ export async function getFilteredProducts(filters: FilterParams) {
 
     const totalProducts = await db.product.count({ where: filterConditions });
 
-    console.log("Products: ", products);
-    console.log("Total Products: ", totalProducts);
+    
     return { products, totalProducts };
   } catch (error) {
     console.error("Error fetching filtered products:", error);

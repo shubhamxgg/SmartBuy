@@ -68,16 +68,12 @@ const WishlistButton = ({
     },
   });
 
-  const handleWishlistToggle = async (e: React.MouseEvent<SVGElement>) => {
+  const handleWishlistToggle = async (e: any) => {
     e.preventDefault();
-    try {
-      if (isInWishlist) {
-        await removeMutation.mutateAsync({ productId, userId });
-      } else {
-        await addMutation.mutateAsync({ productId, userId });
-      }
-    } catch (error) {
-      console.error("Error toggling wishlist:", error);
+    if (isInWishlist) {
+      removeMutation.mutate({ productId, userId });
+    } else {
+      addMutation.mutate({ productId, userId });
     }
   };
 

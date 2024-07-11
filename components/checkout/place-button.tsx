@@ -6,18 +6,20 @@ import { useAddressStore } from "@/store/useAddressStore";
 import { usePaymentStore } from "@/store/usePaymentStore";
 import useCartStore from "@/store/useCartStore";
 import { toast } from "sonner";
-import { createOrder } from "@/lib/actions/order";
+
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import AnimatedButton from "../ui/animate-button";
+import { useUserId } from "@/hooks/use-user-id";
+import { createOrder } from "@/lib/actions/create-order";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const PlaceOrderButton = () => {
   const router = useRouter();
-  const userId = 6;
-  const session = true;
+  const userId = useUserId();
+  const { isAuthenticated } = useAuthStore();
   const { cart, cartId, clearCart } = useCartStore();
   const { selectedAddress } = useAddressStore();
-  const { paymentMethod } = usePaymentStore();
+  // const { paymentMethod } = usePaymentStore();
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const totalAmount = cart.reduce(
@@ -26,7 +28,7 @@ const PlaceOrderButton = () => {
   );
 
   const handlePlaceOrder = async () => {
-    if (!session) {
+    if (!isAuthenticated) {
       toast.error("Please log in to place an order");
       return;
     }
@@ -52,12 +54,11 @@ const PlaceOrderButton = () => {
     };
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
       const result = await createOrder(order);
       if (result.success) {
         setOrderPlaced(true);
         toast.success("Order placed successfully!");
-        clearCart(cartId);
+        await clearCart(cartId);
         router.push(`/orders/${result.orderId}`);
       } else {
         toast.error(result.error || "Failed to place order");
