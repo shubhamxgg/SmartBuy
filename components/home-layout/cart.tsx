@@ -3,20 +3,26 @@ import { ShoppingCart } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import CartSummary from "../cart/cart-summary";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CartItem from "../cart/cart-item";
 import useCartStore from "@/store/useCartStore";
+import { useUserId } from "@/hooks/use-user-id";
+import { useQuery } from "@tanstack/react-query";
 
 const CartPage = () => {
   const { cart, fetchCart } = useCartStore();
   const [isOpen, setIsOpen] = useState(false);
-  const userId = 6;
-  
-  useEffect(() => {
-    fetchCart(userId);
-  }, [fetchCart]);
+  const userId = useUserId();
 
-  if (!cart) {
+  const { data: fetchedCart, isLoading } = useQuery({
+    queryKey: ["cart", userId],
+    queryFn: () => fetchCart(userId as number),
+    enabled: !!userId,
+  });
+
+  const cartItems = fetchedCart || cart;
+
+  if (isLoading) {
     return null;
   }
 
@@ -29,9 +35,9 @@ const CartPage = () => {
           className="bg-gray-900 hover:bg-gray-800 text-white rounded-full relative"
         >
           <ShoppingCart className="h-5 w-5" />
-          {cart.length > 0 && (
+          {cartItems.length > 0 && (
             <span className="absolute -top-3 -right-1 bg-primary text-white text-xs font-bold px-2 rounded-full py-1">
-              {cart.length}
+              {cartItems.length}
             </span>
           )}
         </Button>
@@ -40,12 +46,12 @@ const CartPage = () => {
         <div className="px-6 py-4 border-b border-gray-800">
           <h1 className="text-2xl font-semibold">Shopping Cart</h1>
         </div>
-        {cart.length === 0 ? (
+        {cartItems.length === 0 ? (
           <div className="p-6 text-gray-400">Your cart is empty.</div>
         ) : (
           <div className="flex flex-col h-full overflow-hidden">
             <div className="flex-grow">
-              {cart?.map((item) => (
+              {cartItems?.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
             </div>

@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-import MillionCompiler from "@million/lint";
+
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -9,13 +9,9 @@ const nextConfig = {
       "m.media-amazon.com",
       "loremflickr.com",
       "picsum.photos",
-      "img.clerk.com",
       "example.com",
     ],
   },
 };
 
 export default nextConfig;
-// export default MillionCompiler.next({
-//   rsc: true,
-// })(nextConfig);

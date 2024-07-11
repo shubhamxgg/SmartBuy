@@ -41,7 +41,7 @@ const useCartStore = create<CartStore>((set, get) => ({
   addToCart: async (product: Product) => {
     const { cart, userId } = get();
     if (userId === null) {
-      set({ error: "User ID is not set" });
+      set({ error: "User Id is not set" });
       return;
     }
     const existingItem = cart.find((item) => item.productId === product.id);
@@ -94,7 +94,7 @@ const useCartStore = create<CartStore>((set, get) => ({
   updateCartItemQuantity: async (productId: number, quantity: number) => {
     const { userId, cart } = get();
     if (userId === null) {
-      set({ error: "User ID is not set" });
+      set({ error: "User Id is not set" });
       return;
     }
     try {
@@ -112,7 +112,7 @@ const useCartStore = create<CartStore>((set, get) => ({
   clearCart: async (cartId: number) => {
     const { userId } = get();
     if (userId === null) {
-      set({ error: "User ID is not set" });
+      set({ error: "User Id is not set" });
       return;
     }
     try {
