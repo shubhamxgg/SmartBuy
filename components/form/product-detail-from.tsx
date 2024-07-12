@@ -3,24 +3,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 
-interface ProductDetailsProps {
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  description: string;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
-  price: number | "";
-  setPrice: React.Dispatch<React.SetStateAction<number | "">>;
-}
-
-const ProductDetails = ({
-  name,
-  price,
-  description,
-  setDescription,
-  setName,
-  setPrice,
-}: ProductDetailsProps) => {
-  
+const ProductDetails = () => {
   return (
     <Card className="max-w-4xl mx-auto shadow-lg rounded-xl bg-white overflow-hidden">
       <CardHeader className="bg-gradient-to-r from-blue-500 to-teal-400 text-white p-6">
@@ -33,10 +16,10 @@ const ProductDetails = ({
           </Label>
           <Input
             id="name"
+            name="name"
             className="border border-gray-300 rounded-lg p-3 text-base focus:border-teal-500 focus:ring focus:ring-teal-200 transition duration-200"
             placeholder="Product Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
         <div className="grid gap-4">
@@ -45,13 +28,13 @@ const ProductDetails = ({
           </Label>
           <Input
             id="price"
+            name="price"
             className="border border-gray-300 rounded-lg p-3 text-base focus:border-teal-500 focus:ring focus:ring-teal-200 transition duration-200"
             placeholder="Price"
             type="number"
-            value={price}
-            onChange={(e) =>
-              setPrice(e.target.value ? parseFloat(e.target.value) : "")
-            }
+            required
+            step="0.01"
+            min="0"
           />
         </div>
         <div className="grid gap-4 lg:col-span-2">
@@ -63,10 +46,10 @@ const ProductDetails = ({
           </Label>
           <Textarea
             id="description"
+            name="description"
             className="border border-gray-300 rounded-lg p-3 text-base focus:border-teal-500 focus:ring focus:ring-teal-200 transition duration-200"
             placeholder="Product Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            required
           />
         </div>
       </CardContent>
