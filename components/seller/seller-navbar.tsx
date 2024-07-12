@@ -13,7 +13,7 @@ import Searchbar from "../searchbar";
 import SellerUserDropdown from "./seller-userdrop";
 import SellerSearchbar from "./seller-searchbar";
 import SellerBreadCrumblist from "./seller-breadcrumblist";
-import SellerLeftbar from "./seller-leftbar";
+import SellerLeftbar from "./seller-dashboard-sidebar";
 
 const SellerNavbar = () => {
   return (

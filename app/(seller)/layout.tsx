@@ -1,16 +1,18 @@
-import SellerLeftbar from "@/components/seller/seller-leftbar";
-import SellerNavbar from "@/components/seller/seller-navbar";
+import DashboardNavbar from "@/components/seller/seller-dashboard-navbar";
+import DashboardSidebar from "@/components/seller/seller-dashboard-sidebar";
 
-const SellerDashboard = ({ children }: { children: React.ReactNode }) => {
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="min-h-screen w-full flex flex-col">
-      <SellerLeftbar />
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <SellerNavbar />
-        <div className="flex-1 py-4 md:py-5">{children}</div>
+    <div className="min-h-screen w-full flex">
+      <DashboardSidebar />
+      <div className="flex-1 flex flex-col pl-64">
+        <DashboardNavbar />
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+          {children}
+        </main>
       </div>
     </div>
   );
 };
 
-export default SellerDashboard;
+export default DashboardLayout;

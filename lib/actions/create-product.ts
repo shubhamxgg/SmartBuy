@@ -7,6 +7,7 @@ import { ProductStatus } from "@prisma/client";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 import { z } from "zod";
+import { mkdir } from "fs/promises";
 
 const productSchema = z.object({
   name: z
@@ -59,6 +60,10 @@ export async function createProduct(prevState: any, formData: FormData) {
   const validatedData = validationResult.data;
 
   try {
+    const uploadDir = join(process.cwd(), "public", "uploads");
+
+    await mkdir(uploadDir, { recursive: true });
+
     const mainImage = formData.get("mainImage") as File;
     if (!mainImage) {
       return { message: "Main image is required" };
@@ -68,7 +73,7 @@ export async function createProduct(prevState: any, formData: FormData) {
     const bytes = await mainImage.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const filename = `${Date.now()}-${mainImage.name}`;
-    const path = join(process.cwd(), "public", "uploads", filename);
+    const path = join(uploadDir, filename);
     await writeFile(path, buffer);
     imageUrl = `/uploads/${filename}`;
 
@@ -78,7 +83,7 @@ export async function createProduct(prevState: any, formData: FormData) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const filename = `${Date.now()}-${file.name}`;
-      const path = join(process.cwd(), "public", "uploads", filename);
+      const path = join(uploadDir, filename);
       await writeFile(path, buffer);
       additionalImages.push(`/uploads/${filename}`);
     }
@@ -90,7 +95,7 @@ export async function createProduct(prevState: any, formData: FormData) {
         price: validatedData.price,
         imageUrl,
         categoryId: parseInt(validatedData.category),
-        sellerId: 1,
+        sellerId: 5,
         status: validatedData.status,
         featured: validatedData.featured,
         stock: {
@@ -113,7 +118,7 @@ export async function createProduct(prevState: any, formData: FormData) {
     });
 
     revalidatePath("/products");
-    redirect("/products");
+    return { message: "success" };
   } catch (error) {
     console.error("Error creating product:", error);
     return { message: "An error occurred while creating the product" };

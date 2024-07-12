@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -21,7 +20,7 @@ const SellerCard = () => {
       </CardHeader>
       <CardFooter>
         <Button>
-          <Link href="/create-order">Create New Order</Link>
+          <Link href="/create-order">Add New Product</Link>
         </Button>
       </CardFooter>
     </Card>

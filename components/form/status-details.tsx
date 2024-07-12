@@ -25,12 +25,8 @@ const StatusDetails = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={ProductStatus.AVAILABLE}>Available</SelectItem>
-              <SelectItem value={ProductStatus.OUT_OF_STOCK}>
-                Out of Stock
-              </SelectItem>
-              <SelectItem value={ProductStatus.DISCONTINUED}>
-                Discontinued
-              </SelectItem>
+              <SelectItem value={ProductStatus.OUT_OF_STOCK}>Out of Stock</SelectItem>
+              <SelectItem value={ProductStatus.DISCONTINUED}>Discontinued</SelectItem>
             </SelectContent>
           </Select>
         </div>
