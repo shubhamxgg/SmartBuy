@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { XIcon } from "lucide-react";
-import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
+import { Button } from "../ui/button";
+import { XIcon, UploadIcon } from "lucide-react";
 import Image from "next/image";
 
-const ImageDetails: React.FC = () => {
+const ImageDetails = () => {
   const [mainImage, setMainImage] = useState<File | null>(null);
   const [additionalImages, setAdditionalImages] = useState<File[]>([]);
 
@@ -39,71 +39,91 @@ const ImageDetails: React.FC = () => {
       <CardContent className="grid gap-4">
         <div className="grid gap-2">
           <Label htmlFor="mainImage">Main Image</Label>
-          <input
-            type="file"
-            id="mainImage"
-            name="mainImage"
-            accept="image/*"
-            onChange={handleMainImageChange}
-            required
-          />
-          <div className="grid grid-cols-3 gap-4">
-            {mainImage && (
-              <div className="relative group">
+          <div className="flex items-center gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full h-auto flex flex-col items-center justify-center cursor-pointer overflow-hidden"
+              onClick={() => document.getElementById('mainImage')?.click()}
+            >
+              {mainImage ? (
                 <Image
-                  alt="Main Product Image"
-                  className="aspect-square object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
-                  height={150}
                   src={URL.createObjectURL(mainImage)}
-                  width={150}
+                  alt="Main Product Image"
+                  width={100}
+                  height={100}
+                  className="object-cover"
                 />
-                <Button
-                  className="absolute top-2 right-2 bg-white dark:bg-gray-950 rounded-full"
-                  size="icon"
-                  variant="ghost"
-                  onClick={handleRemoveMainImage}
-                  type="button"
-                >
-                  <XIcon className="w-4 h-4" />
-                  <span className="sr-only">Remove image</span>
-                </Button>
-              </div>
+              ) : (
+                <>
+                  <UploadIcon className="h-6 w-6 mb-2" />
+                  <span>Upload Image</span>
+                </>
+              )}
+            </Button>
+            {mainImage && (
+              <Button
+                type="button"
+                variant="destructive"
+                size="icon"
+                onClick={handleRemoveMainImage}
+              >
+                <XIcon className="h-4 w-4" />
+              </Button>
             )}
           </div>
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="additionalImages">Additional Images</Label>
           <input
+            id="mainImage"
+            name="mainImage"
             type="file"
-            id="additionalImages"
-            name="additionalImages"
             accept="image/*"
-            multiple
-            onChange={handleAdditionalImagesChange}
+            onChange={handleMainImageChange}
+            className="hidden"
+            required
           />
+        </div>
+        <div className="grid gap-2 ">
+          <Label htmlFor="additionalImages">Additional Images</Label>
           <div className="grid grid-cols-3 gap-4">
             {additionalImages.map((file, index) => (
-              <div key={index} className="relative group mt-2">
+              <div key={index} className="relative group">
                 <Image
-                  alt={`Additional Product Image ${index + 1}`}
-                  className="aspect-square object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
-                  height={150}
                   src={URL.createObjectURL(file)}
-                  width={150}
+                  alt={`Additional Product Image ${index + 1}`}
+                  width={100}
+                  height={100}
+                  className="object-cover w-full h-32 rounded-md o"
                 />
                 <Button
-                  className="absolute top-2 right-2 bg-white dark:bg-gray-950 rounded-full"
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => handleRemoveAdditionalImage(index)}
                   type="button"
+                  variant="destructive"
+                  size="icon"
+                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={() => handleRemoveAdditionalImage(index)}
                 >
-                  <XIcon className="w-4 h-4" />
-                  <span className="sr-only">Remove image</span>
+                  <XIcon className="h-4 w-4" />
                 </Button>
               </div>
             ))}
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full h-32 flex flex-col items-center justify-center cursor-pointer"
+              onClick={() => document.getElementById('additionalImages')?.click()}
+            >
+              <UploadIcon className="h-6 w-6 mb-2" />
+              <span>Add Images</span>
+            </Button>
           </div>
+          <input
+            id="additionalImages"
+            name="additionalImages"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleAdditionalImagesChange}
+            className="hidden"
+          />
         </div>
       </CardContent>
     </Card>

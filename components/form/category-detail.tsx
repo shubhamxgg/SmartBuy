@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import {
   Select,
@@ -9,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 
 interface Category {
@@ -30,12 +28,11 @@ const CategoryDetails = ({ categories }: CategoryDetailsProps) => {
       <CardContent className="grid gap-4">
         <div className="grid gap-2">
           <Label htmlFor="category">Category</Label>
-          <Select name="category" defaultValue="">
+          <Select name="category">
             <SelectTrigger>
               <SelectValue placeholder="Select Category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Select a category</SelectItem>
               {categories.map((category) => (
                 <SelectItem key={category.id} value={category.id.toString()}>
                   {category.name}
@@ -45,7 +42,7 @@ const CategoryDetails = ({ categories }: CategoryDetailsProps) => {
           </Select>
         </div>
         <Link href={"/create-category"}>
-          <Button variant={"outline"}>Create New Category</Button>
+          <Button variant={"outline"} className="w-full">Create New Category</Button>
         </Link>
       </CardContent>
     </Card>

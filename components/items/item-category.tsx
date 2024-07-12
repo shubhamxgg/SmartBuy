@@ -5,7 +5,7 @@ import useCategories from "@/hooks/use-categories";
 import ItemCategorySkeleton from "./item-category-skeleton";
 
 const ItemCategory = () => {
-  const { data, isLoading, error } = useCategories();
+  const { categories, isLoading, error } = useCategories();
 
   if (isLoading) {
     return <ItemCategorySkeleton />;
@@ -21,7 +21,7 @@ const ItemCategory = () => {
         <h1>{"Shop by category"}</h1>
       </div>
       <div className="flex gap-2 overflow-x-auto scroll-auto snap-x snap-proximity">
-        {data?.map((item) => (
+        {categories.map((item) => (
           <ItemCategoryCard key={item.id} item={item} />
         ))}
       </div>
