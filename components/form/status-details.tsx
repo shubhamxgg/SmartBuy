@@ -1,6 +1,5 @@
 import { ProductStatus } from "@prisma/client";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import {
   Select,
@@ -11,19 +10,7 @@ import {
 } from "../ui/select";
 import { Checkbox } from "../ui/checkbox";
 
-interface StatusDetailsProps {
-  status: ProductStatus;
-  setStatus: React.Dispatch<React.SetStateAction<ProductStatus>>;
-  featured: boolean;
-  setFeatured: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const StatusDetails = ({
-  featured,
-  setFeatured,
-  status,
-  setStatus,
-}: StatusDetailsProps) => {
+const StatusDetails = () => {
   return (
     <Card>
       <CardHeader>
@@ -32,10 +19,7 @@ const StatusDetails = ({
       <CardContent className="grid gap-4">
         <div className="grid gap-2">
           <Label htmlFor="status">Status</Label>
-          <Select
-            value={status}
-            onValueChange={(value) => setStatus(value as ProductStatus)}
-          >
+          <Select name="status" defaultValue={ProductStatus.AVAILABLE}>
             <SelectTrigger>
               <SelectValue placeholder="Select Status" />
             </SelectTrigger>
@@ -51,19 +35,10 @@ const StatusDetails = ({
           </Select>
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="featured">Featured</Label>
-          {/* <input
-            type="checkbox"
-            id="featured"
-            checked={featured}
-            onChange={(e) => setFeatured(e.target.checked)}
-            className="checkbox"
-          /> */}
-          <Checkbox
-            checked={featured === true}
-            onCheckedChange={() => setFeatured}
-            className="w-10 h-10"
-          />
+          <Label htmlFor="featured" className="flex items-center space-x-2">
+            <Checkbox id="featured" name="featured" />
+            <span>Featured</span>
+          </Label>
         </div>
       </CardContent>
     </Card>
