@@ -18,7 +18,7 @@ const initialState: { message: string; errors: Record<string, string[]> } = {
   errors: {},
 };
 
-const CreateOrder = () => {
+const CreateProduct = () => {
   const [state, formAction] = useFormState(createProduct, initialState);
   const { categories, isLoading, error } = useCategories();
   const formRef = useRef<HTMLFormElement>(null);
@@ -43,7 +43,7 @@ const CreateOrder = () => {
     <form
       ref={formRef}
       action={formAction}
-      className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6"
+      className="flex flex-1 flex-col gap-4 md:gap-8"
     >
       <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 md:gap-8">
         <div className="flex items-center">
@@ -65,4 +65,4 @@ const CreateOrder = () => {
   );
 };
 
-export default CreateOrder;
+export default CreateProduct;

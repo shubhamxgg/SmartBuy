@@ -17,11 +17,11 @@ const DashboardSidebar = () => {
     <div className="hidden fixed left-0 inset-y-0 flex-col h-full w-64 z-30 border-r bg-background sm:flex">
       <div className="flex flex-col gap-1 px-3 py-4">
         <Link
-          href={"/dashboard"}
+          href={"/"}
           className="flex items-center gap-2 px-3 py-2 mb-6 text-lg font-semibold text-primary"
         >
           <Package2 className="h-6 w-6" />
-          <span>Dashboard</span>
+          <span>SmartBuy</span>
         </Link>
         <NavItem href="/dashboard" icon={Home} label="Home" />
         <NavItem href="/dashboard/orders" icon={ShoppingCart} label="Orders" />
