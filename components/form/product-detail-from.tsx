@@ -3,70 +3,41 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 
-interface ProductDetailsProps {
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  description: string;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
-  price: number | "";
-  setPrice: React.Dispatch<React.SetStateAction<number | "">>;
-}
-
-const ProductDetails = ({
-  name,
-  price,
-  description,
-  setDescription,
-  setName,
-  setPrice,
-}: ProductDetailsProps) => {
-  
+const ProductDetails = () => {
   return (
-    <Card className="max-w-4xl mx-auto shadow-lg rounded-xl bg-white overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-blue-500 to-teal-400 text-white p-6">
-        <CardTitle className="text-3xl font-bold">Product Details</CardTitle>
+    <Card>
+      <CardHeader>
+        <CardTitle>Product Details</CardTitle>
       </CardHeader>
-      <CardContent className="p-8 grid lg:grid-cols-2 gap-6">
-        <div className="grid gap-4">
-          <Label htmlFor="name" className="text-lg font-medium text-gray-700">
-            Name
-          </Label>
+      <CardContent className="grid gap-4">
+        <div className="grid gap-2">
+          <Label htmlFor="name">Name</Label>
           <Input
             id="name"
-            className="border border-gray-300 rounded-lg p-3 text-base focus:border-teal-500 focus:ring focus:ring-teal-200 transition duration-200"
+            name="name"
             placeholder="Product Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
-        <div className="grid gap-4">
-          <Label htmlFor="price" className="text-lg font-medium text-gray-700">
-            Price
-          </Label>
+        <div className="grid gap-2">
+          <Label htmlFor="price">Price</Label>
           <Input
             id="price"
-            className="border border-gray-300 rounded-lg p-3 text-base focus:border-teal-500 focus:ring focus:ring-teal-200 transition duration-200"
+            name="price"
             placeholder="Price"
             type="number"
-            value={price}
-            onChange={(e) =>
-              setPrice(e.target.value ? parseFloat(e.target.value) : "")
-            }
+            step="0.01"
+            min="0"
+            required
           />
         </div>
-        <div className="grid gap-4 lg:col-span-2">
-          <Label
-            htmlFor="description"
-            className="text-lg font-medium text-gray-700"
-          >
-            Description
-          </Label>
+        <div className="grid gap-2">
+          <Label htmlFor="description">Description</Label>
           <Textarea
             id="description"
-            className="border border-gray-300 rounded-lg p-3 text-base focus:border-teal-500 focus:ring focus:ring-teal-200 transition duration-200"
+            name="description"
             placeholder="Product Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            required
           />
         </div>
       </CardContent>

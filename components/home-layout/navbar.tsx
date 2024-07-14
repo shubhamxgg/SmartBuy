@@ -2,8 +2,9 @@ import Link from "next/link";
 import { BaggageClaimIcon, Store } from "lucide-react";
 import SearchBar from "../searchbar";
 import UserDropdown from "./user-dropdown";
-import HomePageSidebar from "./home-sidebar";
+
 import CartPage from "./cart";
+import HomePageSidebar from "./home-sidebar";
 
 const Navbar = () => {
   return (
@@ -12,7 +13,7 @@ const Navbar = () => {
         <HomePageSidebar />
         <Link href="/" className="hidden sm:flex items-center gap-2">
           <BaggageClaimIcon className="h-6 w-6 font-bold text-foreground" />
-          <span className="text-foreground text-xl font-bold">Nexus</span>
+          <span className="text-foreground text-xl font-bold">SmartBuy</span>
         </Link>
       </div>
 
@@ -20,7 +21,7 @@ const Navbar = () => {
         <SearchBar />
 
         <Link
-          href="/seller"
+          href="/dashboard"
           className="hidden md:flex items-center gap-2 text-sm text-foreground"
         >
           <Store className="h-5 w-5" />

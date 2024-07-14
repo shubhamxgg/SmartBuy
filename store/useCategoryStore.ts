@@ -1,4 +1,4 @@
-import { getCategories } from "@/lib/actions/category";
+import { getCategories, createCategory } from "@/lib/actions/category";
 import { create } from "zustand";
 
 interface Category {
@@ -8,29 +8,37 @@ interface Category {
 
 interface CategoryStore {
   categories: Category[];
-  fetchCategories: () => Promise<void>;
-  addCategory: (category: Category) => void;
   isLoading: boolean;
   error: string | null;
+  fetchCategories: () => Promise<void>;
+  addCategory: (name: string) => Promise<Category>;
 }
 
-const useCategoryStore = create<CategoryStore>((set) => ({
+const useCategoryStore = create<CategoryStore>((set, get) => ({
   categories: [],
   isLoading: false,
   error: null,
   fetchCategories: async () => {
+    set({ isLoading: true, error: null });
     try {
-      const response = await getCategories();
-      set({ categories: response });
-    } catch (error: any) {
-      set({ error: error.message, isLoading: false });
+      const categories = await getCategories();
+      set({ categories, isLoading: false });
+    } catch (error) {
+      set({ error: (error as Error).message, isLoading: false });
     }
   },
-
-  addCategory: (category) =>
-    set((state) => ({
-      categories: [...state.categories, category],
-    })),
+  addCategory: async (name: string) => {
+    try {
+      const newCategory = await createCategory({ name });
+      set((state) => ({
+        categories: [...state.categories, newCategory],
+      }));
+      return newCategory;
+    } catch (error) {
+      set({ error: (error as Error).message });
+      throw error;
+    }
+  },
 }));
 
 export default useCategoryStore;
