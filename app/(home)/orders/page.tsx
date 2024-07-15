@@ -12,10 +12,10 @@ import {
 } from "@/components/ui/breadcrumb";
 import OrdersSkeleton from "@/components/orders/orders-skeleton";
 import OrderCard from "@/components/orders/order-card";
-import { useUserId } from "@/hooks/use-user-id";
+import { useUserAuth } from "@/hooks/use-user-auth";
 
 const OrdersPage = () => {
-  const userId = useUserId();
+  const { userId, isAuthenticated, showLoginToast } = useUserAuth();
 
   const {
     data: orders,

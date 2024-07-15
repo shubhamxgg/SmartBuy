@@ -9,17 +9,16 @@ import { toast } from "sonner";
 
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedButton from "../ui/animate-button";
-import { useUserId } from "@/hooks/use-user-id";
+import { useUserAuth } from "@/hooks/use-user-auth";
 import { createOrder } from "@/lib/actions/create-order";
 import { useAuthStore } from "@/store/useAuthStore";
 
 const PlaceOrderButton = () => {
   const router = useRouter();
-  const userId = useUserId();
-  const { isAuthenticated } = useAuthStore();
+  const { userId, isAuthenticated } = useUserAuth();
   const { cart, clearCart } = useCartStore();
   const { selectedAddress } = useAddressStore();
-  // const { paymentMethod } = usePaymentStore();
+
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const total = useMemo(
