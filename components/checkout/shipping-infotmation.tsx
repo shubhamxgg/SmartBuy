@@ -3,12 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AddressList from "../address/address-list";
 import { useAddressStore } from "@/store/useAddressStore";
 import { Address } from "@/type";
-import { useUserId } from "@/hooks/use-user-id";
+import { useUserAuth } from "@/hooks/use-user-auth";
 
 const ShippingInformation = () => {
   const { selectAddress } = useAddressStore();
-  const userId = useUserId();
-  if(!userId) return <div>Login</div>
+  const { userId, isAuthenticated, showLoginToast } = useUserAuth();
+  if (!userId) return <div>Login</div>;
   const handleSelectAddress = (address: Address) => {
     selectAddress(address);
   };

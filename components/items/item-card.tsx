@@ -3,11 +3,11 @@ import { Button } from "../ui/button";
 import { ShoppingCart, Heart } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardFooter } from "../ui/card";
-import { useUserId } from "@/hooks/use-user-id";
 import { formatCurrency } from "@/lib/utils";
-
+import { useUserAuth } from "@/hooks/use-user-auth";
 import useCart from "@/hooks/use-cart";
 import { Product } from "@/type";
+import WishlistButton from "../wishlist-button";
 
 interface ItemCardProps {
   product: Product;
@@ -15,7 +15,8 @@ interface ItemCardProps {
 
 const ItemCard = ({ product }: ItemCardProps) => {
   const { handleAddToCart, isAddingToCart } = useCart(product);
-  const userId = useUserId();
+  const { userId, isAuthenticated, showLoginToast } = useUserAuth();
+ 
 
   return (
     <Card className="group relative overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-xl bg-card bg-opacity-60 flex flex-col ">
@@ -66,16 +67,14 @@ const ItemCard = ({ product }: ItemCardProps) => {
             className="flex-1 mr-2"
           >
             <ShoppingCart className="mr-2 h-4 w-4" />
-            {isAddingToCart ? "Adding..." : "Add to Cart"}
+            {isAddingToCart ? "Adding to Cart..." : "Add to Cart"}
           </Button>
           {userId && (
-            <Button
-              size="icon"
-              variant="outline"
-              className="text-muted-foreground hover:text-primary transition-colors"
-            >
-              <Heart className="h-4 w-4" />
-            </Button>
+            <WishlistButton
+              userId={userId}
+              productId={product.id}
+              isWishList={false}
+            />
           )}
         </div>
       </CardFooter>

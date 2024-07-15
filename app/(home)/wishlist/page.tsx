@@ -6,10 +6,10 @@ import WishlistItem from "@/components/wishlist/wishlist-item";
 import LoadMoreButton from "@/components/load-more-button";
 import WishlistSkeleton from "@/components/wishlist/wishlist-skeleton";
 import { Loader } from "lucide-react";
-import { useUserId } from "@/hooks/use-user-id";
+import { useUserAuth } from "@/hooks/use-user-auth";
 
 const WishlistPage = () => {
-  const userId = useUserId();
+  const { userId, isAuthenticated, showLoginToast } = useUserAuth();
 
   const {
     data,
