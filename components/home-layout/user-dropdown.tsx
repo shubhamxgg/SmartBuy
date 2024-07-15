@@ -42,13 +42,13 @@ const UserDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="rounded-full" size="icon" variant="ghost">
-          <Avatar>
+        <Button className="rounded-sm" size="icon" variant="ghost">
+          <Avatar >
             {isAuthenticated && user ? (
               <AvatarImage
                 src={"https://github.com/shadcn.png"}
                 alt={user.name}
-                className="h-16 w-16 object-cover"
+                
               />
             ) : null}
             <AvatarFallback>
