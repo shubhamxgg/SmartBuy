@@ -23,12 +23,12 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <Link href="/product" className="sm:hidden">
-              <Button variant="ghost" size="sm" className="text-muted-foreground">
+            <Link href="/products" className="sm:hidden">
+              <Button variant="outline" size="sm" className="text-muted-foreground">
                 <Search className="h-5 w-5" />
               </Button>
             </Link>
-            <Link href="/products" className="hidden md:flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/dashbaord" className="hidden md:flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors">
               <Store className="h-5 w-5 mr-1" />
               <span>Dashboard</span>
             </Link>
