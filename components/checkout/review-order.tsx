@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAddressStore } from "@/store/useAddressStore";
 import { usePaymentStore } from "@/store/usePaymentStore";
@@ -10,11 +10,15 @@ const ReviewOrder = () => {
   const { cart } = useCartStore();
   const { selectedAddress } = useAddressStore();
   const { paymentMethod } = usePaymentStore();
-  const totalAmount = cart.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
-    0
+  const total = useMemo(
+    () =>
+      cart.items.reduce(
+        (acc: number, item: { product: { price: number }; quantity: number }) =>
+          acc + item.product.price * item.quantity,
+        0
+      ),
+    [cart.items]
   );
-
   return (
     <Card>
       <CardHeader>
@@ -23,7 +27,7 @@ const ReviewOrder = () => {
       <CardContent>
         <div className="mb-4">
           <h3 className="font-semibold mb-2">Items</h3>
-          {cart.map((item) => (
+          {cart.items.map((item) => (
             <div key={item.id} className="flex justify-between mb-2">
               <span>
                 {item.product.title} (x{item.quantity})
@@ -33,7 +37,7 @@ const ReviewOrder = () => {
           ))}
           <div className="flex justify-between font-semibold mt-2">
             <span>Total</span>
-            <span>${totalAmount.toFixed(2)}</span>
+            <span>${total.toFixed(2)}</span>
           </div>
         </div>
         <div className="mb-4">

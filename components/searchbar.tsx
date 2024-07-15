@@ -1,45 +1,82 @@
-"use client";
-import { SearchIcon, X } from "lucide-react";
-import { Input } from "./ui/input";
-import Link from "next/link";
-import { Button } from "./ui/button";
-import { useState } from "react";
+'use client'
 
-const Searchbar = () => {
-  const [search, setSearch] = useState<string>("");
+import { useState, useTransition } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search, X, Loader2 } from "lucide-react";
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
+const SearchBar = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
+  const [search, setSearch] = useState(searchParams.get('q') || '');
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    startTransition(() => {
+      const params = new URLSearchParams(searchParams);
+      if (search.trim()) {
+        params.set('search', search.trim());
+      } else {
+        params.delete('search');
+      }
+      router.push(`/products?${params.toString()}`);
+    });
+  };
 
   const clearSearch = () => {
     setSearch("");
+    startTransition(() => {
+      const params = new URLSearchParams(searchParams);
+      params.delete('search');
+      router.push(`/products?${params.toString()}`);
+    });
   };
 
   return (
-    <div className="flex items-center justify-end gap-2 w-full">
-      <div className="hidden sm:flex relative w-auto gap-2">
-        <SearchIcon className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
+    <form onSubmit={handleSearch} className="relative w-full max-w-xl mx-auto">
+      <div className="relative">
         <Input
-          className="w-full pl-8 sm:w-[200px] md:w-[350px] lg:w-[400px]"
-          placeholder="Search product..."
-          onChange={handleSearchChange}
+          type="text"
           value={search}
+          onChange={handleSearchChange}
+          placeholder="Search products..."
+          className="w-full pl-10 pr-24 h-12 rounded-full shadow-sm focus:ring-2 focus:ring-primary"
         />
+        <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
         {search && (
-          <X
-            className="h-4 w-4 absolute right-3 top-3 text-muted-foreground"
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="absolute right-16 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
             onClick={clearSearch}
-          />
-        )}
-      </div>
-      <div className="">
-        <Link href={"/search"}>
-          <Button variant={"outline"} size={"icon"}>
-            <SearchIcon className="h-4 w-4" />
+          >
+            <X className="h-5 w-5 text-muted-foreground hover:text-primary" />
           </Button>
-        </Link>
+        )}
+        <Button 
+          type="submit"
+          disabled={isPending}
+          className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10 px-4 rounded-full bg-primary hover:bg-primary/90"
+        >
+          {isPending ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : (
+            <>
+              <Search className="w-5 h-5" />
+              <span className="ml-2 hidden sm:inline">Search</span>
+            </>
+          )}
+        </Button>
       </div>
-    </div>
+    </form>
   );
 };
 
-export default Searchbar;
+export default SearchBar;

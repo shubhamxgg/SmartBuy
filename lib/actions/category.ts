@@ -3,9 +3,6 @@
 import db from "../db";
 
 export async function createCategory({ name }: { name: string }) {
-  // if (!name) {
-  //   return { error: "Please enter category name!" };
-  // }
 
   try {
     const category = await db.category.create({

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -12,9 +12,14 @@ import Image from "next/image";
 const OrderSummary = () => {
   const { cart } = useCartStore();
 
-  const totalCost = cart.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
-    0
+  const total = useMemo(
+    () =>
+      cart.items.reduce(
+        (acc: number, item: { product: { price: number }; quantity: number }) =>
+          acc + item.product.price * item.quantity,
+        0
+      ),
+    [cart.items]
   );
 
   return (
@@ -24,7 +29,7 @@ const OrderSummary = () => {
         <CardDescription>Review your order details</CardDescription>
       </CardHeader>
       <CardContent>
-        {cart.map((item) => (
+        {cart.items.map((item) => (
           <div key={item.product.id} className="flex items-center mb-4">
             <Image
               src={item.product.imageUrl}
@@ -45,7 +50,7 @@ const OrderSummary = () => {
         ))}
         <div className="border-t pt-4 flex justify-end">
           <h3 className="text-lg font-semibold">
-            Total Cost: ${totalCost.toFixed(2)}
+            Total Cost: ${total.toFixed(2)}
           </h3>
         </div>
       </CardContent>

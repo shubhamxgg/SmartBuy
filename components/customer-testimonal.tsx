@@ -9,24 +9,34 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
-import { Button } from "./ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Card, CardContent } from "./ui/card";
+import { QuoteIcon } from "lucide-react";
 
-const testimonials = [
+interface Testimonial {
+  name: string;
+  image: string;
+  text: string;
+  position: string;
+}
+
+const testimonials: Testimonial[] = [
   {
     name: "John Doe",
-    image: "/user.jpg",
-    text: "This product has changed my life for the better!",
+    image: "/images/users/user.jpg",
+    text: "This product has revolutionized my workflow. The intuitive interface and powerful features have significantly boosted my productivity.",
+    position: "Software Engineer"
   },
   {
     name: "Jane Smith",
-    image: "/user.jpg",
-    text: "Excellent quality and fantastic customer service.",
+    image: "/images/users/user.jpg",
+    text: "Exceptional quality and outstanding customer service. I'm impressed by the attention to detail and the team's responsiveness to feedback.",
+    position: "UX Designer"
   },
   {
     name: "Mike Johnson",
-    image: "/user.jpg",
-    text: "I would highly recommend this to everyone.",
+    image: "/images/users/user.jpg",
+    text: "I can't recommend this product enough. It's been a game-changer for our team, streamlining our processes and improving collaboration.",
+    position: "Project Manager"
   },
 ];
 
@@ -40,27 +50,25 @@ const CustomerTestimonial = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="w-full md:w-1/2 rounded-lg p-4 flex items-center justify-center border">
-          <Skeleton className="h-12 w-3/4" />
+      <div className="flex flex-col md:flex-row gap-8 p-8 bg-card bg-opacity-60 rounded-xl">
+        <div className="w-full md:w-1/3 flex items-center justify-center">
+          <Skeleton className="h-16 w-3/4" />
         </div>
-        <div className="w-full md:w-1/2 rounded-lg border">
-          <div className="max-w-sm mx-auto p-4 relative ">
-            <Skeleton className="h-64 w-full" />
-          </div>
+        <div className="w-full md:w-2/3">
+          <Skeleton className="h-64 w-full rounded-xl" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-4">
-      <div className="w-full md:w-1/2 bg-card rounded-lg p-4 flex items-center justify-center border">
-        <h2 className="text-3xl md:text-5xl font-bold text-center">
-          Customer Testimonials
+    <div className="flex flex-col md:flex-row gap-8 p-8 bg-card bg-opacity-60 rounded-xl border">
+      <div className="w-full md:w-1/3 flex items-center justify-center">
+        <h2 className="text-4xl md:text-5xl font-bold text-center leading-tight">
+          What Our Customers Say
         </h2>
       </div>
-      <div className="w-full md:w-1/2 bg-card border rounded-lg">
+      <div className="w-full md:w-2/3">
         <CustomerTestimonialCarousel />
       </div>
     </div>
@@ -69,41 +77,45 @@ const CustomerTestimonial = () => {
 
 const CustomerTestimonialCarousel = () => {
   return (
-    <div className="max-w-sm mx-auto p-4 relative">
-      <Carousel>
-        <CarouselContent>
-          {testimonials.map((testimonial, index) => (
-            <CarouselItem key={index}>
-              <div className="flex flex-col items-center">
-                <div className="relative w-48 h-48 rounded-full overflow-hidden">
-                  <Image
-                    alt={testimonial.name}
-                    src={testimonial.image}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <p className="mt-4 text-lg font-semibold">{testimonial.name}</p>
-                <p className="mt-2 text-gray-600 text-center">
-                  {testimonial.text}
-                </p>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="absolute top-1/2 -left-4 -translate-y-1/2 z-10">
-          <Button size="default" variant="outline">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-        </CarouselPrevious>
-        <CarouselNext className="absolute top-1/2 -right-4 -translate-y-1/2 z-10">
-          <Button size="default" variant="outline">
-            <ArrowRight className="h-5 w-5" />
-          </Button>
-        </CarouselNext>
-      </Carousel>
-    </div>
+    <Carousel className="w-full max-w-xl mx-auto">
+      <CarouselContent>
+        {testimonials.map((testimonial, index) => (
+          <CarouselItem key={index}>
+            <TestimonialCard testimonial={testimonial} />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
   );
 };
+
+interface TestimonialCardProps {
+  testimonial: Testimonial;
+}
+
+const TestimonialCard = ({ testimonial }: TestimonialCardProps) => (
+  <Card className="bg-card  shadow-sm rounded-xl overflow-hidden">
+    <CardContent className="p-6">
+      <QuoteIcon className="text-primary w-12 h-12 mb-4 opacity-20" />
+      <p className="text-muted-foreground mb-4 italic">{testimonial.text}</p>
+      <div className="flex items-center">
+        <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
+          <Image
+            alt={testimonial.name}
+            src={testimonial.image}
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div>
+          <p className="font-semibold">{testimonial.name}</p>
+          <p className="text-sm text-muted-foreground">{testimonial.position}</p>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);
 
 export default CustomerTestimonial;

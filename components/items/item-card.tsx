@@ -1,66 +1,84 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Heart } from "lucide-react";
 import Link from "next/link";
-import WishlistButton from "../wishlist-button";
-import useCart from "@/hooks/use-cart";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import { Card, CardContent, CardFooter } from "../ui/card";
 import { useUserId } from "@/hooks/use-user-id";
+import { formatCurrency } from "@/lib/utils";
+
+import useCart from "@/hooks/use-cart";
+import { Product } from "@/type";
 
 interface ItemCardProps {
-  product: any;
+  product: Product;
 }
 
 const ItemCard = ({ product }: ItemCardProps) => {
-  const { handleAddToCart } = useCart(product);
+  const { handleAddToCart, isAddingToCart } = useCart(product);
   const userId = useUserId();
 
   return (
-    <Card className="relative group overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+    <Card className="group relative overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-xl bg-card bg-opacity-60 flex flex-col ">
       {product.featured && (
-        <div className="absolute top-3 left-3 inline-block px-3 py-1 text-xs font-medium bg-primary text-white rounded-full z-10">
+        <div className="absolute top-2 left-2 z-10 bg-primary text-primary-foreground text-xs font-semibold px-2 py-1 rounded-full">
           Featured
         </div>
       )}
-      <Link href={`/items/${product.id}`} className="h-full block">
-        <div className="relative h-56 w-full overflow-hidden">
+      <Link href={`/items/${product.id}`} className="flex flex-col">
+        <div className="relative h-48 overflow-hidden bg-white">
           <Image
-            alt={"item-card"}
-            className="object-contain w-full h-full bg-white opacity-80 p-2"
+            alt={product.title}
             src={product.imageUrl}
-            height={80}
-            width={80}
+            fill
+            className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
-        <CardHeader className="flex items-start px-4 py-3">
-          <h3 className="font-bold text-lg text-nowrap text-ellipsis truncate hover:text-primary cursor-pointer">
+        <CardContent className="p-4 flex-grow flex flex-col">
+          <h3 className="font-semibold text-lg truncate group-hover:text-primary transition-colors">
             {product.title}
           </h3>
-        </CardHeader>
-        <CardContent className="p-4">
-          <div className="flex items-start justify-between">
-            <span className="font-semibold text-lg text-white">
-              ${product.price}
+          <p className="text-muted-foreground text-sm mt-1 line-clamp-2 flex-grow">
+            {product.description}
+          </p>
+          <div className="mt-2 flex items-center justify-between">
+            <span className="text-lg font-bold text-primary">
+              {formatCurrency(product.price)}
             </span>
-            <div className="flex items-center">
-              <Button
-                size="default"
-                variant="outline"
-                onClick={handleAddToCart}
-              >
-                <ShoppingCart />
-              </Button>
-              <WishlistButton
-                className="absolute top-5 right-5 stroke-primary stroke-2 transition ease-in-out duration-300 hover:fill-primary hover:-translate-y-2"
-                isWishList={false}
-                productId={product.id}
-                userId={userId!!}
-              />
-              <span className="sr-only">Add to Wishlist</span>
-            </div>
+            {product.price && (
+              <span className="text-sm text-muted-foreground line-through">
+                {formatCurrency(product.price)}
+              </span>
+            )}
           </div>
         </CardContent>
       </Link>
+      <CardFooter className="p-4 pt-0 mt-auto">
+        <div className="flex items-center justify-between w-full">
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={(e) => {
+              e.preventDefault();
+              handleAddToCart();
+            }}
+            disabled={isAddingToCart}
+            className="flex-1 mr-2"
+          >
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            {isAddingToCart ? "Adding..." : "Add to Cart"}
+          </Button>
+          {userId && (
+            <Button
+              size="icon"
+              variant="outline"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Heart className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+      </CardFooter>
     </Card>
   );
 };

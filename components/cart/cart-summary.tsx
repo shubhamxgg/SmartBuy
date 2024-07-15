@@ -1,37 +1,84 @@
 import useCartStore from "@/store/useCartStore";
+import useAuthModalStore from "@/store/useAuthModalStore";
+import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
-import React, { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { Button } from "../ui/button";
+import { ShoppingBag } from "lucide-react";
 
-const CartSummary = ({ onClose }: { onClose: () => void }) => {
+interface CartSummaryProps {
+  onClose: () => void;
+}
+
+const CartSummary = ({ onClose }: CartSummaryProps) => {
   const router = useRouter();
-  const { cart, cartId, clearCart } = useCartStore();
-  const total = cart.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
-    0
+  const { cart, clearCart } = useCartStore();
+  const { openModal } = useAuthModalStore();
+  const { user } = useAuthStore();
+
+  const total = useMemo(
+    () =>
+      cart.items.reduce(
+        (acc: number, item: { product: { price: number }; quantity: number }) =>
+          acc + item.product.price * item.quantity,
+        0
+      ),
+    [cart.items]
   );
 
-  const handleChange = useCallback(() => {
-    router.push("/checkout");
-    onClose();
-  }, [onClose, router]);
+  const handleCheckout = useCallback(async () => {
+    if (!user) {
+      openModal();
+      return;
+    }
+    try {
+      await router.push("/checkout");
+      onClose();
+    } catch (error) {
+      console.error("Checkout failed:", error);
+    }
+  }, [onClose, router, user, openModal]);
+
+  const handleClearCart = useCallback(() => {
+    clearCart();
+  }, [clearCart]);
 
   return (
-    <div className="bg-card rounded-lg p-6 shadow-lg">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Cart Summary</h3>
-        <Button variant={"outline"} onClick={() => clearCart(cartId)}>
+    <div className="bg-card rounded-lg p-6 shadow-lg border border-gray-700">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-xl font-bold flex items-center">
+          <ShoppingBag className="mr-2 h-5 w-5" />
+          Cart Summary
+        </h3>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleClearCart}
+          className="text-sm"
+        >
           Clear Cart
         </Button>
       </div>
-      <div className="flex items-center justify-between">
-        <span className="text-gray-500 font-medium">Total</span>
-        <span className="text-gray-500 font-bold text-2xl">
-          ${total.toFixed(2)}
-        </span>
+      <div className="space-y-2 mb-6">
+        <div className="flex justify-between text-gray-400">
+          <span>Subtotal</span>
+          <span>${total.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between text-gray-400">
+          <span>Shipping</span>
+          <span>Calculated at checkout</span>
+        </div>
       </div>
-      <Button className="w-full mt-4" onClick={handleChange}>
-        Proceed to Checkout
+      <div className="flex items-center justify-between mb-6 pt-4 border-t border-gray-700">
+        <span className="text-lg font-semibold">Total</span>
+        <span className="text-2xl font-bold">${total.toFixed(2)}</span>
+      </div>
+      <Button
+        className="w-full py-6 text-lg font-semibold"
+        onClick={handleCheckout}
+        disabled={cart.items.length === 0}
+      >
+        {user ? "Proceed to Checkout" : "Sign In to Checkout"}
       </Button>
     </div>
   );

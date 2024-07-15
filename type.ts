@@ -11,6 +11,18 @@ export interface Category {
   updatedAt: Date;
 }
 
+export interface NewProduct{
+  id: number;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  imageUrl: string;
+  description: string;
+  features: string[];
+  category: string;
+  rating: number;
+}
+
 export interface Product {
   quantity?: number;
   id: number;
@@ -18,13 +30,13 @@ export interface Product {
   description: string;
   price: number;
   imageUrl: string;
-  seller: { id: number; user: { name: string } };
+  seller?: { id: number; user: { name: string } };
   status: string;
   featured: boolean;
   stock?: { sku: string; quantity: number; lowStockThreshold: number } | null;
-  images: { id: number; url: string }[];
-  reviews: { id: number; rating: number; comment: string }[];
-  category: Category;
+  images?: { id: number; url: string }[];
+  reviews?: { id: number; rating: number; comment: string }[];
+  category?: Category;
 }
 
 export interface Filter {
