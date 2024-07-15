@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
+import { useState } from "react";
 
 interface ItemCategoryCardProps {
   item: {
@@ -12,11 +13,14 @@ interface ItemCategoryCardProps {
 
 const ItemCategoryCard = ({ item }: ItemCategoryCardProps) => {
   const router = useRouter();
+  const [imageError, setImageError] = useState(false);
 
   const handleClick = () => {
     router.push(`/search?categories=${item.name}`);
   };
 
+  const imageSrc = item.image || `/images/category/${item.name}.jpg`;
+  const fallbackImage = "/images/placeholder.jpg";
   return (
     <div 
       className="group relative flex-shrink-0 w-48 h-64 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-card"
@@ -24,10 +28,11 @@ const ItemCategoryCard = ({ item }: ItemCategoryCardProps) => {
     >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-70" />
       <Image
-        src={`/images/category/${item.name}.jpg`}
+        src={imageError ? fallbackImage : imageSrc}
         alt={item.name}
         fill
         className="object-cover bg-white transition-transform duration-300 group-hover:scale-110"
+        onError={() => setImageError(true)}
       />
       <div className="absolute inset-x-0 bottom-0 p-4 flex flex-col items-center text-center">
         <h3 className="text-white font-semibold text-lg mb-2 drop-shadow-md">

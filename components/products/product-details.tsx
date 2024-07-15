@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import WishlistButton from "../wishlist-button";
 import useCart from "@/hooks/use-cart";
-import { useUserId } from "@/hooks/use-user-id";
+import { useUserAuth } from "@/hooks/use-user-auth";
 
 interface ProductDetailsProps {
   product: Product;
@@ -20,7 +20,7 @@ interface ProductDetailsProps {
 
 const ProductDetails = ({ product }: ProductDetailsProps) => {
   const { handleAddToCart } = useCart(product);
-  const userId = useUserId();
+  const { userId, isAuthenticated, showLoginToast } = useUserAuth();
   if (userId === undefined) {
     return <div>Please log in to add items to your wishlist.</div>;
   }

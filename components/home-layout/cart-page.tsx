@@ -6,7 +6,7 @@ import CartSummary from "../cart/cart-summary";
 import { useState, useEffect } from "react";
 import CartItem from "../cart/cart-item";
 import useCartStore from "@/store/useCartStore";
-import { useUserId } from "@/hooks/use-user-id";
+import { useUserAuth } from "@/hooks/use-user-auth";
 import useAuthModalStore from "@/store/useAuthModalStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import { CartItems } from "@/type";
@@ -14,7 +14,7 @@ import { CartItems } from "@/type";
 const CartPage = () => {
   const { cart, fetchCart, mergeLocalCartWithServerCart } = useCartStore();
   const [isOpen, setIsOpen] = useState(false);
-  const userId = useUserId();
+  const { userId, isAuthenticated, showLoginToast } = useUserAuth();
   const { user } = useAuthStore();
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const CartPage = () => {
         ) : (
           <>
             <div className="flex-grow overflow-y-auto mb-6">
-              {cartItems.map((item) => (
+              {cartItems?.map((item) => (
                 <CartItem key={item.id} item={item as CartItems} />
               ))}
             </div>
