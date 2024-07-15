@@ -7,31 +7,46 @@ import { useState, useEffect } from "react";
 import CartItem from "../cart/cart-item";
 import useCartStore from "@/store/useCartStore";
 import { useUserAuth } from "@/hooks/use-user-auth";
-import useAuthModalStore from "@/store/useAuthModalStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import { CartItems } from "@/type";
 
 const CartPage = () => {
   const { cart, fetchCart, mergeLocalCartWithServerCart } = useCartStore();
   const [isOpen, setIsOpen] = useState(false);
-  const { userId, isAuthenticated, showLoginToast } = useUserAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  const { userId, isAuthenticated } = useUserAuth();
   const { user } = useAuthStore();
 
   useEffect(() => {
     const initializeCart = async () => {
-      if (user && userId) {
-        await mergeLocalCartWithServerCart(userId);
-      } else if (userId) {
-        await fetchCart(userId);
-      } else {
-        await fetchCart(null);
+      setIsLoading(true);
+      try {
+        if (user && userId) {
+          await mergeLocalCartWithServerCart(userId);
+        } else if (userId) {
+          await fetchCart(userId);
+        } else {
+          await fetchCart(null);
+        }
+      } catch (error) {
+        console.error("Failed to initialize cart:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     initializeCart();
   }, [user, userId, fetchCart, mergeLocalCartWithServerCart]);
 
-  const cartItems = cart.items || [];
+  const cartItems = cart?.items || [];
+
+  if (isLoading) {
+    return (
+      <Button variant="outline" size="sm" className="relative p-2" disabled>
+        <ShoppingCart className="h-5 w-5" />
+      </Button>
+    );
+  }
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -65,7 +80,7 @@ const CartPage = () => {
         ) : (
           <>
             <div className="flex-grow overflow-y-auto mb-6">
-              {cartItems?.map((item) => (
+              {cartItems.map((item) => (
                 <CartItem key={item.id} item={item as CartItems} />
               ))}
             </div>
