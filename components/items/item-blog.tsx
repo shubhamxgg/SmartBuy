@@ -2,28 +2,31 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import Image from "next/image";
 import { Skeleton } from "../ui/skeleton";
 import { Card } from "../ui/card";
+import { CalendarDays, ArrowRight } from "lucide-react";
 
 const blogPosts = [
   {
-    title: "Exploring the Future of AI",
+    title: "The Rise of AI in E-commerce",
     description:
-      "An in-depth look at the advancements in artificial intelligence and what the future holds.",
-    image: "/user.jpg",
+      "Explore how artificial intelligence is revolutionizing online shopping experiences and personalization.",
+    date: "2023-12-15",
+    category: "AI & E-commerce",
   },
   {
-    title: "Sustainable Living Tips",
+    title: "5G and the Future of Online Retail",
     description:
-      "Learn how to live a more sustainable and eco-friendly lifestyle with these simple tips.",
-    image: "/user.jpg",
+      "Discover how 5G technology is set to transform mobile shopping and augmented reality experiences in e-commerce.",
+    date: "2023-12-10",
+    category: "Tech Trends",
   },
   {
-    title: "Top Travel Destinations for 2024",
+    title: "Blockchain in Supply Chain Management",
     description:
-      "Discover the top travel destinations to add to your bucket list for the coming year.",
-    image: "/user.jpg",
+      "Learn how blockchain technology is enhancing transparency and efficiency in e-commerce supply chains.",
+    date: "2023-12-05",
+    category: "Blockchain",
   },
 ];
 
@@ -40,10 +43,10 @@ const ItemBlog = () => {
       <div className="py-10">
         <div className="border rounded-lg shadow-md overflow-hidden">
           <div className="p-4 border-b flex justify-between items-center">
-            <Skeleton className="h-6 w-32" />
-            <Skeleton className="h-8 w-20" />
+            <Skeleton className="h-8 w-40" />
+            <Skeleton className="h-10 w-24" />
           </div>
-          <div className="grid md:grid-cols-3 gap-4 p-4">
+          <div className="grid md:grid-cols-3 gap-6 p-6">
             <Skeleton className="h-64 w-full" />
             <Skeleton className="h-64 w-full" />
             <Skeleton className="h-64 w-full" />
@@ -56,19 +59,22 @@ const ItemBlog = () => {
   return (
     <div className="py-10">
       <div className="bg-card rounded-lg shadow-md overflow-hidden border">
-        <div className="p-4 flex justify-between items-center bg-card mb-2">
-          <h1 className="text-2xl font-semibold">Blog Posts</h1>
+        <div className="p-6 flex justify-between items-center border-b mb-4">
+          <h1 className="text-3xl font-bold">Latest Blog Posts</h1>
           <Link href="/blog">
-            <Button variant="outline">View all</Button>
+            <Button variant="outline" className="hover:bg-accent">
+              View all <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
           {blogPosts.map((post, index) => (
             <ItemBlogCard
               key={index}
               title={post.title}
               description={post.description}
-              image={post.image}
+              date={post.date}
+              category={post.category}
             />
           ))}
         </div>
@@ -80,25 +86,27 @@ const ItemBlog = () => {
 interface ItemBlogCardProps {
   title: string;
   description: string;
-  image: string;
+  date: string;
+  category: string;
 }
 
-const ItemBlogCard = ({ title, image, description }: ItemBlogCardProps) => {
+const ItemBlogCard = ({ title, description, date, category }: ItemBlogCardProps) => {
   return (
-    <Card className=" bg-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200">
-      <div className="relative h-48">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          className="object-cover w-full h-full"
-        />
-      </div>
-      <div className="p-4 flex flex-col gap-2">
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="text-gray-600 line-clamp-3">{description}</p>
-        <Button variant="outline" className="mt-2 self-start">
-          Read More
+    <Card className="bg-card rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 hover:scale-105 transform">
+      <div className="p-6 flex flex-col gap-3 h-full">
+        <div className="flex justify-between items-center text-sm text-muted-foreground mb-2">
+          <span className="bg-accent text-accent-foreground px-2 py-1 rounded-full text-xs font-medium">
+            {category}
+          </span>
+          <div className="flex items-center">
+            <CalendarDays className="h-4 w-4 mr-1" />
+            {new Date(date).toLocaleDateString()}
+          </div>
+        </div>
+        <h2 className="text-xl font-bold mb-2">{title}</h2>
+        <p className="text-muted-foreground line-clamp-3 flex-grow">{description}</p>
+        <Button variant="link" className="mt-4 self-start p-0">
+          Read More <ArrowRight className="ml-1 h-4 w-4" />
         </Button>
       </div>
     </Card>

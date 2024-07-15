@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { CartItems, Product } from "../type";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { Product } from "../type";
 import {
   clearCartItem,
   createCartItem,
@@ -8,121 +9,167 @@ import {
   updateCartItem,
 } from "@/lib/actions/cart";
 
+interface CartItem {
+  id: number;
+  productId: number;
+  quantity: number;
+  product: Product;
+}
+
+interface Cart {
+  cartId: number | null;
+  items: CartItem[];
+}
+
 interface CartStore {
-  cart: CartItems[];
-  cartId: number;
+  cart: Cart;
   userId: number | null;
   isLoading: boolean;
   error: string | null;
-  fetchCart: (userId: number) => Promise<void>;
-  addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
-  updateCartItemQuantity: (productId: number, quantity: number) => void;
-  clearCart: (cartId: number) => void;
+  fetchCart: (userId: number | null) => Promise<void>;
+  addToCart: (product: Product, quantity: number) => Promise<void>;
+  removeFromCart: (productId: number) => Promise<void>;
+  updateCartItemQuantity: (productId: number, quantity: number) => Promise<void>;
+  clearCart: () => Promise<void>;
+  mergeLocalCartWithServerCart: (userId: number | null) => Promise<void>;
 }
 
-const useCartStore = create<CartStore>((set, get) => ({
-  cart: [],
-  cartId: 0,
-  userId: null,
-  isLoading: false,
-  error: null,
+const useCartStore = create(
+  persist<CartStore>(
+    (set, get) => ({
+      cart: { cartId: null, items: [] },
+      userId: null,
+      isLoading: false,
+      error: null,
 
-  fetchCart: async (userId: number) => {
-    set({ isLoading: true, error: null, userId });
-    try {
-      const { cartId, items } = await getCartItem({ userId });
-      set({ cartId, cart: items, isLoading: false });
-    } catch (error: any) {
-      set({ error: error.message, isLoading: false });
-    }
-  },
+      fetchCart: async (userId: number | null) => {
+        if (!userId) {
+          set({ cart: { cartId: null, items: [] }, userId: null, isLoading: false });
+          return;
+        }
+        set({ isLoading: true, error: null });
+        try {
+          const cartData = await getCartItem({ userId });
+          set({ cart: cartData, userId, isLoading: false });
+        } catch (error: any) {
+          set({ error: error.message, isLoading: false });
+        }
+      },
 
-  addToCart: async (product: Product) => {
-    const { cart, userId } = get();
-    if (userId === null) {
-      set({ error: "User Id is not set" });
-      return;
-    }
-    const existingItem = cart.find((item) => item.productId === product.id);
-    if (existingItem) {
-      const updatedItem = {
-        ...existingItem,
-        quantity: existingItem.quantity + 1,
-        userId,
-      };
-      await updateCartItem(updatedItem);
-      set({
-        cart: cart.map((item) =>
-          item.productId === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        ),
-      });
-    } else {
-      const newItem = await createCartItem({
-        productId: product.id,
-        quantity: 1,
-        userId,
-      });
-      const newCartItem: CartItems = {
-        id: newItem.id,
-        cartId: newItem.cartId,
-        userId: userId,
-        productId: newItem.productId,
-        quantity: newItem.quantity,
-        product: { ...product, quantity: 1 },
-      };
-      set({ cart: [...cart, newCartItem] });
-    }
-  },
+      addToCart: async (product: Product, quantity: number) => {
+        const { userId, cart  } = get();
+        const newItem: CartItem = {
+          id: Date.now(),
+          productId: product.id,
+          quantity: quantity || 1, 
+          product: { ...product },
+        };
 
-  removeFromCart: async (productId: number) => {
-    const { cart, userId } = get();
-    if (userId === null) {
-      set({ error: "User ID is not set" });
-      return;
-    }
-    try {
-      await removeCartItem({ productId, userId });
-      set({ cart: cart.filter((item) => item.productId !== productId) });
-    } catch (error: any) {
-      set({ error: error.message });
-    }
-  },
+        if (userId) {
+          try {
+            await createCartItem({ productId: product.id, quantity: quantity || 1, userId });
+            set({ cart: { ...cart, items: [...cart.items, newItem] } });
+          } catch (error: any) {
+            set({ error: error.message });
+          }
+        } else {
+          set({ cart: { ...cart, items: [...cart.items, newItem] } });
+        }
+      },
 
-  updateCartItemQuantity: async (productId: number, quantity: number) => {
-    const { userId, cart } = get();
-    if (userId === null) {
-      set({ error: "User Id is not set" });
-      return;
-    }
-    try {
-      await updateCartItem({ productId, quantity, userId });
-      set({
-        cart: cart.map((item) =>
-          item.productId === productId ? { ...item, quantity } : item
-        ),
-      });
-    } catch (error: any) {
-      set({ error: error.message });
-    }
-  },
+      removeFromCart: async (productId: number) => {
+        const { userId, cart } = get();
+        if (userId) {
+          try {
+            await removeCartItem({ userId, productId });
+            set({ cart: { ...cart, items: cart.items.filter(item => item.productId !== productId) } });
+          } catch (error: any) {
+            set({ error: error.message });
+          }
+        } else {
+          set({ cart: { ...cart, items: cart.items.filter(item => item.productId !== productId) } });
+        }
+      },
 
-  clearCart: async (cartId: number) => {
-    const { userId } = get();
-    if (userId === null) {
-      set({ error: "User Id is not set" });
-      return;
+      updateCartItemQuantity: async (productId: number, quantity: number) => {
+        const { userId, cart } = get();
+        if (userId) {
+          try {
+            await updateCartItem({ userId, productId, quantity });
+            set({
+              cart: {
+                ...cart,
+                items: cart.items.map(item =>
+                  item.productId === productId ? { ...item, quantity } : item
+                ),
+              },
+            });
+          } catch (error: any) {
+            set({ error: error.message });
+          }
+        } else {
+          set({
+            cart: {
+              ...cart,
+              items: cart.items.map(item =>
+                item.productId === productId ? { ...item, quantity } : item
+              ),
+            },
+          });
+        }
+      },
+
+      clearCart: async () => {
+        const { userId, cart } = get();
+        if (userId && cart.cartId) {
+          try {
+            await clearCartItem({ cartId: cart.cartId, userId });
+            set({ cart: { cartId: null, items: [] } });
+          } catch (error: any) {
+            set({ error: error.message });
+          }
+        } else {
+          set({ cart: { cartId: null, items: [] } });
+        }
+      },
+
+      mergeLocalCartWithServerCart: async (userId: number | null) => {
+        if (!userId) {
+          return;
+        }
+        const { cart } = get();
+        set({ isLoading: true, error: null });
+        try {
+          const serverCart = await getCartItem({ userId });
+          for (const item of cart.items) {
+            const serverItem = serverCart.items.find((si: { productId: number }) => si.productId === item.productId);
+            if (serverItem) {
+              await updateCartItem({
+                userId,
+                productId: item.productId,
+                quantity: item.quantity + serverItem.quantity,
+              });
+            } else {
+              await createCartItem({
+                productId: item.productId,
+                quantity: item.quantity,
+                userId,
+              });
+            }
+          }
+
+          const updatedCart = await getCartItem({ userId });
+          set({ cart: updatedCart, userId, isLoading: false });
+        } catch (error: any) {
+          set({ error: error.message, isLoading: false });
+        }
+      },
+    }),
+    {
+      name: "cart-storage",
+      storage: createJSONStorage(() => localStorage),
     }
-    try {
-      await clearCartItem({ cartId, userId });
-      set({ cart: [] });
-    } catch (error: any) {
-      set({ error: error.message });
-    }
-    set({ cart: [] });
-  },
-}));
+  )
+);
 
 export default useCartStore;
