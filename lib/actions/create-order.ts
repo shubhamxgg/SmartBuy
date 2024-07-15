@@ -26,7 +26,7 @@ const OrderSchema = z.object({
 });
 
 export async function createOrder(orderData: unknown) {
-  const imgae = "/order";
+  
   try {
     const order = OrderSchema.parse(orderData);
     await db.address.upsert({
@@ -54,7 +54,7 @@ export async function createOrder(orderData: unknown) {
             productId: item.productId,
             quantity: item.quantity,
             price: item.price,
-            image: imgae,
+            image: "/order.jpg",
           })),
         },
         payments: {
