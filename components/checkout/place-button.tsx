@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAddressStore } from "@/store/useAddressStore";
 import { usePaymentStore } from "@/store/usePaymentStore";
@@ -17,14 +17,19 @@ const PlaceOrderButton = () => {
   const router = useRouter();
   const userId = useUserId();
   const { isAuthenticated } = useAuthStore();
-  const { cart, cartId, clearCart } = useCartStore();
+  const { cart, clearCart } = useCartStore();
   const { selectedAddress } = useAddressStore();
   // const { paymentMethod } = usePaymentStore();
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
-  const totalAmount = cart.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
-    0
+  const total = useMemo(
+    () =>
+      cart.items.reduce(
+        (acc: number, item: { product: { price: number }; quantity: number }) =>
+          acc + item.product.price * item.quantity,
+        0
+      ),
+    [cart.items]
   );
 
   const handlePlaceOrder = async () => {
@@ -41,12 +46,12 @@ const PlaceOrderButton = () => {
     setIsProcessing(true);
     const order = {
       userId: userId,
-      items: cart.map((item) => ({
+      items: cart.items.map((item) => ({
         productId: item.product.id,
         quantity: item.quantity,
         price: item.product.price,
       })),
-      totalAmount,
+      totalAmount: total,
       status: "PENDING",
       paymentStatus: "PENDING",
       shippingStatus: "PENDING",
@@ -58,7 +63,7 @@ const PlaceOrderButton = () => {
       if (result.success) {
         setOrderPlaced(true);
         toast.success("Order placed successfully!");
-        await clearCart(cartId);
+        await clearCart();
         router.push(`/orders/${result.orderId}`);
       } else {
         toast.error(result.error || "Failed to place order");

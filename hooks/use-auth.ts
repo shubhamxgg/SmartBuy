@@ -1,8 +1,6 @@
-"use client";
-
 import { useAuthStore } from "@/store/useAuthStore";
 
-export const useAuth = () => {
+export function useUserId() {
   const { user } = useAuthStore();
-  return { user };
-};
+  return user ? user.id : null;
+}

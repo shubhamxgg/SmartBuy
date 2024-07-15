@@ -4,7 +4,10 @@ import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 
 interface ItemCategoryCardProps {
-  item: any;
+  item: {
+    name: string;
+    image?: string;
+  };
 }
 
 const ItemCategoryCard = ({ item }: ItemCategoryCardProps) => {
@@ -15,19 +18,27 @@ const ItemCategoryCard = ({ item }: ItemCategoryCardProps) => {
   };
 
   return (
-    <div className="group relative flex-shrink-0 w-72 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer">
-      <div className="aspect-square w-full">
-        <Image
-          src={`/images/category/${item.name}.jpg`}
-          alt={item.name}
-          height={200}
-          width={200}
-          className="object-cover bg-white h-full w-full"
-        />
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-        <Button className="w-full font-bold text-white" onClick={handleClick}>
+    <div 
+      className="group relative flex-shrink-0 w-48 h-64 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-card"
+      onClick={handleClick}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-70" />
+      <Image
+        src={`/images/category/${item.name}.jpg`}
+        alt={item.name}
+        fill
+        className="object-cover bg-white transition-transform duration-300 group-hover:scale-110"
+      />
+      <div className="absolute inset-x-0 bottom-0 p-4 flex flex-col items-center text-center">
+        <h3 className="text-white font-semibold text-lg mb-2 drop-shadow-md">
           {item.name}
+        </h3>
+        <Button 
+          variant="secondary" 
+          size="sm" 
+          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        >
+          Shop Now
         </Button>
       </div>
     </div>

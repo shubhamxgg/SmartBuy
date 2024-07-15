@@ -86,7 +86,6 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
         userId={userId!!}
         productId={product.id}
         isWishList={false}
-        title="Wishlist"
       />
 
       <div className="border-t border-border pt-6 mb-8">
