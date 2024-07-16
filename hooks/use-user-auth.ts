@@ -1,15 +1,17 @@
 import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
+import { useCallback } from "react";
 
 export function useUserAuth() {
   const user = useAuthStore((state) => state.user);
 
-  const showLoginToast = () => {
+  const showLoginToast = useCallback(() => {
+    console.log("Attempting to show login toast");
     toast.error("Please log in to access this feature.", {
-      description: "Authentication required",
-      duration: 3000,
+      duration: 5000,
     });
-  };
+    console.log("Toast function called");
+  }, []);
 
   return {
     user,
