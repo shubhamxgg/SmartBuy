@@ -33,7 +33,7 @@ const ItemSection = ({ title }: ItemSectonProps) => {
         <Button
           variant={"outline"}
           onClick={() => {
-            router.push(`/search?categories=${title}`);
+            router.push(`/products?categoryId=${categoryData[0].id}`);
           }}
         >
           View All Product

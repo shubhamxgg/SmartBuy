@@ -7,46 +7,26 @@ import { useState, useEffect } from "react";
 import CartItem from "../cart/cart-item";
 import useCartStore from "@/store/useCartStore";
 import { useUserAuth } from "@/hooks/use-user-auth";
-import { useAuthStore } from "@/store/useAuthStore";
 import { CartItems } from "@/type";
 
 const CartPage = () => {
   const { cart, fetchCart, mergeLocalCartWithServerCart } = useCartStore();
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const { userId, isAuthenticated } = useUserAuth();
-  const { user } = useAuthStore();
+  const { userId } = useUserAuth();
 
   useEffect(() => {
     const initializeCart = async () => {
-      setIsLoading(true);
-      try {
-        if (user && userId) {
-          await mergeLocalCartWithServerCart(userId);
-        } else if (userId) {
-          await fetchCart(userId);
-        } else {
-          await fetchCart(null);
-        }
-      } catch (error) {
-        console.error("Failed to initialize cart:", error);
-      } finally {
-        setIsLoading(false);
+      if (userId) {
+        await fetchCart(userId);
+      } else {
+        await fetchCart(null);
       }
     };
 
     initializeCart();
-  }, [user, userId, fetchCart, mergeLocalCartWithServerCart]);
+  }, [userId, fetchCart, mergeLocalCartWithServerCart]);
 
   const cartItems = cart?.items || [];
-
-  if (isLoading) {
-    return (
-      <Button variant="outline" size="sm" className="relative p-2" disabled>
-        <ShoppingCart className="h-5 w-5" />
-      </Button>
-    );
-  }
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -63,13 +43,8 @@ const CartPage = () => {
       <SheetContent className="w-full sm:max-w-md">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Your Cart</h2>
-          <SheetClose asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <X className="h-6 w-6" />
-            </Button>
-          </SheetClose>
         </div>
-        {cartItems.length === 0 ? (
+        {!cartItems || cartItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center flex-grow text-center">
             <ShoppingCart className="h-16 w-16 text-muted-foreground mb-4" />
             <p className="text-xl font-semibold mb-2">Your cart is empty</p>
