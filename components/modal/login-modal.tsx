@@ -6,7 +6,7 @@ import AuthForm from "../form/auth-form";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserPlus, LogIn, X } from "lucide-react";
 
-const AuthModal = () => {
+const LoginModal = () => {
   const { isOpen, closeModal } = useAuthModalStore();
   const [isLogin, setIsLogin] = useState(true);
   const [mounted, setMounted] = useState(false);
@@ -138,4 +138,4 @@ const AuthModal = () => {
   );
 };
 
-export default AuthModal;
+export default LoginModal;

@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedButton from "../ui/animate-button";
-import { useUserAuth } from "@/hooks/use-user-auth";
+import { useUserAuth } from "@/hooks/use-auth";
 import { createOrder } from "@/lib/actions/create-order";
 import { useAuthStore } from "@/store/useAuthStore";
 

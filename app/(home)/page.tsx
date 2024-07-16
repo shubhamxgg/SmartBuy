@@ -1,19 +1,23 @@
 import CustomerTestimonal from "@/components/customer-testimonal";
+import { Category } from "@/components/category/category";
+import { CategoryListSkeleton } from "@/components/category/category-list-skeleton";
 import ItemBlog from "@/components/items/item-blog";
-import ItemCarousel from "@/components/items/item-carousel";
-import ItemCategory from "@/components/items/item-category";
 import ItemFeaturedBuy from "@/components/items/item-featured-buy";
-import ItemSection from "@/components/items/item-section";
+import { Suspense } from "react";
+import { ProductSection } from "@/components/product/product-section";
+import ProductCarousel from "@/components/product/product-carousel";
 
 const HomePage = () => {
   return (
     <div className="flex flex-col">
-      <ItemCarousel />
-      <ItemSection title={"Mobile"} />
-      <ItemCategory />
-      <ItemSection title={"Fashion"} />
-      <ItemSection title={"Electronic"} />
-      <ItemSection title={"Mobile"} />
+      <ProductCarousel />
+      <ProductSection categoryName="Mobile" />
+      <ProductSection categoryName="Electronic" />
+      <ProductSection categoryName="Fashion" />
+      <ProductSection categoryName="Sports" />
+      <Suspense fallback={<CategoryListSkeleton />}>
+        <Category />
+      </Suspense>
       <ItemFeaturedBuy />
       <ItemBlog />
       <CustomerTestimonal />

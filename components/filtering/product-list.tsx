@@ -1,25 +1,25 @@
-'use client'
+"use client";
 
-import { useQuery } from '@tanstack/react-query'
-import { useSearchParams } from 'next/navigation'
-import dynamic from 'next/dynamic'
-import { Skeleton } from "@/components/ui/skeleton"
+import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Pagination = dynamic(() => import("./pagination"), {
-  loading: () => <Skeleton className="h-10 w-full mt-6" />
-})
+  loading: () => <Skeleton className="h-10 w-full mt-6" />,
+});
 
 const ProductGrid = dynamic(() => import("./product-grid"), {
-  loading: () => <ProductGridSkeleton />
-})
+  loading: () => <ProductGridSkeleton />,
+});
 
 async function fetchProducts(searchParams: Record<string, string>) {
-  const queryString = new URLSearchParams(searchParams).toString()
-  const response = await fetch(`/api/products?${queryString}`)
+  const queryString = new URLSearchParams(searchParams).toString();
+  const response = await fetch(`/api/products?${queryString}`);
   if (!response.ok) {
-    throw new Error('Failed to fetch products')
+    throw new Error("Failed to fetch products");
   }
-  return response.json()
+  return response.json();
 }
 
 function ProductGridSkeleton() {
@@ -33,7 +33,7 @@ function ProductGridSkeleton() {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 function ProductListSkeleton() {
@@ -43,22 +43,30 @@ function ProductListSkeleton() {
       <ProductGridSkeleton />
       <Skeleton className="h-10 w-full mt-6" />
     </div>
-  )
+  );
 }
 
-export default function ProductList({ searchParams: initialSearchParams } : any) {
-  const searchParams = useSearchParams()
-  const searchParamsObject = Object.fromEntries(searchParams)
+export default function ProductList({
+  searchParams: initialSearchParams,
+}: any) {
+  const searchParams = useSearchParams();
+  const searchParamsObject = Object.fromEntries(searchParams);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['products', searchParams.toString()],
-    queryFn: () => fetchProducts({ ...initialSearchParams, ...searchParamsObject }),
-  })
+    queryKey: ["products", searchParams.toString()],
+    queryFn: () =>
+      fetchProducts({ ...initialSearchParams, ...searchParamsObject }),
+  });
 
-  if (isLoading) return <ProductListSkeleton />
-  if (error) return <div>An error occurred: {error.message}</div>
+  if (isLoading) return <ProductListSkeleton />;
+  if (error) return <div>An error occurred: {error.message}</div>;
 
-  const { products, total, page, totalPages } = data || { products: [], total: 0, page: 1, totalPages: 1 }
+  const { products, total, page, totalPages } = data || {
+    products: [],
+    total: 0,
+    page: 1,
+    totalPages: 1,
+  };
 
   return (
     <div>
@@ -66,5 +74,5 @@ export default function ProductList({ searchParams: initialSearchParams } : any)
       <ProductGrid products={products} />
       <Pagination currentPage={page} totalPages={totalPages} />
     </div>
-  )
+  );
 }

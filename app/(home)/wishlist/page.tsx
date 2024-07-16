@@ -1,69 +1,34 @@
 "use client";
-
-import React from "react";
-import { useWishlist } from "@/hooks/use-wishlist";
-import WishlistItem from "@/components/wishlist/wishlist-item";
-import LoadMoreButton from "@/components/load-more-button";
-import WishlistSkeleton from "@/components/wishlist/wishlist-skeleton";
-import { Loader } from "lucide-react";
-import { useUserAuth } from "@/hooks/use-user-auth";
+import { useEffect } from "react";
+import WishlistList from "@/components/wishlist/wishlist-list";
+import { useUserAuth } from "@/hooks/use-auth";
+import useAuthModalStore from "@/store/useAuthModalStore";
 
 const WishlistPage = () => {
-  const { userId, isAuthenticated, showLoginToast } = useUserAuth();
+  const { isAuthenticated, userId } = useUserAuth();
+  const { openModal } = useAuthModalStore();
 
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    status,
-  } = useWishlist(userId as number);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      openModal();
+    }
+  }, [isAuthenticated, openModal]);
 
-  if (status === "pending") return <WishlistSkeleton />;
-  if (status === "error")
-    return <p>Error: {error?.message ?? "An error occurred"}</p>;
-  const isEmpty = !data?.pages.some((page) => page.items.length > 0);
+  if (!isAuthenticated) {
+    return <UnauthenticatedState />;
+  }
 
   return (
-    <div className="p-2 flex flex-col items-center min-h-screen">
-      <div className="w-full">
-        <h1 className="text-2xl font-semibold mb-4">Your Wishlist</h1>
-        {isEmpty ? (
-          <p className="text-center text-2xl">Add item to WishList</p>
-        ) : (
-          <>
-            {data?.pages.map((group, i) => (
-              <div key={i} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                {group.items.map((item: any) => (
-                  <WishlistItem
-                    key={item.id}
-                    item={item}
-                    userId={userId as number}
-                  />
-                ))}
-              </div>
-            ))}
-          </>
-        )}
-
-        {hasNextPage ? (
-          <LoadMoreButton
-            onClick={() => fetchNextPage()}
-            disabled={!hasNextPage || isFetchingNextPage}
-            isLoading={isFetchingNextPage}
-            hasNextPage={hasNextPage}
-          />
-        ) : null}
-        {isFetching && !isFetchingNextPage && (
-          <div className="mt-4">
-            <Loader className="animate-spin" />
-          </div>
-        )}
-      </div>
+    <div>
+      <WishlistList userId={userId as number} />
     </div>
   );
 };
+
+const UnauthenticatedState = () => (
+  <div className="text-center py-10">
+    <p>Please log in to view your wishlist.</p>
+  </div>
+);
 
 export default WishlistPage;
