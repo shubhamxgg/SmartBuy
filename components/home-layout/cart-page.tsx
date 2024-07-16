@@ -7,21 +7,16 @@ import { useState, useEffect } from "react";
 import CartItem from "../cart/cart-item";
 import useCartStore from "@/store/useCartStore";
 import { useUserAuth } from "@/hooks/use-user-auth";
-import useAuthModalStore from "@/store/useAuthModalStore";
-import { useAuthStore } from "@/store/useAuthStore";
 import { CartItems } from "@/type";
 
 const CartPage = () => {
   const { cart, fetchCart, mergeLocalCartWithServerCart } = useCartStore();
   const [isOpen, setIsOpen] = useState(false);
-  const { userId, isAuthenticated, showLoginToast } = useUserAuth();
-  const { user } = useAuthStore();
+  const { userId } = useUserAuth();
 
   useEffect(() => {
     const initializeCart = async () => {
-      if (user && userId) {
-        await mergeLocalCartWithServerCart(userId);
-      } else if (userId) {
+      if (userId) {
         await fetchCart(userId);
       } else {
         await fetchCart(null);
@@ -29,9 +24,9 @@ const CartPage = () => {
     };
 
     initializeCart();
-  }, [user, userId, fetchCart, mergeLocalCartWithServerCart]);
+  }, [userId, fetchCart, mergeLocalCartWithServerCart]);
 
-  const cartItems = cart.items || [];
+  const cartItems = cart?.items || [];
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -48,13 +43,8 @@ const CartPage = () => {
       <SheetContent className="w-full sm:max-w-md">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Your Cart</h2>
-          <SheetClose asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <X className="h-6 w-6" />
-            </Button>
-          </SheetClose>
         </div>
-        {cartItems.length === 0 ? (
+        {!cartItems || cartItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center flex-grow text-center">
             <ShoppingCart className="h-16 w-16 text-muted-foreground mb-4" />
             <p className="text-xl font-semibold mb-2">Your cart is empty</p>
@@ -65,7 +55,7 @@ const CartPage = () => {
         ) : (
           <>
             <div className="flex-grow overflow-y-auto mb-6">
-              {cartItems?.map((item) => (
+              {cartItems.map((item) => (
                 <CartItem key={item.id} item={item as CartItems} />
               ))}
             </div>
