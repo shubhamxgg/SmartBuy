@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AddressList from "../address/address-list";
 import { useAddressStore } from "@/store/useAddressStore";
 import { Address } from "@/type";
-import { useUserAuth } from "@/hooks/use-user-auth";
+import { useUserAuth } from "@/hooks/use-auth";
 
 const ShippingInformation = () => {
   const { selectAddress } = useAddressStore();

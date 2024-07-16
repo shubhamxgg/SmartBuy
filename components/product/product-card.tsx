@@ -1,31 +1,28 @@
 import Image from "next/image";
-import { Button } from "../ui/button";
-import { ShoppingCart, Heart } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { formatCurrency } from "@/lib/utils";
-import { useUserAuth } from "@/hooks/use-user-auth";
-import useCart from "@/hooks/use-cart";
 import { Product } from "@/type";
-import WishlistButton from "../wishlist-button";
+import { AddToCartButton } from "../cart/add-to-cart-button";
 
-interface ItemCardProps {
-  product: Product;
+import { WishlistButton } from "../wishlist-button";
+
+interface ProductCardProps {
+  product: any;
 }
 
-const ItemCard = ({ product }: ItemCardProps) => {
-  const { handleAddToCart, isAddingToCart } = useCart(product);
-  const { userId, isAuthenticated, showLoginToast } = useUserAuth();
- 
-
+export async function ProductCard({ product }: ProductCardProps) {
   return (
-    <Card className="group relative overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-xl bg-card bg-opacity-60 flex flex-col ">
+    <Card className="group relative overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-xl bg-card bg-opacity-60 flex flex-col">
+      <div className="absolute top-2 right-2 z-10">
+        <WishlistButton productId={product.id} />
+      </div>
       {product.featured && (
         <div className="absolute top-2 left-2 z-10 bg-primary text-primary-foreground text-xs font-semibold px-2 py-1 rounded-full">
           Featured
         </div>
       )}
-      <Link href={`/items/${product.id}`} className="flex flex-col">
+      <Link href={`/product/${product.id}`} className="flex flex-col">
         <div className="relative h-48 overflow-hidden bg-white">
           <Image
             alt={product.title}
@@ -55,31 +52,8 @@ const ItemCard = ({ product }: ItemCardProps) => {
         </CardContent>
       </Link>
       <CardFooter className="p-4 pt-0 mt-auto">
-        <div className="flex items-center justify-between w-full">
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={(e) => {
-              e.preventDefault();
-              handleAddToCart();
-            }}
-            disabled={isAddingToCart}
-            className="flex-1 mr-2"
-          >
-            <ShoppingCart className="mr-2 h-4 w-4" />
-            {isAddingToCart ? "Adding to Cart..." : "Add to Cart"}
-          </Button>
-          {userId && (
-            <WishlistButton
-              userId={userId}
-              productId={product.id}
-              isWishList={false}
-            />
-          )}
-        </div>
+        <AddToCartButton product={product} />
       </CardFooter>
     </Card>
   );
-};
-
-export default ItemCard;
+}

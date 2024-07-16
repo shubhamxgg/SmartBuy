@@ -7,8 +7,7 @@ export enum ProductStatus {
 export interface Category {
   id: number;
   name: string;
-  createdAt: Date;
-  updatedAt: Date;
+  imageUrl?: string | null;
 }
 
 export interface NewProduct{
@@ -31,7 +30,7 @@ export interface Product {
   price: number;
   imageUrl: string;
   seller?: { id: number; user: { name: string } };
-  status: string;
+  status: any;
   featured: boolean;
   stock?: { sku: string; quantity: number; lowStockThreshold: number } | null;
   images?: { id: number; url: string }[];

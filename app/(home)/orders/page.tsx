@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchOrderByUserId } from "@/lib/actions/orders";
@@ -12,17 +11,15 @@ import {
 } from "@/components/ui/breadcrumb";
 import OrdersSkeleton from "@/components/orders/orders-skeleton";
 import OrderCard from "@/components/orders/order-card";
-import { useUserAuth } from "@/hooks/use-user-auth";
+import { useUserAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
-const OrdersPage = () => {
+const ProductPage = () => {
   const { userId, isAuthenticated } = useUserAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push("/");
     }
   }, [isAuthenticated, router]);
 
@@ -64,4 +61,4 @@ const OrdersPage = () => {
   );
 };
 
-export default OrdersPage;
+export default ProductPage;

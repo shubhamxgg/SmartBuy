@@ -1,31 +1,23 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 interface LoadMoreButtonProps {
   onClick: () => void;
   disabled: boolean;
   isLoading: boolean;
-  hasNextPage: boolean | undefined;
+  children: React.ReactNode;
 }
 
-const LoadMoreButton = ({
+export function LoadMoreButton({
   onClick,
   disabled,
   isLoading,
-  hasNextPage,
-}: LoadMoreButtonProps) => (
-  <Button
-    onClick={onClick}
-    disabled={disabled}
-    className="mt-4 w-full"
-    variant="outline"
-  >
-    {isLoading
-      ? "Loading more..."
-      : hasNextPage
-      ? "Load More"
-      : "Nothing more to load"}
-  </Button>
-);
-
-export default LoadMoreButton;
+  children,
+}: LoadMoreButtonProps) {
+  return (
+    <Button onClick={onClick} disabled={disabled}>
+      {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+      {children}
+    </Button>
+  );
+}

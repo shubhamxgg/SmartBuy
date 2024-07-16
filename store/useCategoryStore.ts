@@ -4,6 +4,7 @@ import { create } from "zustand";
 interface Category {
   id: number;
   name: string;
+  imageUrl?: string | null;
 }
 
 interface CategoryStore {

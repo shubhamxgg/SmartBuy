@@ -6,7 +6,7 @@ import CartSummary from "../cart/cart-summary";
 import { useState, useEffect } from "react";
 import CartItem from "../cart/cart-item";
 import useCartStore from "@/store/useCartStore";
-import { useUserAuth } from "@/hooks/use-user-auth";
+import { useUserAuth } from "@/hooks/use-auth";
 import { CartItems } from "@/type";
 
 const CartPage = () => {

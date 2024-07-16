@@ -44,8 +44,6 @@ export async function createWishlist({ productId, userId }: WishList) {
       include: {
         product: true,
       },
-      
-
     });
 
     return wishlistItems;
@@ -54,13 +52,17 @@ export async function createWishlist({ productId, userId }: WishList) {
     throw new Error("Failed to create wishlist");
   }
 }
-
-export async function removeItemFromWishlist({ productId, userId }: WishList) {
+export async function removeFromWishlist({
+  productId,
+  userId,
+}: {
+  productId: number;
+  userId: number;
+}) {
   try {
-    const wishlist = await db.wishlist.findFirst({
-      where: {
-        userId,
-      },
+    const wishlist = await db.wishlist.findUnique({
+      where: { userId },
+      select: { id: true },
     });
 
     if (!wishlist) {
@@ -69,42 +71,61 @@ export async function removeItemFromWishlist({ productId, userId }: WishList) {
 
     return await db.wishlistItem.deleteMany({
       where: {
+        productId,
         wishlistId: wishlist.id,
-        id: productId,
       },
     });
   } catch (error) {
-    throw new Error("Error removing item from wishlist");
+    console.error("Failed to remove item from wishlist:", error);
+    throw new Error("Failed to remove item from wishlist");
   }
 }
 
-export async function getWishlist({
+export async function fetchAllWishlist({
   userId,
   skip = 0,
-  take = 0,
+  take = 10,
 }: WishlistParams) {
   try {
     const wishlist = await db.wishlist.findUnique({
       where: { userId },
-      include: {
-        items: {
-          include: {
-            product: true,
-          },
-          skip,
-          take,
-        },
-      },
+      select: { id: true },
     });
 
     if (!wishlist) {
-      throw new Error("Wishlist not found");
+      return {
+        items: [],
+        totalItems: 0,
+        nextCursor: null,
+      };
     }
+
+    const items = await db.wishlistItem.findMany({
+      where: { wishlistId: wishlist.id },
+      include: {
+        product: true,
+      },
+      skip,
+      take: take + 1,
+      orderBy: { id: "desc" },
+    });
+
+    const hasNextPage = items.length > take;
+    const nextCursor = hasNextPage ? skip + take : null;
+
+    const paginatedItems = hasNextPage ? items.slice(0, take) : items;
+
+    const totalItems = await db.wishlistItem.count({
+      where: { wishlistId: wishlist.id },
+    });
+
     return {
-      items: wishlist.items,
-      nextCursor: wishlist.items.length === take ? skip + take : null,
+      items: paginatedItems,
+      totalItems,
+      nextCursor,
     };
   } catch (error) {
+    console.error("Error fetching wishlist:", error);
     throw new Error("Error fetching wishlist");
   }
 }

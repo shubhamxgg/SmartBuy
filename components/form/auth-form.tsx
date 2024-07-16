@@ -42,7 +42,6 @@ export default function AuthForm({ isLogin, onToggleMode }: AccountFormProps) {
           setUser(result.user as User);
           toast.success("Login successful!");
           closeModal();
-          router.push("/");
         } else {
           toast.success("Registration successful!");
           onToggleMode();

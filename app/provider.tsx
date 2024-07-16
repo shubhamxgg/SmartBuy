@@ -3,7 +3,7 @@ import { ThemeProvider } from "@/components/theme";
 import React from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import AuthModal from "@/components/modal/auth-modal";
+import AuthModal from "@/components/modal/login-modal";
 
 const queryClient = new QueryClient();
 
