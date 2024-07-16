@@ -2,13 +2,10 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-import { useState } from "react";
+
 
 interface ItemCategoryCardProps {
-  item: {
-    name: string;
-    imageUrl: string;
-  };
+  item: any
 }
 
 const ItemCategoryCard = ({ item }: ItemCategoryCardProps) => {
