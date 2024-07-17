@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 
 async function fetchProducts(searchParams: URLSearchParams) {
-  const response = await fetch(`/api/products?${searchParams.toString()}`)
+  const response = await fetch(`/api/search?${searchParams.toString()}`)
   if (!response.ok) {
     throw new Error('Failed to fetch products')
   }

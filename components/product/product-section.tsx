@@ -32,7 +32,7 @@ export async function ProductSection({ categoryName }: ProductSectionProps) {
         </h2>
         <Button variant="outline" asChild className="group">
           <a
-            href={`/search?category=${categoryId}`}
+            href={`/search?categoryId=${categoryId}`}
             className="flex items-center"
           >
             View All Products

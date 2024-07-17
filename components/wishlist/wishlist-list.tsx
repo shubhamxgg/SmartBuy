@@ -2,6 +2,7 @@
 
 import { useFetchAllWishlist } from "@/hooks/use-fetch-wishlist";
 import WishlistGrid from "./wishlist-grid";
+import WishlistSkeleton from "./wishlist-skeleton";
 
 interface WishlistContentProps {
   userId: number;
@@ -19,7 +20,7 @@ export default function WishlistContent({ userId }: WishlistContentProps) {
 
   if (status === "error") return <h1>Error: {error.message}</h1>;
   if (isLoading) {
-    return <div>Loadind...</div>;
+    return <WishlistSkeleton />;
   }
   return (
     <div className="space-y-6">
