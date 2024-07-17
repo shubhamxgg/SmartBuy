@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import useCartStore from "@/store/useCartStore";
 import { useUserAuth } from "@/hooks/use-auth";
-import CartButton from "./cart-button";
 import CartList from "./cart-list";
 import useCartSheet from "@/hooks/use-cart-sheet";
 import { Button } from "../ui/button";
@@ -36,7 +35,7 @@ const CartPage = () => {
       <SheetContent className="w-full sm:max-w-md">
         <CartList
           cartItems={cart?.items ?? []}
-          onClose={() => {}}
+          onClose={() => setIsOpen(false)}
           isLoading={isLoading}
           error={error}
         />

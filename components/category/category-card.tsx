@@ -14,7 +14,7 @@ interface CategoryCardProps {
 
 export function CategoryCard({ category }: CategoryCardProps) {
   return (
-    <Link href={`/products?categoryId=${category.id}`} passHref>
+    <Link href={`/search?categoryId=${category.id}`} passHref>
       <Card className="group relative w-72 h-48 overflow-hidden transition-all duration-300 hover:shadow-lg">
         <Image
           src={category.imageUrl}

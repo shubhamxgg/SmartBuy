@@ -19,8 +19,8 @@ const navItems = [
   { href: "/", icon: HomeIcon, label: "Home" },
   { href: "/orders", icon: ShoppingBagIcon, label: "Orders" },
   { href: "/wishlist", icon: HeartIcon, label: "Wishlist" },
-  { href: "/account", icon: UserIcon, label: "Account" },
-  { href: "/settings", icon: SettingsIcon, label: "Settings" },
+  { href: "#", icon: UserIcon, label: "Account" },
+  { href: "#", icon: SettingsIcon, label: "Settings" },
 ];
 
 const HomePageSidebar = () => {
