@@ -42,19 +42,25 @@ const UserDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="rounded-sm" size="icon" variant="ghost">
-          <Avatar >
+        <Button className="rounded-md p-0" size="icon" variant="outline">
+          <Avatar className="h-8 w-8 rounded-md">
             {isAuthenticated && user ? (
               <AvatarImage
                 src={"https://github.com/shadcn.png"}
                 alt={user.name}
-                
+                className="rounded-md"
               />
-            ) : null}
-            <AvatarFallback>
+            ) : (
+              <AvatarImage
+                src="/default-avatar.png"
+                alt="Default user"
+                className="rounded-md"
+              />
+            )}
+            <AvatarFallback className="rounded-md">
               {isAuthenticated && user
                 ? user.name.charAt(0).toUpperCase()
-                : "NL"}
+                : "G"}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -89,10 +95,16 @@ const UserDropdown = () => {
             </DropdownMenuItem>
           </>
         ) : (
-          <DropdownMenuItem onClick={handleLogin} className="cursor-pointer">
-            <User className="h-4 w-4 mr-2" />
-            Login
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuItem onClick={handleLogin} className="cursor-pointer">
+              <User className="h-4 w-4 mr-2" />
+              Login
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild onClick={handleLogin}>
+              <User className="h-4 w-4 mr-2" />
+              Register
+            </DropdownMenuItem>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,5 +1,10 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from 'recharts';
+import { useUserAuth } from "@/hooks/use-auth";
+import useAuthModalStore from "@/store/useAuthModalStore";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
 const data = [
   { name: "Jan", total: 1200 },
   { name: "Feb", total: 1900 },
@@ -10,7 +15,22 @@ const data = [
 ];
 
 export default function DashboardPage() {
-  
+  const router = useRouter();
+  const { user, isAuthenticated, showLoginToast } = useUserAuth();
+  const { openModal } = useAuthModalStore();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/");
+      openModal();
+      return;
+    }
+  }, [user, isAuthenticated, openModal, router]);
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="space-y-4">
       <h2 className="text-3xl font-bold">Dashboard Overview</h2>

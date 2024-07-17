@@ -30,8 +30,14 @@ export default function AuthForm({ isLogin, onToggleMode }: AccountFormProps) {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormInputs>();
+
+  const fillAdminCredentials = () => {
+    setValue("email", "admin@x.com");
+    setValue("password", "admin123");
+  };
 
   const mutation = useMutation({
     mutationFn: async (data: FormInputs) =>
@@ -71,7 +77,7 @@ export default function AuthForm({ isLogin, onToggleMode }: AccountFormProps) {
           id="email"
           type="email"
           placeholder="Enter your email"
-          {...register("email", { 
+          {...register("email", {
             required: "Email is required",
             pattern: {
               value: /\S+@\S+\.\S+/,
@@ -105,18 +111,30 @@ export default function AuthForm({ isLogin, onToggleMode }: AccountFormProps) {
         )}
       </div>
 
-      <Button
-        type="submit"
-        className="w-full"
-        disabled={isSubmitting}
-      >
+      <div className="text-center">
+        <p className="text-sm text-gray-500 mb-2">
+          For testing, use <strong>admin@x.com</strong> and password <strong>admin123</strong>
+        </p>
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={fillAdminCredentials}
+        >
+          Fill Admin Credentials
+        </Button>
+      </div>
+
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Please wait
           </>
+        ) : isLogin ? (
+          "Log in"
         ) : (
-          isLogin ? "Log in" : "Sign up"
+          "Sign up"
         )}
       </Button>
     </form>
