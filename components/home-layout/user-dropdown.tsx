@@ -100,7 +100,7 @@ const UserDropdown = () => {
               <User className="h-4 w-4 mr-2" />
               Login
             </DropdownMenuItem>
-            <DropdownMenuItem asChild onClick={handleLogin}>
+            <DropdownMenuItem onClick={handleLogin}>
               <User className="h-4 w-4 mr-2" />
               Register
             </DropdownMenuItem>
