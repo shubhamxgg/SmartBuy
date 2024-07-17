@@ -1,59 +1,52 @@
 "use client";
 
-import { createWishlist, removeItemFromWishlist } from "@/lib/actions/wishlist";
-import { cn } from "@/lib/utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import {
+  checkWishlistStatus,
+  toggleWishlistItem,
+} from "@/lib/actions/wishlist-btn";
+
+import { useUserAuth } from "@/hooks/use-auth";
 
 interface WishlistButtonProps {
-  userId: number;
   productId: number;
-  isWishList: boolean;
   className?: string;
 }
 
-const WishlistButton = ({
-  isWishList,
-  productId,
-  userId,
-  className,
-}: WishlistButtonProps) => {
-  const [isInWishlist, setIsInWishlist] = useState(isWishList);
-  const queryClient = useQueryClient();
+export function WishlistButton({ productId, className }: WishlistButtonProps) {
+  const { userId, isAuthenticated } = useUserAuth();
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const addMutation = useMutation({
-    mutationFn: () => createWishlist({ productId, userId }),
-    onSuccess: () => {
-      setIsInWishlist(true);
-      toast.success("Added to wishlist!");
-      queryClient.invalidateQueries({ queryKey: ["wishlist", userId] });
-    },
-    onError: (error: Error) => {
-      toast.error(`Error adding to wishlist: ${error.message}`);
-    },
-  });
+  useEffect(() => {
+    if (isAuthenticated && userId) {
+      checkWishlistStatus(userId, productId).then(setIsInWishlist);
+    }
+  }, [isAuthenticated, userId, productId]);
 
-  const removeMutation = useMutation({
-    mutationFn: () => removeItemFromWishlist({ productId, userId }),
-    onSuccess: () => {
-      setIsInWishlist(false);
-      toast.success("Removed from wishlist!");
-      queryClient.invalidateQueries({ queryKey: ["wishlist", userId] });
-    },
-    onError: (error: Error) => {
-      toast.error(`Error removing from wishlist: ${error.message}`);
-    },
-  });
+  const handleWishlistToggle = async () => {
+    if (!isAuthenticated) {
+      toast.error("Please log in to use the wishlist");
+      return;
+    }
 
-  const handleWishlistToggle = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (isInWishlist) {
-      removeMutation.mutate();
-    } else {
-      addMutation.mutate();
+    setIsLoading(true);
+    try {
+      const newStatus = await toggleWishlistItem(userId, productId);
+      setIsInWishlist(newStatus);
+      toast.success(
+        newStatus ? "Added to wishlist!" : "Removed from wishlist!"
+      );
+    } catch (error) {
+      toast.error("Failed to update wishlist");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,22 +55,23 @@ const WishlistButton = ({
       size="icon"
       variant="ghost"
       onClick={handleWishlistToggle}
-      disabled={addMutation.isPending || removeMutation.isPending}
+      disabled={!isAuthenticated || isLoading}
       className={cn(
-        "transition-colors duration-200",
-        isInWishlist ? "text-primary" : "text-gray-400",
+        "transition-all duration-200 hover:scale-110",
+        isInWishlist ? "text-red-500" : "text-gray-400",
         className
       )}
       aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <Heart
         className={cn(
-          "h-6 w-6",
-          isInWishlist && "fill-primary"
+          "h-6 w-6 transition-all duration-200",
+          isInWishlist && "fill-current",
+          isHovered && !isInWishlist && "text-red-500"
         )}
       />
     </Button>
   );
-};
-
-export default WishlistButton;
+}

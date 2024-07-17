@@ -6,6 +6,8 @@ import useItemData from "@/hooks/use-item";
 import ProductSkeleton from "@/components/products/product-skeleton";
 import ProductBreadcrumbs from "@/components/products/product-breadcrumb";
 import SkeletonLoader from "@/components/skeleton-loader";
+import { ProductSection } from "@/components/product/product-section";
+
 
 const ProductImages = dynamic(
   () => import("@/components/products/product-images"),
@@ -15,9 +17,7 @@ const ProductDetails = dynamic(
   () => import("@/components/products/product-details"),
   { ssr: false }
 );
-const ItemSection = dynamic(() => import("@/components/items/item-section"), {
-  ssr: false,
-});
+
 const ProductCustomerRatings = lazy(
   () => import("@/components/products/product-customer-ratings")
 );
@@ -31,9 +31,9 @@ interface ItemPageProps {
   };
 }
 
-const ItemsPage = ({ params: { id } }: ItemPageProps) => {
+const ProductPage = ({ params: { id } }: ItemPageProps) => {
   const { data: product, isLoading, error } = useItemData(Number(id));
-  
+
   if (isLoading) return <ProductSkeleton />;
   if (error) return <div>Error: {error.message}</div>;
   if (!product) return <div>Product not found</div>;
@@ -54,7 +54,7 @@ const ItemsPage = ({ params: { id } }: ItemPageProps) => {
       </div>
 
       <Suspense fallback={<SkeletonLoader />}>
-        <ItemSection title="Mobile" />
+        <ProductSection categoryName="Mobile" />
       </Suspense>
 
       <div className="py-5 md:py-10 flex flex-col lg:flex-row gap-5 p-2 md:p-4 rounded-sm">
@@ -70,4 +70,4 @@ const ItemsPage = ({ params: { id } }: ItemPageProps) => {
   );
 };
 
-export default React.memo(ItemsPage);
+export default React.memo(ProductPage);

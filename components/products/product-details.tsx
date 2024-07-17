@@ -10,16 +10,18 @@ import {
   Calendar,
   CheckCircle,
 } from "lucide-react";
-import WishlistButton from "../wishlist-button";
-import useCart from "@/hooks/use-cart";
-import { useUserAuth } from "@/hooks/use-user-auth";
+
+import { useUserAuth } from "@/hooks/use-auth";
+import { useCart } from "@/hooks/use-cart";
+import { WishlistButton } from "../home-layout/wishlist-button";
 
 interface ProductDetailsProps {
   product: Product;
 }
 
 const ProductDetails = ({ product }: ProductDetailsProps) => {
-  const { handleAddToCart } = useCart(product);
+  const { addToCart } = useCart();
+
   const { userId, isAuthenticated, showLoginToast } = useUserAuth();
   if (userId === undefined) {
     return <div>Please log in to add items to your wishlist.</div>;
@@ -77,16 +79,16 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
         <Button className="flex-1 bg-primary hover:bg-primary/90">
           Buy Now
         </Button>
-        <Button className="flex-1" variant="outline" onClick={handleAddToCart}>
+        <Button
+          className="flex-1"
+          variant="outline"
+          onClick={() => addToCart(product)}
+        >
           Add to Cart
         </Button>
       </div>
 
-      <WishlistButton
-        userId={userId!!}
-        productId={product.id}
-        isWishList={false}
-      />
+      <WishlistButton productId={product.id} />
 
       <div className="border-t border-border pt-6 mb-8">
         <h3 className="text-xl font-semibold mb-4">Product Details</h3>

@@ -4,7 +4,9 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { Button } from "../ui/button";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
+
 
 interface CartSummaryProps {
   onClose: () => void;
@@ -41,7 +43,9 @@ const CartSummary = ({ onClose }: CartSummaryProps) => {
 
   const handleClearCart = useCallback(() => {
     clearCart();
-  }, [clearCart]);
+    toast.message("Cart cleared");
+    onClose();
+  }, [clearCart, onClose]);
 
   return (
     <div className="bg-card rounded-lg p-6 shadow-lg border border-gray-700">
@@ -50,14 +54,9 @@ const CartSummary = ({ onClose }: CartSummaryProps) => {
           <ShoppingBag className="mr-2 h-5 w-5" />
           Cart Summary
         </h3>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleClearCart}
-          className="text-sm"
-        >
-          Clear Cart
-        </Button>
+       <Button variant="outline" size="sm" onClick={handleClearCart} className="text-sm">
+         Clear Cart <ShoppingCart className="ml-2 h-4 w-4" />
+       </Button>
       </div>
       <div className="space-y-2 mb-6">
         <div className="flex justify-between text-gray-400">

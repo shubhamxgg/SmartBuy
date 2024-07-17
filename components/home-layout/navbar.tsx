@@ -2,7 +2,7 @@ import Link from "next/link";
 import { BaggageClaimIcon, Store, Search, Menu } from "lucide-react";
 import SearchBar from "../searchbar";
 import UserDropdown from "./user-dropdown";
-import CartPage from "./cart-page";
+import CartPage from "../cart/cart-page";
 import { Button } from "../ui/button";
 import { Suspense } from "react";
 import HomePageSidebar from "./home-sidebar";
@@ -36,9 +36,9 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <Link href="/products" className="sm:hidden">
+            <Link href="/search" className="sm:hidden">
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 className="text-muted-foreground hover:bg-white/10"
               >
@@ -47,9 +47,9 @@ const Navbar = () => {
             </Link>
             <Link
               href="/dashboard"
-              className="hidden md:flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="hidden md:flex items-center px-3 py-2 rounded-md text-sm font-medium bg-primary-foreground text-primary hover:bg-primary/90 transition-colors"
             >
-              <Store className="h-5 w-5 mr-1" />
+              <Store className="h-5 w-5 mr-2" />
               <span>Dashboard</span>
             </Link>
             <CartPage />

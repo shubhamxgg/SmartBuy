@@ -23,7 +23,7 @@ export default function SortDropdown() {
     const [sortBy, sortOrder] = value.split('-');
     params.set('sortBy', sortBy);
     params.set('sortOrder', sortOrder);
-    router.push(`/products?${params.toString()}`);
+    router.push(`/search?${params.toString()}`);
   };
 
   const currentSort = `${searchParams.get('sortBy') || 'createdAt'}-${searchParams.get('sortOrder') || 'desc'}`;

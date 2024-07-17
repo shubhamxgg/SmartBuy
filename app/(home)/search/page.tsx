@@ -1,100 +1,105 @@
-// "use client";
+import { Suspense } from "react";
+import { getCategories } from "@/lib/actions/category";
+import { getSellers } from "@/lib/actions/seller";
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
+import MobileFilters from "@/components/filtering/filter-drawer";
 
-// import { Suspense, lazy } from "react";
-// import dynamic from "next/dynamic";
-// import { useRouter } from "next/navigation";
-// import { useFilterStore } from "@/store/useFilterStore";
-// import useSyncURLWithState from "@/hooks/use-filtered-url";
-// import useProducts from "@/hooks/use-products";
+const ProductList = dynamic(
+  () => import("@/components/filtering/product-list"),
+  {
+    ssr: false,
+    loading: () => <ProductListSkeleton />,
+  }
+);
 
-// import SearchHeader from "@/components/search/search-header";
-// import { Skeleton } from "@/components/ui/skeleton";
+const FilterSidebar = dynamic(
+  () => import("@/components/filtering/filter-sidebar"),
+  {
+    ssr: false,
+    loading: () => <FilterSidebarSkeleton />,
+  }
+);
 
-// const SearchSidebar = dynamic(() => import("@/components/search/search-sidebar"), { ssr: false });
-// const SearchSortMenu = dynamic(() => import("@/components/search/search-sort-menu"), { ssr: false });
-// const SearchFilterDrawer = dynamic(() => import("@/components/search/search-drawer"), { ssr: false });
-// const SearchResults = lazy(() => import("@/components/search/seach-result"));
+const SortDropdown = dynamic(
+  () => import("@/components/filtering/sort-dropdown"),
+  {
+    ssr: false,
+    loading: () => <SortDropdownSkeleton />,
+  }
+);
 
-// const Search = () => {
-//   const router = useRouter();
-//   useSyncURLWithState();
-//   const { priceRange, selectedBrands, selectedCategories, selectedRating, sort } = useFilterStore();
-
-//   const filters = {
-//     priceRange,
-//     selectedBrands,
-//     categoryNames: selectedCategories,
-//     selectedRating,
-//     sort,
-//   };
-
-//   const { data: products, error } = useProducts(filters);
-//   const isLoading = false;
-
-//   const handleBack = () => {
-//     router.back();
-//   };
-
-//   return (
-//     <div className="flex flex-col">
-//       <SearchHeader resultCount={products?.length || 0} onBack={handleBack} />
-
-//       <main className="flex-grow container mx-auto px-4 py-8">
-//         <div className="hidden lg:block mb-6">
-//           <Suspense fallback={<Skeleton className="h-10 w-full" />}>
-//             <SearchSortMenu />
-//           </Suspense>
-//         </div>
-
-//         <div className="flex flex-col md:flex-row gap-8">
-//           <aside className="hidden md:block w-full md:w-64 lg:w-72 flex-shrink-0">
-//             <div className="sticky top-24">
-//               <Suspense fallback={<Skeleton className="h-[600px] w-full" />}>
-//                 <SearchSidebar />
-//               </Suspense>
-//             </div>
-//           </aside>
-
-//           <div className="flex-grow">
-//             <Suspense fallback={<ProductsSkeleton />}>
-//               <SearchResults
-//                 isLoading={isLoading}
-//                 error={error}
-//                 products={products}
-//               />
-//             </Suspense>
-//           </div>
-//         </div>
-//       </main>
-
-//       <Suspense fallback={null}>
-//         <SearchFilterDrawer />
-//       </Suspense>
-//     </div>
-//   );
-// };
-
-// const ProductsSkeleton = () => (
-//   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-//     {[...Array(8)].map((_, i) => (
-//       <div key={i} className="space-y-2">
-//         <Skeleton className="h-48 w-full" />
-//         <Skeleton className="h-4 w-2/3" />
-//         <Skeleton className="h-4 w-1/2" />
-//       </div>
-//     ))}
-//   </div>
-// );
-
-// export default Search;
-
-
-const page = () => {
+function ProductListSkeleton() {
   return (
-    <div>
-      Enter
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[...Array(6)].map((_, i) => (
+        <div key={i} className="space-y-4">
+          <Skeleton className="h-48 w-full" />
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-4 w-1/2" />
+        </div>
+      ))}
     </div>
   );
 }
 
-export default page;
+function FilterSidebarSkeleton() {
+  return (
+    <div className="space-y-6">
+      <Skeleton className="h-8 w-3/4" />
+      {[...Array(3)].map((_, i) => (
+        <div key={i} className="space-y-2">
+          <Skeleton className="h-6 w-1/2" />
+          {[...Array(4)].map((_, j) => (
+            <Skeleton key={j} className="h-4 w-full" />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SortDropdownSkeleton() {
+  return (
+    <div className="flex justify-end">
+      <Skeleton className="h-10 w-40" />
+    </div>
+  );
+}
+
+export default async function SearchPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const [categories, sellers] = await Promise.all([
+    getCategories(),
+    getSellers(),
+  ]);
+
+  return (
+    <div className="space-y-4 pb-20 md:pb-0">
+      <h1 className="text-3xl font-bold mb-8">Search Products</h1>
+      <div className="flex items-center justify-end mb-4">
+        <div className="hidden md:block">
+          <Suspense fallback={<SortDropdownSkeleton />}>
+            <SortDropdown />
+          </Suspense>
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row">
+        <div className="hidden md:block w-fit lg:sticky lg:top-28 lg:self-start lg:max-h-[calc(100vh-8rem)] overflow-y-auto ">
+          <Suspense fallback={<FilterSidebarSkeleton />}>
+            <FilterSidebar categories={categories} sellers={sellers} />
+          </Suspense>
+        </div>
+        <div className="flex-1 md:ml-8">
+          <Suspense fallback={<ProductListSkeleton />}>
+            <ProductList searchParams={searchParams} />
+          </Suspense>
+        </div>
+      </div>
+      <MobileFilters categories={categories} sellers={sellers} />
+    </div>
+  );
+}

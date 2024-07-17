@@ -25,7 +25,7 @@ const SearchBar = () => {
       } else {
         params.delete('search');
       }
-      router.push(`/products?${params.toString()}`);
+      router.push(`/search?${params.toString()}`);
     });
   };
 
@@ -34,7 +34,7 @@ const SearchBar = () => {
     startTransition(() => {
       const params = new URLSearchParams(searchParams);
       params.delete('search');
-      router.push(`/products?${params.toString()}`);
+      router.push(`/search?${params.toString()}`);
     });
   };
 
