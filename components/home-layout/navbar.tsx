@@ -2,7 +2,7 @@ import Link from "next/link";
 import { BaggageClaimIcon, Store, Search, Menu } from "lucide-react";
 import SearchBar from "../searchbar";
 import UserDropdown from "./user-dropdown";
-import CartPage from "./cart-page";
+import CartPage from "../cart/cart-page";
 import { Button } from "../ui/button";
 import { Suspense } from "react";
 import HomePageSidebar from "./home-sidebar";

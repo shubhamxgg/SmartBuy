@@ -13,7 +13,7 @@ import {
 
 import { useUserAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
-import { WishlistButton } from "../cart/wishlist-button";
+import { WishlistButton } from "../home-layout/wishlist-button";
 
 interface ProductDetailsProps {
   product: Product;

@@ -15,7 +15,7 @@ const ProductGrid = dynamic(() => import("./product-grid"), {
 
 async function fetchProducts(searchParams: Record<string, string>) {
   const queryString = new URLSearchParams(searchParams).toString();
-  const response = await fetch(`/api/products?${queryString}`);
+  const response = await fetch(`/api/search?${queryString}`);
   if (!response.ok) {
     throw new Error("Failed to fetch products");
   }

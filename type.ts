@@ -55,8 +55,7 @@ export interface FilterState {
 
 export interface CartItems {
   id: number;
-  cartId: number;
-  userId: number | null;
+
   productId: number;
   quantity: number;
   product: Product;
