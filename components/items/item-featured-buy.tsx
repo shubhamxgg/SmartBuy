@@ -65,7 +65,7 @@ const ItemFeaturedBuy = () => {
       </div>
       <CardContent className="p-8 flex flex-col flex-1">
         <Badge className="w-fit mb-4">Featured Product</Badge>
-        <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
+        <h1 className="text-2xl sm:text-4xl font-bold mb-2">{product.name}</h1>
         <div className="flex items-center mb-4">
           <span className="text-2xl font-bold text-primary">${product.price}</span>
           {product.originalPrice && (

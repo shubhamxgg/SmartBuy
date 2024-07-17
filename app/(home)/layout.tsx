@@ -7,7 +7,7 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="sticky top-0 z-50">
         <Navbar />
       </div>
-      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <main className="flex-grow max-w-8xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {children}
       </main>
       <Footer />

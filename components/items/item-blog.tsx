@@ -60,7 +60,7 @@ const ItemBlog = () => {
     <div className="py-10">
       <div className="bg-card rounded-lg shadow-md overflow-hidden border">
         <div className="p-6 flex justify-between items-center border-b mb-4">
-          <h1 className="text-3xl font-bold">Latest Blog Posts</h1>
+          <h1 className="text-xl sm:text-3xl font-bold">Latest Blog Posts</h1>
           <Link href="/blog">
             <Button variant="outline" className="hover:bg-accent">
               View all <ArrowRight className="ml-2 h-4 w-4" />

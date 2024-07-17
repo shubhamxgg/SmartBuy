@@ -25,7 +25,7 @@ const CartList = ({
   return (
     <>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Your Cart</h2>
+        <h2 className="text-2xl text-center font-bold">Your Cart</h2>
       </div>
       {cartItems.length === 0 ? (
         <CartEmpty />

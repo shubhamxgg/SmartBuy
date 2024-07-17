@@ -1,53 +1,75 @@
 'use client'
+import { useState } from 'react';
 import {
   HomeIcon,
-  Package2Icon,
-  PackageIcon,
-  PanelLeft,
-  ShoppingCartIcon,
-  User,
-  Settings,
+  ShoppingBagIcon,
+  HeartIcon,
+  UserIcon,
+  SettingsIcon,
+  MenuIcon,
+  XIcon,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 const navItems = [
-  { href: "/", icon: HomeIcon, label: "Dashboard" },
-  { href: "/orders", icon: ShoppingCartIcon, label: "Orders" },
-  { href: "/wishlist", icon: PackageIcon, label: "Wishlist" },
-  { href: "/account", icon: User, label: "Account" },
-  { href: "/settings", icon: Settings, label: "Settings" },
+  { href: "/", icon: HomeIcon, label: "Home" },
+  { href: "/orders", icon: ShoppingBagIcon, label: "Orders" },
+  { href: "/wishlist", icon: HeartIcon, label: "Wishlist" },
+  { href: "/account", icon: UserIcon, label: "Account" },
+  { href: "/settings", icon: SettingsIcon, label: "Settings" },
 ];
 
 const HomePageSidebar = () => {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button className="sm:hidden" variant="outline" size="sm">
-          <PanelLeft className="h-5 w-5" />
+        <Button className="fixed top-4 left-4 z-50 sm:hidden" variant="outline" size="icon">
+          <MenuIcon className="h-6 w-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-        <nav className="grid gap-6 text-lg font-medium">
-          <Link
-            className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-            href="/"
-          >
-            <Package2Icon className="h-5 w-5 transition-all group-hover:scale-110" />
-            <span className="sr-only">NexMarket</span>
-          </Link>
-          {navItems.map((item) => (
-            <NavItem
-              key={item.href}
-              {...item}
-              isActive={pathname === item.href}
-            />
-          ))}
-        </nav>
+      <SheetContent side="left" className="w-[280px] sm:w-[350px] p-0">
+        <motion.div 
+          className="flex flex-col h-full bg-background/95 backdrop-blur-sm p-6"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary">SmartBuy</h1>
+            <p className="text-sm text-muted-foreground mt-2">Your one-stop shop for smart deals</p>
+          </div>
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            {navItems.map((item) => (
+              <NavItem
+                key={item.href}
+                {...item}
+                isActive={pathname === item.href}
+                onClick={() => setIsOpen(false)}
+              />
+            ))}
+          </div>
+          <div className="mt-auto space-y-4">
+            <p className="text-sm text-muted-foreground text-center">
+              © 2023 SmartBuy. All rights reserved.
+            </p>
+            <Button 
+              variant="outline" 
+              className="w-full" 
+              onClick={() => setIsOpen(false)}
+            >
+              <XIcon className="h-4 w-4 mr-2" />
+              Close Menu
+            </Button>
+          </div>
+        </motion.div>
       </SheetContent>
     </Sheet>
   );
@@ -58,19 +80,23 @@ interface NavItemProps {
   icon: React.ElementType;
   label: string;
   isActive: boolean;
+  onClick: () => void;
 }
 
-const NavItem = ({ href, icon: Icon, label, isActive }: NavItemProps) => (
-  <Link
-    className={`flex items-center gap-4 px-2.5 py-2 rounded-lg transition-colors ${
-      isActive
-        ? "bg-accent text-accent-foreground"
-        : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
-    }`}
-    href={href}
-  >
-    <Icon className="h-5 w-5" />
-    {label}
+const NavItem = ({ href, icon: Icon, label, isActive, onClick }: NavItemProps) => (
+  <Link href={href} onClick={onClick}>
+    <motion.div
+      className={`flex flex-col items-center justify-center p-4 rounded-xl transition-all ${
+        isActive
+          ? "bg-primary/10 text-primary shadow-lg"
+          : "bg-background/50 text-foreground hover:bg-primary/5 hover:shadow-md"
+      } backdrop-blur-sm`}
+      whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <Icon className="h-6 w-6 mb-2" />
+      <span className="text-sm font-medium">{label}</span>
+    </motion.div>
   </Link>
 );
 

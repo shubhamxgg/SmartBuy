@@ -39,7 +39,7 @@ const CartCard = ({ item }: CartItemProps) => {
             icon={<MinusIcon className="h-4 w-4" />}
             onClick={handleQuantityDecrease}
           />
-          <span className="mx-3 font-semibold">{item.quantity}</span>
+          <span className="mx-3 font-semibold">{quantity}</span>
           <CartUpdateButton
             icon={<PlusIcon className="h-4 w-4" />}
             onClick={handleQuantityIncrease}
@@ -48,7 +48,7 @@ const CartCard = ({ item }: CartItemProps) => {
       </div>
       <div className="flex flex-col items-end ml-4">
         <span className="font-semibold text-lg">
-          ${(item.product.price * Number(item.quantity)).toFixed(2)}
+          ${(price * Number(quantity)).toFixed(2)}
         </span>
         <CartUpdateButton
           className="text-red-400 hover:text-red-300 mt-2"

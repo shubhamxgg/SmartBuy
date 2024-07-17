@@ -7,6 +7,8 @@ import { useUserAuth } from "@/hooks/use-auth";
 import CartButton from "./cart-button";
 import CartList from "./cart-list";
 import useCartSheet from "@/hooks/use-cart-sheet";
+import { Button } from "../ui/button";
+import { ShoppingCart } from "lucide-react";
 
 const CartPage = () => {
   const { cart, fetchCart, isLoading, error } = useCartStore();
@@ -21,8 +23,15 @@ const CartPage = () => {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger>
-        <CartButton itemCount={cartItemCount} />
+      <SheetTrigger asChild>
+        <Button variant="outline" size="sm" className="relative p-2">
+          <ShoppingCart className="h-5 w-5" />
+          {cartItemCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+              {cartItemCount}
+            </span>
+          )}
+        </Button>
       </SheetTrigger>
       <SheetContent className="w-full sm:max-w-md">
         <CartList
