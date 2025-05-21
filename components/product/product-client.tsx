@@ -2,12 +2,12 @@
 
 import React, { Suspense, lazy } from "react";
 import dynamic from "next/dynamic";
-import useItemData from "@/hooks/use-item";
+import { useItemData } from "@/hooks/use-item";
 import ProductSkeleton from "@/components/products/product-skeleton";
 import ProductBreadcrumbs from "@/components/products/product-breadcrumb";
 import SkeletonLoader from "@/components/skeleton-loader";
 import { ProductSection } from "@/components/product/product-section";
-
+import { RetryButton } from "../retry-button";
 
 const ProductImages = dynamic(
   () => import("@/components/products/product-images"),
@@ -31,16 +31,17 @@ interface ItemPageProps {
   };
 }
 
-const ProductPage = ({ params: { id } }: ItemPageProps) => {
-  const { data: product, isLoading, error } = useItemData(Number(id));
+const ProductClient = ({ id }: { id: number }) => {
+  const { data: product, isLoading, error, refetch } = useItemData(Number(id));
 
   if (isLoading) return <ProductSkeleton />;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!product) return <div>Product not found</div>;
+  if (error)
+    return <RetryButton onClick={() => refetch()} error={error.message} />;
+  if (!product) return <ProductSkeleton />;
 
   return (
     <div className="flex flex-col w-full gap-8">
-      <div className="hidden sm:block p-5">
+      <div className="hidden sm:block p-2 md:p-5">
         <ProductBreadcrumbs category={product.category} title={product.title} />
       </div>
 
@@ -53,21 +54,21 @@ const ProductPage = ({ params: { id } }: ItemPageProps) => {
         </Suspense>
       </div>
 
-      <Suspense fallback={<SkeletonLoader />}>
+      {/* <Suspense fallback={<SkeletonLoader />}>
         <ProductSection categoryName="Mobile" />
-      </Suspense>
+      </Suspense> */}
 
       <div className="py-5 md:py-10 flex flex-col lg:flex-row gap-5 p-2 md:p-4 rounded-sm">
         <Suspense fallback={<SkeletonLoader />}>
-          <ProductCustomerRatings ratings={product.reviews} />
+          <ProductCustomerRatings ratings={[]} />
         </Suspense>
 
         <Suspense fallback={<SkeletonLoader />}>
-          <ProductReviews reviews={product.reviews} />
+          <ProductReviews reviews={[]} />
         </Suspense>
       </div>
     </div>
   );
 };
 
-export default React.memo(ProductPage);
+export default React.memo(ProductClient);

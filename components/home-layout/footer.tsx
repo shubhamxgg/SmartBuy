@@ -16,13 +16,13 @@ const Footer = () => {
             <Instagram />
           </a>
         </div>
-        <p className="text-gray-400">&copy; 2024 Nex Company</p>
+        <p className="text-gray-400">&copy; Smart Buy</p>
         <Button
           size="default"
           variant="outline"
           className="text-gray-400 hover:text-white hidden sm:block"
         >
-          Subscribe
+          Contact Us
         </Button>
       </div>
     </footer>

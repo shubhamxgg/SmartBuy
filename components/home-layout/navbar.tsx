@@ -6,6 +6,7 @@ import CartPage from "../cart/cart-page";
 import { Button } from "../ui/button";
 import { Suspense } from "react";
 import HomePageSidebar from "./home-sidebar";
+import Image from "next/image";
 
 const Navbar = () => {
   return (
@@ -15,12 +16,15 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link
               href="/"
-              className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              className="hidden sm:flex items-center space-x-2 hover:opacity-80 transition-opacity duration-200"
             >
-              <BaggageClaimIcon className="hidden sm:inline-block h-8 w-8 text-primary" />
-              <span className="text-xl font-bold hidden sm:inline-block">
-                SmartBuy
-              </span>
+              <Image
+                src={"/logo/icon-text.svg"}
+                alt="Logo"
+                width={150}
+                height={100}
+                className="h-8 w-auto"
+              />
             </Link>
             <HomePageSidebar />
           </div>
@@ -47,7 +51,7 @@ const Navbar = () => {
             </Link>
             <Link
               href="/dashboard"
-              className="hidden md:flex items-center px-3 py-2 rounded-md text-sm font-medium bg-primary-foreground text-primary hover:bg-primary/90 transition-colors"
+              className="hidden md:flex items-center px-3 py-2 rounded-md text-sm font-medium bg-primary-foreground text-primary hover:bg-muted transition-colors"
             >
               <Store className="h-5 w-5 mr-2" />
               <span>Dashboard</span>

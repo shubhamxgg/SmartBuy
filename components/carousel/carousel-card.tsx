@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { ShoppingCart } from "lucide-react";
+import { LazyImage } from "../lazy-image";
 
 interface CarouselItem {
   id: number;
@@ -17,13 +18,15 @@ export function CarouselCard({ item }: CarouselCardType) {
   return (
     <div className="w-full shrink-0 relative h-[400px] flex items-center">
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent z-10" />
-      <Image
-        alt={item.title}
-        className="object-contain bg-white w-full h-full"
-        src={item.imageUrl}
-        fill
-        priority
-      />
+      <div className="absolute inset-0">
+        <LazyImage
+          src={item.imageUrl}
+          alt={item.title}
+          priority={false}
+          className="transition-transform duration-300 hover:scale-105"
+          sizes="100vw"
+        />
+      </div>
       <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-start">
         <div className="max-w-lg">
           <h3 className="text-3xl font-bold text-white mb-4 leading-tight">

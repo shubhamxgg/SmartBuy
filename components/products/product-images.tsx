@@ -26,7 +26,10 @@ const ProductImages = ({ product }: ProductImagesProps) => {
           src={allImages[currentImageIndex]}
           layout="fill"
           objectFit="contain"
+          loading="lazy"
           className="rounded-lg overflow-hidden"
+          placeholder="blur"
+          blurDataURL={allImages[currentImageIndex]}
         />
         {allImages.length > 1 && (
           <>
@@ -60,6 +63,7 @@ const ProductImages = ({ product }: ProductImagesProps) => {
               width={80}
               height={80}
               objectFit="cover"
+              loading="lazy"
               className="rounded-sm overflow-hidden"
             />
           </button>
