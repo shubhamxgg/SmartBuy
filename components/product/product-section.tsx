@@ -2,6 +2,7 @@ import { getProductByCategory } from "@/lib/actions/category";
 import { ProductGrid } from "./product-grid";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 interface ProductSectionProps {
   categoryName: string;
@@ -25,22 +26,22 @@ export async function ProductSection({ categoryName }: ProductSectionProps) {
   const { id: categoryId, products } = categoryData[0];
 
   return (
-    <section className="mb-12">
+    <div className="mb-12">
       <div className="flex flex-row items-center justify-between mb-6 pb-4 border-b">
         <h2 className="text-xl sm:text-3xl font-bold text-gray-800 sm:mb-0">
           <span className="bg-clip-text text-primary">{categoryName}</span>
         </h2>
         <Button variant="outline" asChild className="group">
-          <a
+          <Link
             href={`/search?categoryId=${categoryId}`}
             className="flex items-center"
           >
             View All Products
             <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </a>
+          </Link>
         </Button>
       </div>
       <ProductGrid products={products} />
-    </section>
+    </div>
   );
 }

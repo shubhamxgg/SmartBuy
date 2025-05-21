@@ -3,7 +3,6 @@ import {
   SearchParamsSchema,
   safeParseProduct,
 } from "@/lib/schemas";
-import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 export async function GET(request: Request) {

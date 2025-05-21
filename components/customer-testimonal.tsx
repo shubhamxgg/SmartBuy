@@ -62,7 +62,7 @@ const CustomerTestimonial = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-8 p-8 bg-card bg-opacity-60 rounded-xl border">
+    <div className="flex flex-col md:flex-row gap-8 p-8 bg-card bg-opacity-60 rounded-xl border mt-5">
       <div className="w-full md:w-1/3 flex items-center justify-center">
         <h2 className="text-4xl md:text-5xl font-bold text-center leading-tight">
           What Our Customers Say

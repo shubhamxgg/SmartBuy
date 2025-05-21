@@ -96,7 +96,7 @@ export default function FilterSidebar({
   return (
     <div className="w-80 flex-shrink-0 p-6 space-y-6 bg-gradient-to-br from-background to-background/80 rounded-xl shadow-lg border border-primary/10 h-full mr-8 scroll-smooth scrollbar-hide">
       <div className="flex justify-between items-center">
-        <h2 className="font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+        <h2 className="font-bold text-2xl">
           Filters
         </h2>
         <Button

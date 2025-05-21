@@ -1,4 +1,3 @@
-import { Product } from "@/type";
 import { ProductCard } from "./product-card";
 
 interface ProductGridProps {

@@ -6,8 +6,13 @@ import Provider from "./provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Nexus",
-  description: "nexus",
+  title: "Smarty Buy",
+  description: "Your one-stop shop for all things smart.",
+  icons: {
+    icon: "/logo/icon.svg",
+    shortcut: "/logo/icon.svg",
+    apple: "/logo/icon.svg",
+  },
 };
 
 export default function RootLayout({

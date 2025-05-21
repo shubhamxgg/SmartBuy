@@ -70,7 +70,7 @@ function SortDropdownSkeleton() {
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: any;
 }) {
   const [categories, sellers] = await Promise.all([
     getCategories(),
