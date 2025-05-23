@@ -8,14 +8,21 @@ interface ProductImagesProps {
 
 const ProductImages = ({ product }: ProductImagesProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const allImages = [product.imageUrl, ...(product.images?.map((img: any) => img.url) || [])];
+  const allImages = [
+    product.imageUrl,
+    ...(product.images?.map((img: any) => img.url) || []),
+  ];
+  console.log(product);
+  console.log(allImages);
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % allImages.length);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + allImages.length) % allImages.length);
+    setCurrentImageIndex(
+      (prevIndex) => (prevIndex - 1 + allImages.length) % allImages.length
+    );
   };
 
   return (
@@ -27,7 +34,7 @@ const ProductImages = ({ product }: ProductImagesProps) => {
           layout="fill"
           objectFit="contain"
           loading="lazy"
-          className="rounded-lg overflow-hidden"
+          className="rounded-lg overflow-hidden bg-white"
           placeholder="blur"
           blurDataURL={allImages[currentImageIndex]}
         />
@@ -54,7 +61,7 @@ const ProductImages = ({ product }: ProductImagesProps) => {
             key={index}
             onClick={() => setCurrentImageIndex(index)}
             className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 ${
-              index === currentImageIndex ? 'border-primary' : 'border-border'
+              index === currentImageIndex ? "border-primary" : "border-border"
             }`}
           >
             <Image

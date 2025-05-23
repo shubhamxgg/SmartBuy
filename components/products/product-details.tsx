@@ -82,7 +82,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
         <Button
           className="flex-1"
           variant="outline"
-          onClick={() => addToCart(product)}
+          onClick={() => addToCart(product, 1)}
         >
           Add to Cart
         </Button>

@@ -31,13 +31,10 @@ const CartList = ({
         <CartEmpty />
       ) : (
         <>
-          <div className="flex-grow overflow-y-auto mb-6">
+          <div className="flex-grow mb-6 overflow-y-scroll h-[400px]">
             {cartItems.map((item) => (
               <CartCard key={item.id} item={item} />
             ))}
-          </div>
-          <div className="mt-auto">
-            <CartSummary onClose={onClose} />
           </div>
         </>
       )}

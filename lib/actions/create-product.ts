@@ -1,13 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import db from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { ProductStatus } from "@prisma/client";
-import { writeFile } from "fs/promises";
-import { join } from "path";
 import { z } from "zod";
-import { mkdir } from "fs/promises";
 
 const productSchema = z.object({
   name: z
@@ -60,40 +56,32 @@ export async function createProduct(prevState: any, formData: FormData) {
   const validatedData = validationResult.data;
 
   try {
-    const uploadDir = join(process.cwd(), "public", "uploads");
+    const mainImage = formData.get("mainImage") as string;
+    const additionalImages = formData.getAll("additionalImages") as string[];
 
-    await mkdir(uploadDir, { recursive: true });
+    const uploadFormData = new FormData();
+    uploadFormData.append("files", mainImage);
+    additionalImages.forEach((file) => {
+      uploadFormData.append("files", file);
+    });
 
-    const mainImage = formData.get("mainImage") as File;
-    if (!mainImage) {
-      return { message: "Main image is required" };
+    const response = await fetch("http:localhost:3000/api/upload", {
+      method: "POST",
+      body: uploadFormData,
+    });
+
+    const uploadResponse = await response.json();
+    console.log("Upload response:", uploadResponse);
+    if (!response.ok) {
+      throw new Error("Failed to upload main image");
     }
 
-    let imageUrl = "";
-    const bytes = await mainImage.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const filename = `${Date.now()}-${mainImage.name}`;
-    const path = join(uploadDir, filename);
-    await writeFile(path, buffer);
-    imageUrl = `/uploads/${filename}`;
-
-    const additionalImageFiles = formData.getAll("additionalImages") as File[];
-    const additionalImages: string[] = [];
-    for (const file of additionalImageFiles) {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const filename = `${Date.now()}-${file.name}`;
-      const path = join(uploadDir, filename);
-      await writeFile(path, buffer);
-      additionalImages.push(`/uploads/${filename}`);
-    }
-
-    const product = await db.product.create({
+    await db.product.create({
       data: {
         title: validatedData.name,
         description: validatedData.description,
         price: validatedData.price,
-        imageUrl,
+        imageUrl: uploadResponse.url[0].original,
         categoryId: parseInt(validatedData.category),
         sellerId: 5,
         status: validatedData.status,
@@ -106,11 +94,14 @@ export async function createProduct(prevState: any, formData: FormData) {
           },
         },
         images: {
-          createMany: {
-            data: additionalImages.map((url) => ({ url })),
-          },
+          create: uploadResponse.url.map(
+            (url: { original: string; thumbnail: string }) => ({
+              url: url.thumbnail,
+            })
+          ),
         },
       },
+
       include: {
         stock: true,
         images: true,
@@ -118,7 +109,7 @@ export async function createProduct(prevState: any, formData: FormData) {
     });
 
     revalidatePath("/products");
-    return { message: "success" };
+    return { message: "Product successfully created" };
   } catch (error) {
     console.error("Error creating product:", error);
     return { message: "An error occurred while creating the product" };

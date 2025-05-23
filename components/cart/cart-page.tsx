@@ -8,15 +8,19 @@ import CartList from "./cart-list";
 import useCartSheet from "@/hooks/use-cart-sheet";
 import { Button } from "../ui/button";
 import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/hooks/use-cart";
+import CartSummary from "./cart-summary";
 
 const CartPage = () => {
-  const { cart, fetchCart, isLoading, error } = useCartStore();
+  const { cartData, cart, setCart, mergeCart } = useCart();
   const { isOpen, setIsOpen } = useCartSheet();
   const { userId } = useUserAuth();
 
   useEffect(() => {
-    fetchCart(userId ?? null);
-  }, [userId, fetchCart]);
+    if (cartData.isSuccess && userId) {
+      mergeCart();
+    }
+  }, [cartData.isSuccess, cartData.data, setCart, userId]);
 
   const cartItemCount = cart?.items?.length ?? 0;
 
@@ -36,9 +40,13 @@ const CartPage = () => {
         <CartList
           cartItems={cart?.items ?? []}
           onClose={() => setIsOpen(false)}
-          isLoading={isLoading}
-          error={error}
+          isLoading={cartData.isLoading}
+          error={cartData.error?.message ?? ""}
         />
+
+        <div className="mt-auto">
+          <CartSummary onClose={() => setIsOpen(false)} />
+        </div>
       </SheetContent>
     </Sheet>
   );

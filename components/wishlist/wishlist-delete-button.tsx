@@ -2,7 +2,7 @@
 import { Button } from "../ui/button";
 import { useUserAuth } from "@/hooks/use-auth";
 import { Trash } from "lucide-react";
-import { useRemoveWishlist } from "@/hooks/use-fetch-wishlist";
+import { useWishlist } from "@/hooks/use-wishlist";
 
 interface WishlistDeleteButtonProps {
   productId: number;
@@ -13,12 +13,10 @@ const WishlistDeleteButton = ({
   productId,
   className,
 }: WishlistDeleteButtonProps) => {
-  const { userId } = useUserAuth();
-  const { mutate: removeFromWishlist, isPending } = useRemoveWishlist();
-  if (!userId) return <div>no userId found</div>;
+  const { remove } = useWishlist();
 
   const handleRemove = () => {
-    removeFromWishlist({ productId, userId });
+    remove.mutate({ productId });
   };
 
   return (
@@ -27,10 +25,10 @@ const WishlistDeleteButton = ({
         onClick={handleRemove}
         variant="destructive"
         size="sm"
-        disabled={isPending}
+        disabled={remove.isPending}
       >
         <Trash
-          className={`${isPending ? "animate-pulse" : "hover:scale-105"}`}
+          className={`${remove.isPending ? "animate-pulse bg-red-500" : "hover:scale-105"}`}
         />
       </Button>
     </div>

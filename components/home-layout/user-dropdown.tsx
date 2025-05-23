@@ -15,6 +15,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import useAuthModalStore from "@/store/useAuthModalStore";
+import { useCart } from "@/hooks/use-cart";
+import useCartStore from "@/store/useCartStore";
 
 const NavbarItems = [
   { title: "Account", icon: User, href: "/account" },
@@ -25,6 +27,7 @@ const NavbarItems = [
 
 const UserDropdown = () => {
   const { isAuthenticated, user, logout, checkAuth } = useAuthStore();
+  const { clearCart } = useCartStore();
   const { openModal } = useAuthModalStore();
   const router = useRouter();
 
@@ -36,6 +39,7 @@ const UserDropdown = () => {
 
   const handleLogout = async () => {
     await logout();
+    clearCart();
     router.push("/");
   };
 
