@@ -6,10 +6,10 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    console.log("Email body:", body);
+
     const { data, error } = await resend.emails.send({
       from: "Smart Buy <onboarding@resend.dev>",
-      to: ["shubhamxgg@gmail.com"],
+      to: [process.env.MAIL as string],
       subject: "Your Smart Buy Order Confirmation",
       react: SmartBuyReceiptEmail({
         orderId: body.orderId,

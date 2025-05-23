@@ -3,12 +3,18 @@
 import { useWishlist } from "@/hooks/use-wishlist";
 import WishlistGrid from "./wishlist-grid";
 import WishlistSkeleton from "./wishlist-skeleton";
+import { RetryButton } from "../retry-button";
 
 export default function WishlistContent() {
   const { wishlist } = useWishlist();
 
   if (wishlist.status === "error")
-    return <h1>Error: {wishlist.error.message}</h1>;
+    return (
+      <RetryButton
+        onClick={() => wishlist.refetch()}
+        error={wishlist.error?.message}
+      />
+    );
   if (wishlist.status === "pending") {
     return <WishlistSkeleton />;
   }
