@@ -65,7 +65,7 @@ export async function createProduct(prevState: any, formData: FormData) {
       uploadFormData.append("files", file);
     });
 
-    const response = await fetch("http:localhost:3000/api/upload", {
+    const response = await fetch(`${process.env.API}/api/upload`, {
       method: "POST",
       body: uploadFormData,
     });
