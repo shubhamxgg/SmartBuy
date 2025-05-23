@@ -11,7 +11,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import AnimatedButton from "../ui/animate-button";
 import { useUserAuth } from "@/hooks/use-auth";
 import { createOrder } from "@/lib/actions/create-order";
-import { useAuthStore } from "@/store/useAuthStore";
 
 const PlaceOrderButton = () => {
   const router = useRouter();
@@ -46,6 +45,7 @@ const PlaceOrderButton = () => {
     const order = {
       userId: userId,
       items: cart.items.map((item) => ({
+        title: item.product.title,
         productId: item.product.id,
         quantity: item.quantity,
         price: item.product.price,
@@ -78,11 +78,11 @@ const PlaceOrderButton = () => {
     <AnimatePresence>
       <AnimatedButton
         onClick={handlePlaceOrder}
-        className={`w-full transition-colors duration-300 rounded-sm p-2 ${
+        className={`w-full transition-colors duration-300 rounded-sm p-2 text-black ${
           isProcessing
             ? "bg-gray-600 hover:bg-gray-700 cursor-not-allowed"
             : "bg-primary hover:bg-primary-dark"
-        } text-white`}
+        }`}
         disabled={isProcessing}
       >
         {isProcessing ? (

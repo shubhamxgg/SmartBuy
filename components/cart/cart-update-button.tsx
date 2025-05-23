@@ -1,22 +1,21 @@
-import { ReactNode } from "react";
-import { Button } from "../ui/button";
+import { ButtonHTMLAttributes, ReactNode } from "react";
+import { Button, ButtonProps } from "../ui/button";
 
-interface CartUpdateButtonProps {
+interface CartUpdateButtonProps extends ButtonProps {
   icon: ReactNode;
-  onClick: () => void;
   className?: string;
 }
 const CartUpdateButton = ({
   icon,
-  onClick,
   className,
+  ...props
 }: CartUpdateButtonProps) => {
   return (
     <Button
       size={"icon"}
       variant={"outline"}
       className={`h-8 w-8 rounded-full ${className}`}
-      onClick={onClick}
+      {...props}
     >
       {icon}
     </Button>

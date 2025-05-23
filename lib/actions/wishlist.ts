@@ -125,7 +125,7 @@ export async function fetchAllWishlist({
       nextCursor,
     };
   } catch (error) {
-    console.error("Error fetching wishlist:", error);
+    console.log("Error fetching wishlist:", error);
     throw new Error("Error fetching wishlist");
   }
 }

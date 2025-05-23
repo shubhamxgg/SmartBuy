@@ -20,7 +20,7 @@ const initialState: { message: string; errors: Record<string, string[]> } = {
 
 const CreateProduct = () => {
   const [state, formAction] = useFormState(createProduct, initialState);
-  const { categories, isLoading, error } = useCategories();
+
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -36,9 +36,6 @@ const CreateProduct = () => {
     formRef.current?.reset();
   };
 
-  if (isLoading) return <div>Loading categories...</div>;
-  if (error) return <div>Error loading categories: {error}</div>;
-
   return (
     <form
       ref={formRef}
@@ -50,7 +47,7 @@ const CreateProduct = () => {
           <h1 className="font-semibold text-lg md:text-2xl">Create Product</h1>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <CategoryDetails categories={categories} />
+          <CategoryDetails />
           <ProductDetails />
           <StockDetail />
           <StatusDetails />

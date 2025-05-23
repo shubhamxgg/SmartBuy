@@ -29,8 +29,13 @@ const DashboardSidebar = () => {
         <NavItem href="/dashboard/categories" icon={Tag} label="Categories" />
         <NavItem href="/dashboard/customers" icon={Users2} label="Customers" />
         <NavItem href="/dashboard/sellers" icon={Truck} label="Sellers" />
-        <NavItem href="/dashboard/analytics" icon={LineChart} label="Analytics" />
+        <NavItem
+          href="/dashboard/analytics"
+          icon={LineChart}
+          label="Analytics"
+        />
         <NavItem href="/dashboard/reports" icon={FileText} label="Reports" />
+        <NavItem href="/dashboard/upload" icon={FileText} label="Upload" />
       </div>
       <div className="mt-auto px-3 py-4">
         <NavItem href="/dashboard/settings" icon={Settings} label="Settings" />

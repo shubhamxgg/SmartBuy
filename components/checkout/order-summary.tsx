@@ -8,9 +8,10 @@ import {
 } from "@/components/ui/card";
 import useCartStore from "@/store/useCartStore";
 import Image from "next/image";
+import { Trash2Icon } from "lucide-react";
 
 const OrderSummary = () => {
-  const { cart } = useCartStore();
+  const { cart, removeFromCart } = useCartStore();
 
   const total = useMemo(
     () =>
@@ -39,18 +40,26 @@ const OrderSummary = () => {
               width={50}
             />
             <div className="ml-4 flex-1">
-              <h3 className="font-semibold">{item.productId}</h3>
+              <h3 className="font-semibold">{item.product.title}</h3>
               <p className="text-sm">Quantity: {item.quantity}</p>
-              <p className="text-sm">Price: ${item.product.price}</p>
+              <p className="text-sm">
+                Price: ${Math.round(item.product.price)}
+              </p>
             </div>
             <p className="font-semibold">
-              ${item.product.price * item.quantity}
+              ${Math.round(item.product.price * item.quantity)}
             </p>
+            <button
+              onClick={() => removeFromCart(item.product.id)}
+              className="ml-4 text-sm text-red-500"
+            >
+              <Trash2Icon className="w-4 h-4" />
+            </button>
           </div>
         ))}
         <div className="border-t pt-4 flex justify-end">
           <h3 className="text-lg font-semibold">
-            Total Cost: ${total.toFixed(2)}
+            Total Cost: ${Math.round(total)}
           </h3>
         </div>
       </CardContent>

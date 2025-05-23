@@ -9,6 +9,7 @@ const useCategories = () => {
   useQuery({
     queryKey: ["categories"],
     queryFn: fetchCategories,
+
     enabled: categories.length === 0 && !isLoading && !error,
   });
 
@@ -23,6 +24,7 @@ const useCategories = () => {
     categories,
     isLoading,
     error,
+
     addCategory: addCategoryMutation.mutate,
     isAddingCategory: addCategoryMutation.isPending,
     addCategoryError: addCategoryMutation.error,

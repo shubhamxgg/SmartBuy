@@ -16,9 +16,9 @@ const WishlistPage = () => {
     }
   }, [isAuthenticated, openModal]);
 
-  if (isAuthenticated) {
-    return <LoadingState />;
-  }
+  // if (isAuthenticated) {
+  //   return <LoadingState />;
+  // }
 
   if (!isAuthenticated) {
     return <UnauthenticatedState />;
@@ -27,16 +27,16 @@ const WishlistPage = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Your Wishlist</h1>
-      <WishlistList userId={userId as number} />
+      <WishlistList />
     </div>
   );
 };
 
-const LoadingState = () => (
-  <div className="flex items-center justify-center min-h-[50vh]">
-    <Loader2 className="h-8 w-8 animate-spin text-primary" />
-  </div>
-);
+// const LoadingState = () => (
+//   <div className="flex items-center justify-center min-h-[50vh]">
+//     <Loader2 className="h-8 w-8 animate-spin text-primary" />
+//   </div>
+// );
 
 const UnauthenticatedState = () => (
   <div className="container mx-auto px-4 py-8 text-center">

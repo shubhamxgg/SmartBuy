@@ -3,14 +3,46 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [
-      "plus.unsplash.com",
-      "images.unsplash.com",
-      "m.media-amazon.com",
-      "loremflickr.com",
-      "picsum.photos",
-      "example.com",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "gknnco9fowdzzj12.public.blob.vercel-storage.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "plus.unsplash.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "m.media-amazon.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "loremflickr.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+        port: "",
+        pathname: "/**",
+      },
     ],
+  },
+  experimental: {
+    serverComponentsExternalPackages: ["sharp"],
   },
 };
 

@@ -1,16 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
-import {
-  checkWishlistStatus,
-  toggleWishlistItem,
-} from "@/lib/actions/wishlist-btn";
-
 import { useUserAuth } from "@/hooks/use-auth";
+import { useWishlist } from "@/hooks/use-wishlist";
 
 interface WishlistButtonProps {
   productId: number;
@@ -18,60 +12,41 @@ interface WishlistButtonProps {
 }
 
 export function WishlistButton({ productId, className }: WishlistButtonProps) {
-  const { userId, isAuthenticated } = useUserAuth();
-  const [isInWishlist, setIsInWishlist] = useState(false);
+  const { isAuthenticated } = useUserAuth();
+  const { wishlist, remove, add } = useWishlist();
   const [isHovered, setIsHovered] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (isAuthenticated && userId) {
-      checkWishlistStatus(userId, productId).then(setIsInWishlist);
-    }
-  }, [isAuthenticated, userId, productId]);
+  const isLiked = wishlist.data?.items?.some(
+    (item) => item.productId === productId
+  );
 
   const handleWishlistToggle = async () => {
-    if (!isAuthenticated) {
-      toast.error("Please log in to use the wishlist");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const newStatus = await toggleWishlistItem(userId, productId);
-      setIsInWishlist(newStatus);
-      toast.success(
-        newStatus ? "Added to wishlist!" : "Removed from wishlist!"
-      );
-    } catch (error) {
-      toast.error("Failed to update wishlist");
-      console.error(error);
-    } finally {
-      setIsLoading(false);
+    if (isLiked) {
+      remove.mutate({ productId });
+    } else {
+      add.mutate({ productId });
     }
   };
 
   return (
-    <Button
-      size="icon"
-      variant="ghost"
+    <button
       onClick={handleWishlistToggle}
-      disabled={!isAuthenticated || isLoading}
+      disabled={!isAuthenticated || !wishlist}
       className={cn(
-        "transition-all duration-200 hover:scale-110",
-        isInWishlist ? "text-red-500" : "text-gray-400",
+        "transition-all duration-200 hover:scale-110 cursor-pointer",
+        isLiked ? "text-red-500" : "text-gray-400",
         className
       )}
-      aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+      aria-label={isLiked ? "Remove from wishlist" : "Add to wishlist"}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Heart
         className={cn(
-          "h-6 w-6 transition-all duration-200",
-          isInWishlist && "fill-current",
-          isHovered && !isInWishlist && "text-red-500"
+          "h-6 w-6 transition-all duration-200 ",
+          isLiked && "fill-red-500",
+          isHovered && !isLiked && "fill-red-500"
         )}
       />
-    </Button>
+    </button>
   );
 }

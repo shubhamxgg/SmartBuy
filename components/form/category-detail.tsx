@@ -9,17 +9,21 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Button } from "../ui/button";
+import useCategories from "@/hooks/use-categories";
 
 interface Category {
   id: number;
   name: string;
 }
 
-interface CategoryDetailsProps {
-  categories: Category[];
-}
+const CategoryDetails = () => {
+  const { categories, isLoading, error, } = useCategories();
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading categories</div>;
+  if (!categories || categories.length === 0) {
+    return <div>No categories available</div>;
+  }
 
-const CategoryDetails = ({ categories }: CategoryDetailsProps) => {
   return (
     <Card>
       <CardHeader>
@@ -42,7 +46,9 @@ const CategoryDetails = ({ categories }: CategoryDetailsProps) => {
           </Select>
         </div>
         <Link href={"/create-category"}>
-          <Button variant={"outline"} className="w-full">Create New Category</Button>
+          <Button variant={"outline"} className="w-full">
+            Create New Category
+          </Button>
         </Link>
       </CardContent>
     </Card>
