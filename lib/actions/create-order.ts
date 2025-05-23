@@ -69,7 +69,7 @@ export async function createOrder(orderData: any) {
       },
     });
 
-    const emailResponse = await fetch("http:localhost:3000/api/resend", {
+    const emailResponse = await fetch(`${process.env.API}/api/resend`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
