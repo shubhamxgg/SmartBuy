@@ -2,7 +2,7 @@
 
 import React, { Suspense, lazy } from "react";
 import dynamic from "next/dynamic";
-import { useItemData } from "@/hooks/use-item";
+import { useItemData } from "@/hooks/use-product-item";
 import ProductSkeleton from "@/components/products/product-skeleton";
 import ProductBreadcrumbs from "@/components/products/product-breadcrumb";
 import SkeletonLoader from "@/components/skeleton-loader";
@@ -40,8 +40,8 @@ const ProductClient = ({ id }: { id: number }) => {
   if (!product) return <ProductSkeleton />;
 
   return (
-    <div className="flex flex-col w-full gap-8">
-      <div className="hidden sm:block p-2 md:p-5">
+    <div className="flex flex-col gap-8 w-full">
+      <div className="p-2 md:p-4">
         <ProductBreadcrumbs category={product.category} title={product.title} />
       </div>
 

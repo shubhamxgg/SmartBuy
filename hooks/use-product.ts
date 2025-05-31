@@ -19,6 +19,8 @@ export const useProducts = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["products", searchParams.toString()],
     queryFn: fetchProducts,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
   });
 
   const updateFilters = useCallback(

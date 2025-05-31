@@ -5,6 +5,7 @@ import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserAuth } from "@/hooks/use-auth";
 import { useWishlist } from "@/hooks/use-wishlist";
+import { toast } from "sonner";
 
 interface WishlistButtonProps {
   productId: number;
@@ -20,6 +21,11 @@ export function WishlistButton({ productId, className }: WishlistButtonProps) {
   );
 
   const handleWishlistToggle = async () => {
+    if (!isAuthenticated) {
+      toast.info("Please log in to add to your wishlist.");
+      return;
+    }
+
     if (isLiked) {
       remove.mutate({ productId });
     } else {
@@ -30,7 +36,6 @@ export function WishlistButton({ productId, className }: WishlistButtonProps) {
   return (
     <button
       onClick={handleWishlistToggle}
-      disabled={!isAuthenticated || !wishlist}
       className={cn(
         "transition-all duration-200 hover:scale-110 cursor-pointer",
         isLiked ? "text-red-500" : "text-gray-400",

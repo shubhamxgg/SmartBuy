@@ -35,7 +35,7 @@ export function CarouselCard({ item }: CarouselCardType) {
           <p className="text-2xl font-semibold text-primary mb-6">
             ${item.price}
           </p>
-          <Link href={`/items/${item.id}`}>
+          <Link href={`/product/${item.id}`}>
             <Button size="lg" className="font-semibold px-6 py-3 text-base">
               <ShoppingCart className="mr-2 h-5 w-5" />
               Shop Now

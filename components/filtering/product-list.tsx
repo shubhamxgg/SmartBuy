@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
+import { RetryButton } from "../retry-button";
 
 const Pagination = dynamic(() => import("./pagination"), {
   loading: () => <Skeleton className="h-10 w-full mt-6" />,
@@ -13,7 +14,8 @@ const ProductGrid = dynamic(() => import("./product-grid"), {
   loading: () => <ProductGridSkeleton />,
 });
 
-async function fetchProducts(searchParams: Record<string, string>) {
+
+export async function fetchProducts(searchParams: Record<string, string>) {
   const queryString = new URLSearchParams(searchParams).toString();
   const response = await fetch(`/api/search?${queryString}`);
   if (!response.ok) {
@@ -52,14 +54,15 @@ export default function ProductList({
   const searchParams = useSearchParams();
   const searchParamsObject = Object.fromEntries(searchParams);
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["products", searchParams.toString()],
     queryFn: () =>
       fetchProducts({ ...initialSearchParams, ...searchParamsObject }),
+    staleTime: 1000 * 60 * 5,
   });
 
   if (isLoading) return <ProductListSkeleton />;
-  if (error) return <div>An error occurred: {error.message}</div>;
+  if (error) return <RetryButton error={error.message} onClick={refetch} />;
 
   const { products, total, page, totalPages } = data || {
     products: [],

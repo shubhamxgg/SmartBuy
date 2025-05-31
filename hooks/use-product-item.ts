@@ -10,8 +10,9 @@ export const useItemData = (id: number) => {
     refetchOnReconnect: false,
     refetchInterval: false,
     refetchOnMount: false,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    retry: 1,
+    staleTime: 1000 * 60 * 5,
+    retry: 3,
     retryDelay: 1000,
+    gcTime: 1000 * 60 * 10,
   });
 };

@@ -9,8 +9,8 @@ interface SearchPageProps {
 }
 
 export async function generateMetadata({ searchParams }: SearchPageProps) {
-  const raw = searchParams.search;
-  const q = Array.isArray(raw) ? raw.join(" ") : raw ?? "";
+  const raw = searchParams.query;
+  const q = Array.isArray(raw) ? raw.join(" ") : (raw ?? "");
 
   return {
     title: q ? `${q} - Search products` : "Search products",

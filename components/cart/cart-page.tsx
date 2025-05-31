@@ -20,7 +20,7 @@ const CartPage = () => {
     if (cartData.isSuccess && userId) {
       mergeCart();
     }
-  }, [cartData.isSuccess, cartData.data, setCart, userId]);
+  }, []);
 
   const cartItemCount = cart?.items?.length ?? 0;
 
@@ -36,13 +36,26 @@ const CartPage = () => {
           )}
         </Button>
       </SheetTrigger>
+
       <SheetContent className="w-full sm:max-w-md">
-        <CartList
-          cartItems={cart?.items ?? []}
-          onClose={() => setIsOpen(false)}
-          isLoading={cartData.isLoading}
-          error={cartData.error?.message ?? ""}
-        />
+        {cartData.error ? (
+          <div className="flex flex-col items-center justify-center h-[450px]">
+            <p className="text-red-500 text-sm mb-4">
+              {cartData.error.message || "Failed to load cart items."}
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => cartData.refetch()}
+              className="px-4 py-2"
+            >
+              Retry
+            </Button>
+          </div>
+        ) : cart.items.length > 0 ? (
+          <CartList cartItems={cart?.items ?? []} />
+        ) : (
+          <p className="text-center text-gray-500 pb-10">Your cart is empty.</p>
+        )}
 
         <div className="mt-auto">
           <CartSummary onClose={() => setIsOpen(false)} />

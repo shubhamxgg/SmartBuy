@@ -16,13 +16,11 @@ import { useRouter } from "next/navigation";
 import useAuthModalStore from "@/store/useAuthModalStore";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
-
-
+import { RetryButton } from "../retry-button";
 
 const OrdersPage = () => {
   const { userId, isAuthenticated } = useUserAuth();
   const { openModal } = useAuthModalStore();
-  const router = useRouter();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -34,13 +32,17 @@ const OrdersPage = () => {
     data: orders,
     isLoading: isOrdersLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["orderbyuser", userId],
     queryFn: () => fetchOrderByUserId(userId as number),
     enabled: !!userId && isAuthenticated,
+    staleTime: 1000 * 60 * 5,
   });
 
   if (isOrdersLoading) return <OrdersSkeleton />;
+
+  if (error) return <RetryButton error={error.message} onClick={refetch} />;
 
   if (!isAuthenticated) {
     return (
@@ -70,7 +72,7 @@ const OrdersPage = () => {
         </BreadcrumbList>
       </Breadcrumb>
       <h1 className="text-2xl font-bold mb-4">Your Orders</h1>
-      <div className="space-y-4">
+      <div className="flex flex-col gap-4">
         {orders.map((order) => (
           <OrderCard key={order.id} order={order} />
         ))}

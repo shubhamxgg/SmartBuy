@@ -50,17 +50,11 @@ const UserDropdown = () => {
           <Avatar className="h-8 w-8 rounded-md">
             {isAuthenticated && user ? (
               <AvatarImage
-                src={"https://github.com/shadcn.png"}
+                src={"/placeholder-user.jpg"}
                 alt={user.name}
                 className="rounded-md"
               />
-            ) : (
-              <AvatarImage
-                src="/default-avatar.png"
-                alt="Default user"
-                className="rounded-md"
-              />
-            )}
+            ) : null}
             <AvatarFallback className="rounded-md">
               {isAuthenticated && user
                 ? user.name.charAt(0).toUpperCase()

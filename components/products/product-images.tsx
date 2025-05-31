@@ -12,8 +12,6 @@ const ProductImages = ({ product }: ProductImagesProps) => {
     product.imageUrl,
     ...(product.images?.map((img: any) => img.url) || []),
   ];
-  console.log(product);
-  console.log(allImages);
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % allImages.length);
