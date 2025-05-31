@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchOrderByUserId } from "@/lib/actions/orders";
 import {
@@ -17,9 +17,11 @@ import useAuthModalStore from "@/store/useAuthModalStore";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
 import { RetryButton } from "../retry-button";
+import { useOrder } from "@/hooks/use-order";
 
 const OrdersPage = () => {
-  const { userId, isAuthenticated } = useUserAuth();
+  const [page, setPage] = useState(1);
+  const { isAuthenticated } = useUserAuth();
   const { openModal } = useAuthModalStore();
 
   useEffect(() => {
@@ -29,18 +31,16 @@ const OrdersPage = () => {
   }, [isAuthenticated, openModal]);
 
   const {
-    data: orders,
-    isLoading: isOrdersLoading,
+    orders,
     error,
+    isLoading,
     refetch,
-  } = useQuery({
-    queryKey: ["orderbyuser", userId],
-    queryFn: () => fetchOrderByUserId(userId as number),
-    enabled: !!userId && isAuthenticated,
-    staleTime: 1000 * 60 * 5,
-  });
+    total,
+    limit,
+    page: currentPage,
+  } = useOrder(page);
 
-  if (isOrdersLoading) return <OrdersSkeleton />;
+  if (isLoading) return <OrdersSkeleton />;
 
   if (error) return <RetryButton error={error.message} onClick={refetch} />;
 
@@ -57,6 +57,8 @@ const OrdersPage = () => {
 
   if (error) return <div>Error loading orders. Please try again later.</div>;
   if (!orders || orders.length === 0) return <div>No orders found.</div>;
+  console.log(orders);
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="space-y-4 max-w-screen-lg mx-auto">
@@ -73,9 +75,27 @@ const OrdersPage = () => {
       </Breadcrumb>
       <h1 className="text-2xl font-bold mb-4">Your Orders</h1>
       <div className="flex flex-col gap-4">
-        {orders.map((order) => (
+        {orders?.map((order: any) => (
           <OrderCard key={order.id} order={order} />
         ))}
+      </div>
+
+      <div className="flex justify-between items-center mt-6">
+        <Button
+          disabled={currentPage <= 1}
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+        >
+          Previous
+        </Button>
+        <p>
+          Page {currentPage} of {totalPages}
+        </p>
+        <Button
+          disabled={currentPage >= totalPages}
+          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );
