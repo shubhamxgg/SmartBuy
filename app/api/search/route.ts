@@ -1,10 +1,8 @@
-export const dynamic = 'force-dynamic';
-import {
-  SearchParamsSchema,
-  safeParseProduct,
-} from "@/lib/schemas";
+export const dynamic = "force-dynamic";
+import { SearchParamsSchema, safeParseProduct } from "@/lib/schemas";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -19,10 +17,10 @@ export async function GET(request: Request) {
       where.price = { ...where.price, lte: Number(params.maxPrice) };
     if (params.status) where.status = params.status;
     if (params.featured !== undefined) where.featured = params.featured;
-    if (params.search) {
+    if (params.query) {
       where.OR = [
-        { title: { contains: params.search, mode: "insensitive" } },
-        { description: { contains: params.search, mode: "insensitive" } },
+        { title: { contains: params.query, mode: "insensitive" } },
+        { description: { contains: params.query, mode: "insensitive" } },
       ];
     }
 

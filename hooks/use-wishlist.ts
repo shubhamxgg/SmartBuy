@@ -31,6 +31,9 @@ export const useWishlist = () => {
     queryFn: () => fetchWishlist({ userId: userId as number }),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
+    enabled: !!userId,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
   });
 
   const removeWishlist = useMutation({

@@ -14,7 +14,6 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const router = useRouter();
   const href = `/product/${product.id}`;
 
   return (

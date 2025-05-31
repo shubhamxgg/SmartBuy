@@ -23,6 +23,8 @@ export const useCart = () => {
     enabled: !!userId,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
   });
 
   const addToCartMutation = useMutation({
@@ -76,7 +78,11 @@ export const useCart = () => {
   const handleUpdateQuantity = (id: number, quantity: number) => {
     updateCartItemQuantity(id, quantity);
     if (userId) {
-      updateCartItemMutation.mutate({ userId: userId as number, productId: id, quantity });
+      updateCartItemMutation.mutate({
+        userId: userId as number,
+        productId: id,
+        quantity,
+      });
     }
   };
 

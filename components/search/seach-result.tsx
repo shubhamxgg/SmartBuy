@@ -15,8 +15,8 @@ const SearchResults = ({ products, isLoading, error }: SearchResultsProps) => {
 
   if (error) {
     return (
-      <div className="text-red-500">
-        Error loading products: {error.message}
+      <div className="text-red-500 flex items-center justify-center w-full h-full">
+        <p> Error loading products: {error.message}</p>
       </div>
     );
   }
