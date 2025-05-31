@@ -23,8 +23,20 @@ export async function fetchOrderById(orderId: number) {
   return order;
 }
 
-export async function fetchOrderByUserId(userId: number) {
+export async function fetchOrderByUserId({
+  userId,
+  page,
+  limit,
+}: {
+  userId: number;
+  page?: number;
+  limit?: number;
+}) {
   userIdSchema.parse(userId);
+  const currentPage = page ?? 1;
+  const currentLimit = limit ?? 10;
+  const skip = (currentPage - 1) * currentLimit;
+  const totalOrders = await db.order.count({ where: { userId } });
 
   const orders = await db.order.findMany({
     where: { userId },
@@ -36,20 +48,25 @@ export async function fetchOrderByUserId(userId: number) {
         include: {
           product: {
             select: {
+              title: true,
               imageUrl: true,
             },
           },
         },
       },
     },
+    skip: skip,
+    take: limit,
   });
 
   if (!orders || orders.length === 0) {
     return [];
   }
 
-  return orders.map((order) => ({
-    ...order,
-    image: order.items[0]?.product?.imageUrl || "/clothing.jpg",
-  }));
+  return {
+    orders,
+    total: totalOrders,
+    page,
+    limit,
+  };
 }
