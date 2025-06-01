@@ -42,14 +42,28 @@ export const metadata: Metadata = {
       "Your one-stop shop for all things smart. Smart Buy is a platform for buying and selling smart products.",
     url: "https://smartbuyx.netlify.app",
     siteName: "Smart Buy",
-    images: ["/og-image/og.png"],
+    images: [
+      {
+        url: "https://smartbuyx.netlify.app/og-image/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Smart Buy",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Smart Buy",
     description:
       "Your one-stop shop for all things smart. Smart Buy is a platform for buying and selling smart products.",
-    images: ["/og-image/og.png"],
+    images: [
+      {
+        url: "https://smartbuyx.netlify.app/og-image/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Smart Buy",
+      },
+    ],
   },
 };
 
