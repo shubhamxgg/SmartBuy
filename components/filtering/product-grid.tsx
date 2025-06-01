@@ -1,8 +1,13 @@
 "use client";
+
 import { Product } from "@/type";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ProductCard } from "../product/product-card";
+import { Suspense } from "react";
+
+const Card = dynamic(() => import("../product/product-card"), {
+  ssr: true,
+});
 
 interface ProductGridProps {
   products: Product[];
@@ -36,7 +41,9 @@ const ProductGrid = ({ products }: ProductGridProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <Suspense key={product.id} fallback="Loading...">
+          <Card product={product} />
+        </Suspense>
       ))}
     </div>
   );

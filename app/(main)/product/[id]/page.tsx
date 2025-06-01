@@ -19,8 +19,18 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
-const ProductPage = ({ params }: { params: { id: number } }) => {
-  return <ProductClient id={params.id} />;
+const ProductPage = async ({ params }: PageProps) => {
+  const id = parseInt(params.id, 10);
+  const product = await getProductById(id);
+  if (!product) {
+    return (
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold text-red-600">Product Not Found</h1>
+        <p>The product you are looking for does not exist.</p>
+      </div>
+    );
+  }
+  return <ProductClient initialProduct={product} id={params.id} />;
 };
 
 export default ProductPage;

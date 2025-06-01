@@ -18,11 +18,11 @@ export function CarouselCard({ item }: CarouselCardType) {
   return (
     <div className="w-full shrink-0 relative h-[400px] flex items-center">
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent z-10" />
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 h-full w-full aspect-square">
         <LazyImage
           src={item.imageUrl}
           alt={item.title}
-          priority={false}
+          priority={true}
           className="transition-transform duration-300 hover:scale-105"
           sizes="100vw"
         />

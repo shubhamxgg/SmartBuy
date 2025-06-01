@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -25,7 +26,7 @@ const ProductImages = ({ product }: ProductImagesProps) => {
 
   return (
     <div className="w-full lg:w-1/2 flex flex-col bg-card p-6 rounded-xl border border-border">
-      <div className="relative w-full aspect-square mb-4">
+      <div className="relative h-[400px] w-full mb-4">
         <Image
           alt={product.title}
           src={allImages[currentImageIndex]}
@@ -64,12 +65,12 @@ const ProductImages = ({ product }: ProductImagesProps) => {
           >
             <Image
               alt={`Product image ${index + 1}`}
-              src={img}
+              src={img ? "/placeholder.svg" : img}
               width={80}
               height={80}
               objectFit="cover"
               loading="lazy"
-              className="rounded-sm overflow-hidden"
+              className="rounded-sm h-full w-full overflow-hidden"
             />
           </button>
         ))}
