@@ -4,7 +4,7 @@ import { getCategories } from "@/lib/api/categories";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-export async function Category() {
+async function Category() {
   const categories = await getCategories();
 
   return (
@@ -32,3 +32,5 @@ export async function Category() {
     </section>
   );
 }
+
+export default Category;

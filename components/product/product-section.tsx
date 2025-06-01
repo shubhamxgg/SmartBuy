@@ -8,7 +8,7 @@ interface ProductSectionProps {
   categoryName: string;
 }
 
-export async function ProductSection({ categoryName }: ProductSectionProps) {
+async function ProductSection({ categoryName }: ProductSectionProps) {
   const categoryData = await getProductByCategory({ categoryName });
 
   if (
@@ -27,10 +27,12 @@ export async function ProductSection({ categoryName }: ProductSectionProps) {
 
   return (
     <div className="mb-12">
+      
       <div className="flex flex-row items-center justify-between mb-6 pb-4 border-b">
         <h2 className="text-xl sm:text-3xl font-bold text-gray-800 sm:mb-0">
           <span className="bg-clip-text text-primary">{categoryName}</span>
         </h2>
+
         <Button variant="outline" asChild className="group">
           <Link
             href={`/search?categoryId=${categoryId}`}
@@ -45,3 +47,5 @@ export async function ProductSection({ categoryName }: ProductSectionProps) {
     </div>
   );
 }
+
+export default ProductSection;

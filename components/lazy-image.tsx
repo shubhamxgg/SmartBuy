@@ -50,7 +50,7 @@ export const LazyImage = ({
 
   return (
     <div ref={ref} className="relative w-full h-full bg-white">
-      {isVisible ? (
+      {priority || isVisible ? (
         <Image
           src={src}
           alt={alt}
@@ -61,6 +61,7 @@ export const LazyImage = ({
           className={`object-contain  ${className}`}
           loading={priority ? "eager" : "lazy"}
           quality={80}
+          fetchPriority="high"
         />
       ) : (
         <div className="absolute inset-0 bg-gray-200 animate-pulse" />

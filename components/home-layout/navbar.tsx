@@ -1,12 +1,21 @@
+"use client";
+
 import Link from "next/link";
-import { BaggageClaimIcon, Store, Search, Menu } from "lucide-react";
-import SearchBar from "../searchbar";
-import UserDropdown from "./user-dropdown";
-import CartPage from "../cart/cart-page";
-import { Button } from "../ui/button";
-import { Suspense } from "react";
-import HomePageSidebar from "./home-sidebar";
+import { Store, Search } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Suspense, useState } from "react";
 import Image from "next/image";
+import { Button } from "../ui/button";
+
+const SearchBar = dynamic(() => import("../searchbar"), { ssr: false });
+const Sidebar = dynamic(() => import("./home-sidebar"), { ssr: true });
+
+const CartPageDynamic = dynamic(() => import("../cart/cart-page"), {
+  ssr: false,
+});
+const UserDropdownDynamic = dynamic(() => import("./user-dropdown"), {
+  ssr: false,
+});
 
 const Navbar = () => {
   return (
@@ -21,26 +30,28 @@ const Navbar = () => {
               <Image
                 src={"/logo/icon-text.svg"}
                 alt="Logo"
-                width={150}
-                height={100}
-                className="h-8 w-auto"
+                width={192}
+                height={56}
+                className="h-14 w-48 border"
               />
             </Link>
-            <HomePageSidebar />
+            <Suspense fallback="Loading Sidebar">
+              <Sidebar />
+            </Suspense>
           </div>
 
           <div className="flex-1 max-w-xl mx-4 hidden md:block">
             <Suspense
               fallback={
-                <div className="h-10 bg-muted/20 animate-pulse rounded-md"></div>
+                <div className="h-10 bg-muted/20 animate-pulse rounded-md" />
               }
             >
               <SearchBar />
             </Suspense>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <Link href="/search" className="sm:hidden">
+          <div className="flex items-center gap-4">
+            <Link href="/search" className="md:hidden">
               <Button
                 variant="outline"
                 size="sm"
@@ -56,8 +67,13 @@ const Navbar = () => {
               <Store className="h-5 w-5 mr-2" />
               <span>Dashboard</span>
             </Link>
-            <CartPage />
-            <UserDropdown />
+
+            <Suspense fallback="Loading Cart">
+              <CartPageDynamic />
+            </Suspense>
+            <Suspense fallback="Loading UserButton">
+              <UserDropdownDynamic />
+            </Suspense>
           </div>
         </div>
       </div>

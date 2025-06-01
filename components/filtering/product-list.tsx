@@ -5,15 +5,15 @@ import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RetryButton } from "../retry-button";
+import { Suspense } from "react";
 
 const Pagination = dynamic(() => import("./pagination"), {
-  loading: () => <Skeleton className="h-10 w-full mt-6" />,
+  ssr: false,
 });
 
 const ProductGrid = dynamic(() => import("./product-grid"), {
-  loading: () => <ProductGridSkeleton />,
+  ssr: false,
 });
-
 
 export async function fetchProducts(searchParams: Record<string, string>) {
   const queryString = new URLSearchParams(searchParams).toString();
@@ -72,10 +72,15 @@ export default function ProductList({
   };
 
   return (
-    <div>
+    <>
       <p className="mb-4 text-gray-600">{total} products found</p>
-      <ProductGrid products={products} />
-      <Pagination currentPage={page} totalPages={totalPages} />
-    </div>
+      <Suspense fallback="Loading...">
+        <ProductGrid products={products} />
+      </Suspense>
+
+      <Suspense fallback="Loading...">
+        <Pagination currentPage={page} totalPages={totalPages} />
+      </Suspense>
+    </>
   );
 }

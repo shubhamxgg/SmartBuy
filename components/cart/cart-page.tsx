@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import useCartStore from "@/store/useCartStore";
 import { useUserAuth } from "@/hooks/use-auth";
 import CartList from "./cart-list";
 import useCartSheet from "@/hooks/use-cart-sheet";
@@ -20,7 +19,7 @@ const CartPage = () => {
     if (cartData.isSuccess && userId) {
       mergeCart();
     }
-  }, []);
+  }, [cartData.isSuccess, mergeCart, userId]);
 
   const cartItemCount = cart?.items?.length ?? 0;
 

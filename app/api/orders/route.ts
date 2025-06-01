@@ -1,7 +1,9 @@
 import prisma from "@/lib/prisma";
+import { unstable_noStore } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
+  unstable_noStore();
   const searchParams = request.nextUrl.searchParams;
   const userId = Number(searchParams.get("userId"));
   const page = Number(searchParams.get("page") || 1);

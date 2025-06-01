@@ -1,12 +1,11 @@
 "use client";
 
-import React, { Suspense, lazy } from "react";
+import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
-import { useItemData } from "@/hooks/use-product-item";
+import { useProductDetails } from "@/hooks/use-product-details";
 import ProductSkeleton from "@/components/products/product-skeleton";
 import ProductBreadcrumbs from "@/components/products/product-breadcrumb";
 import SkeletonLoader from "@/components/skeleton-loader";
-import { ProductSection } from "@/components/product/product-section";
 import { RetryButton } from "../retry-button";
 
 const ProductImages = dynamic(
@@ -15,24 +14,31 @@ const ProductImages = dynamic(
 );
 const ProductDetails = dynamic(
   () => import("@/components/products/product-details"),
+  { ssr: true }
+);
+
+const ProductCustomerRatings = dynamic(
+  () => import("@/components/products/product-customer-ratings"),
   { ssr: false }
 );
 
-const ProductCustomerRatings = lazy(
-  () => import("@/components/products/product-customer-ratings")
-);
-const ProductReviews = lazy(
-  () => import("@/components/products/product-reviews")
+const ProductReviews = dynamic(
+  () => import("@/components/products/product-reviews"),
+  { ssr: false }
 );
 
-interface ItemPageProps {
-  params: {
-    id: number;
-  };
+interface ProductClientProps {
+  id: string;
+  initialProduct: any;
 }
 
-const ProductClient = ({ id }: { id: number }) => {
-  const { data: product, isLoading, error, refetch } = useItemData(Number(id));
+const ProductClient = ({ id, initialProduct }: ProductClientProps) => {
+  const {
+    data: product,
+    isLoading,
+    error,
+    refetch,
+  } = useProductDetails(Number(id), initialProduct);
 
   if (isLoading) return <ProductSkeleton />;
   if (error)
@@ -46,10 +52,11 @@ const ProductClient = ({ id }: { id: number }) => {
       </div>
 
       <div className="flex flex-col gap-2 lg:flex-row p-2 md:p-5">
-        <Suspense fallback={<SkeletonLoader />}>
+        <Suspense fallback="Loading..">
           <ProductImages product={product} />
         </Suspense>
-        <Suspense fallback={<div>Loading details...</div>}>
+
+        <Suspense fallback="Loading..">
           <ProductDetails product={product} />
         </Suspense>
       </div>
@@ -71,4 +78,4 @@ const ProductClient = ({ id }: { id: number }) => {
   );
 };
 
-export default React.memo(ProductClient);
+export default ProductClient;

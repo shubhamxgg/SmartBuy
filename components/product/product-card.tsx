@@ -7,13 +7,12 @@ import { formatCurrency } from "@/lib/utils";
 import { AddToCartButton } from "../cart/add-to-cart-button";
 
 import { WishlistButton } from "../wishlist-button";
-import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
   product: any;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product }: ProductCardProps) {
   const href = `/product/${product.id}`;
 
   return (
@@ -27,7 +26,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       )}
       <Link href={href} prefetch={false} className="flex flex-col">
-        <div className="relative h-48 overflow-hidden bg-white">
+        <div className="relative h-48 w-auto overflow-hidden bg-white">
           <Image
             alt={product.title}
             src={
@@ -36,7 +35,8 @@ export function ProductCard({ product }: ProductCardProps) {
                 : "/images/placeholder/item-placeholder.webp"
             }
             fill
-            loading="lazy"
+            loading="eager"
+            fetchPriority="high"
             className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
@@ -66,3 +66,5 @@ export function ProductCard({ product }: ProductCardProps) {
     </Card>
   );
 }
+
+export default ProductCard;

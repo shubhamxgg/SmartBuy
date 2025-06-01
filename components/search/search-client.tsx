@@ -1,15 +1,19 @@
+import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import { getCategories } from "@/lib/actions/category";
 import { getSellers } from "@/lib/actions/seller";
-import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
-import MobileFilters from "@/components/filtering/filter-drawer";
+import { FilterSidebarSkeleton, ProductListSkeleton } from "./search-skeletons";
+
+const MobileFilters = dynamic(
+  () => import("@/components/filtering/filter-drawer"),
+  { ssr: false }
+);
 
 const ProductList = dynamic(
   () => import("@/components/filtering/product-list"),
   {
     ssr: false,
-    loading: () => <ProductListSkeleton />,
   }
 );
 
@@ -17,7 +21,6 @@ const FilterSidebar = dynamic(
   () => import("@/components/filtering/filter-sidebar"),
   {
     ssr: false,
-    loading: () => <FilterSidebarSkeleton />,
   }
 );
 
@@ -25,39 +28,8 @@ const SortDropdown = dynamic(
   () => import("@/components/filtering/sort-dropdown"),
   {
     ssr: false,
-    loading: () => <SortDropdownSkeleton />,
   }
-);
-
-function ProductListSkeleton() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {[...Array(6)].map((_, i) => (
-        <div key={i} className="space-y-4">
-          <Skeleton className="h-48 w-full" />
-          <Skeleton className="h-4 w-3/4" />
-          <Skeleton className="h-4 w-1/2" />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function FilterSidebarSkeleton() {
-  return (
-    <div className="space-y-6">
-      <Skeleton className="h-8 w-3/4" />
-      {[...Array(3)].map((_, i) => (
-        <div key={i} className="space-y-2">
-          <Skeleton className="h-6 w-1/2" />
-          {[...Array(4)].map((_, j) => (
-            <Skeleton key={j} className="h-4 w-full" />
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}
+)
 
 function SortDropdownSkeleton() {
   return (
@@ -99,7 +71,9 @@ export default async function SearchPage({
           </Suspense>
         </div>
       </div>
-      <MobileFilters categories={categories} sellers={sellers} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <MobileFilters categories={categories} sellers={sellers} />
+      </Suspense>
     </div>
   );
 }

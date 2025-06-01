@@ -15,7 +15,7 @@ export async function generateMetadata({ searchParams }: SearchPageProps) {
   return {
     title: q ? `${q} - Search products` : "Search products",
     description: q
-      ? `Browse our catalog for “${q}”`
+      ? `Browse our catalog for “${q} ”`
       : "Search our full product catalog",
   };
 }
